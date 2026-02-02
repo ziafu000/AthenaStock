@@ -1,0 +1,207 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* 
+      Reference Palette "Athena":
+      - Primary Dark: #000047 (Deep Navy)
+      - Secondary/Text: #2c3345 (Dark Slate)
+      - Accent: #bb5504 (Bronze/Burnt Orange)
+      - Background: #fffdfc (Warm Paper)
+      - Surface: #fff2e2 (Light Cream/Peach - likely for cards or highlights)
+    */
+
+    /* Background: Warm paper-like white */
+    --background: 30 20% 99%; /* #fffdfc approx */
+    /* Foreground: Dark Slate */
+    --foreground: 223 22% 22%; /* #2c3345 */
+
+    /* Card: White or very light cream */
+    --card: 0 0% 100%;
+    --card-foreground: 223 22% 22%;
+
+    /* Popover */
+    --popover: 0 0% 100%;
+    --popover-foreground: 223 22% 22%;
+
+    /* Primary: Deep Navy (#000047) */
+    --primary: 240 100% 14%; 
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary: Light Cream/Peach (#fff2e2) */
+    --secondary: 33 50% 94%;
+    --secondary-foreground: 240 100% 14%;
+
+    /* Muted: Cool Grey */
+    --muted: 210 20% 96%;
+    --muted-foreground: 215 16% 47%;
+
+    /* Accent: Bronze/Burnt Orange (#bb5504) */
+    --accent: 27 95% 37%;
+    --accent-foreground: 0 0% 100%;
+
+    /* Destructive */
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    /* Border */
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 240 100% 14%;
+
+    --radius: 0.5rem;
+  }
+
+.h-24 {
+    height: 6rem;
+    width: 6rem;
+}
+
+  .dark {
+    /* Dark Mode: Deep Navy/Slate Theme (Calm) */
+    
+    /* Background: Dark Slate/Navy */
+    --background: 222 47% 11%; /* #0f172a */
+    --foreground: 210 40% 98%;
+
+    /* Card: Slightly lighter Navy */
+    --card: 217 33% 17%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 217 33% 17%;
+    --popover-foreground: 210 40% 98%;
+
+    /* Primary: Soft Blue-White */
+    --primary: 210 40% 98%;
+    --primary-foreground: 222 47% 11%;
+
+    /* Secondary: Darker Bronze or Muted Blue */
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+
+    /* Accent: Bronze/Orange (same but maybe brighter for dark mode?) */
+    --accent: 27 95% 45%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Typography enhancements */
+  h1, h2, h3, h4, h5, h6 {
+    @apply tracking-tight;
+  }
+  
+  p {
+    @apply leading-relaxed;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-muted-foreground/30 rounded-full;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-muted-foreground/50;
+}
+
+/* Selection color - Bronze tint */
+::selection {
+  @apply bg-accent/20 text-accent-foreground;
+}
+
+/* Focus visible styles */
+:focus-visible {
+  @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+}
+
+/* Print styles */
+@media print {
+  body {
+    font-size: 12pt;
+    line-height: 1.5;
+    color: black !important;
+    background: white !important;
+  }
+  
+  a {
+    text-decoration: underline;
+  }
+  
+  h1, h2, h3, h4 {
+    page-break-after: avoid;
+  }
+  
+  p, li {
+    orphans: 3;
+    widows: 3;
+  }
+}
+
+/* Container utility */
+@layer components {
+  .container {
+    @apply mx-auto px-4 sm:px-6 lg:px-8;
+    max-width: 80rem;
+  }
+
+  /* Calm CTA Button Styles */
+  .btn-ghost {
+    @apply px-6 py-3 text-sm font-medium text-muted-foreground 
+           border border-border hover:bg-accent/5 hover:text-foreground
+           rounded-md transition-all;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 text-sm font-medium bg-secondary text-secondary-foreground
+           hover:bg-secondary/80 rounded-md transition-all;
+  }
+
+  .btn-outline {
+    @apply px-6 py-3 text-sm font-medium border-2 border-primary text-primary
+           hover:bg-primary hover:text-primary-foreground rounded-md transition-all;
+  }
+
+  /* Disclaimer Box */
+  .disclaimer-box {
+    @apply border rounded-lg p-6 bg-muted/30 text-sm text-muted-foreground;
+  }
+
+  /* Advisory Card */
+  .advisory-card {
+    @apply border rounded-2xl p-6 hover:border-accent/40 transition-colors bg-background;
+  }
+}
