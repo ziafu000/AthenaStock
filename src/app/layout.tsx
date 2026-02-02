@@ -13,10 +13,14 @@ const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif"
 export const metadata: Metadata = {
     title: {
         template: "%s | Đầu tư tỉnh thức",
-        default: "Đầu tư tỉnh thức – Phương pháp Warren Buffett",
+        default: "Athena Stock - Đầu tư tỉnh thức",
     },
     description: "Hoạch định hành trình đầu tư bền vững, hiểu đúng bản chất doanh nghiệp và kiểm soát tâm lý hành vi.",
     keywords: ["đầu tư giá trị", "warren buffett", "tâm lý đầu tư", "chứng khoán", "dài hạn"],
+    icons: {
+        icon: "/logo.png",
+        apple: "/logo.png",
+    },
 };
 
 export default function RootLayout({
