@@ -33,3 +33,27 @@ export interface Post {
     content: string
     slug: string
 }
+
+export const contentTypePathMap: Record<ContentType, string> = {
+    article: "articles",
+    business: "business",
+    psychology: "psychology",
+    framework: "frameworks",
+    library: "library",
+}
+
+export const contentTypeLabelMap: Record<ContentType, string> = {
+    article: "Bài viết",
+    business: "Doanh nghiệp",
+    psychology: "Tâm lý",
+    framework: "Framework",
+    library: "Thư viện",
+}
+
+export function getPostUrl(type: ContentType, slug: string): string {
+    return `/${contentTypePathMap[type]}/${slug}`
+}
+
+export function getTypeLabel(type: ContentType): string {
+    return contentTypeLabelMap[type]
+}

@@ -16,7 +16,7 @@ export async function getPostBySlug(type: ContentType, slug: string): Promise<Po
             content,
             slug,
         }
-    } catch (error) {
+    } catch {
         return null
     }
 }
@@ -47,7 +47,7 @@ export async function getAllPosts(type: ContentType): Promise<Post[]> {
             )
 
         return posts
-    } catch (error) {
+    } catch {
         return []
     }
 }

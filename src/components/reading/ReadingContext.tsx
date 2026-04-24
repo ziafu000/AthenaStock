@@ -1,6 +1,6 @@
 "use client"
 
-import React, { createContext, useContext, useState, useEffect } from "react"
+import React, { createContext, useContext, useState } from "react"
 
 type FontSize = "normal" | "large"
 type LineWidth = "normal" | "wide"
@@ -16,18 +16,21 @@ interface ReadingContextType {
 
 const ReadingContext = createContext<ReadingContextType | undefined>(undefined)
 
-export function ReadingProvider({ children }: { children: React.ReactNode }) {
-    const [fontSize, setFontSizeState] = useState<FontSize>("normal")
-    const [lineWidth, setLineWidthState] = useState<LineWidth>("normal")
-    const [isFocusMode, setIsFocusMode] = useState(false)
+function readStoredOption<T extends string>(key: string, fallback: T, allowedValues: readonly T[]) {
+    if (typeof window === "undefined") return fallback
 
-    // Load from localStorage on mount
-    useEffect(() => {
-        const savedFontSize = localStorage.getItem("reading-font-size") as FontSize
-        const savedLineWidth = localStorage.getItem("reading-line-width") as LineWidth
-        if (savedFontSize) setFontSizeState(savedFontSize)
-        if (savedLineWidth) setLineWidthState(savedLineWidth)
-    }, [])
+    const storedValue = window.localStorage.getItem(key)
+    return allowedValues.includes(storedValue as T) ? (storedValue as T) : fallback
+}
+
+export function ReadingProvider({ children }: { children: React.ReactNode }) {
+    const [fontSize, setFontSizeState] = useState<FontSize>(() =>
+        readStoredOption("reading-font-size", "normal", ["normal", "large"])
+    )
+    const [lineWidth, setLineWidthState] = useState<LineWidth>(() =>
+        readStoredOption("reading-line-width", "normal", ["normal", "wide"])
+    )
+    const [isFocusMode, setIsFocusMode] = useState(false)
 
     const setFontSize = (size: FontSize) => {
         setFontSizeState(size)
@@ -39,7 +42,7 @@ export function ReadingProvider({ children }: { children: React.ReactNode }) {
         localStorage.setItem("reading-line-width", width)
     }
 
-    const toggleFocusMode = () => setIsFocusMode(!isFocusMode)
+    const toggleFocusMode = () => setIsFocusMode((current) => !current)
 
     return (
         <ReadingContext.Provider

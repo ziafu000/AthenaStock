@@ -6,17 +6,44 @@ import { Header } from "@/components/layout/Header"; // Updated import
 import { Footer } from "../components/layout/Footer"; // Updated import
 import { ReadingProvider } from "@/components/reading/ReadingContext"; // Updated import
 import { cn } from "@/lib/utils";
+import { siteConfig } from "@/lib/site";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif" });
 
 export const metadata: Metadata = {
+    metadataBase: new URL(siteConfig.url),
     title: {
         template: "%s | Đầu tư tỉnh thức",
-        default: "Athena Stock - Đầu tư tỉnh thức",
+        default: siteConfig.title,
     },
-    description: "Hoạch định hành trình đầu tư bền vững, hiểu đúng bản chất doanh nghiệp và kiểm soát tâm lý hành vi.",
+    description: siteConfig.description,
     keywords: ["đầu tư giá trị", "warren buffett", "tâm lý đầu tư", "chứng khoán", "dài hạn"],
+    alternates: {
+        canonical: "/",
+    },
+    openGraph: {
+        type: "website",
+        locale: siteConfig.locale,
+        url: "/",
+        siteName: siteConfig.name,
+        title: siteConfig.title,
+        description: siteConfig.description,
+        images: [
+            {
+                url: "/logo.png",
+                width: 512,
+                height: 512,
+                alt: siteConfig.name,
+            },
+        ],
+    },
+    twitter: {
+        card: "summary",
+        title: siteConfig.title,
+        description: siteConfig.description,
+        images: ["/logo.png"],
+    },
     icons: {
         icon: "/logo.png",
         apple: "/logo.png",

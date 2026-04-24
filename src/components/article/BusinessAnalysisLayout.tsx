@@ -4,10 +4,11 @@ import { useReading } from "@/components/reading/ReadingContext"
 import { ReadingControls } from "@/components/reading/ReadingControls"
 import { ReadingProgress } from "@/components/article/ReadingProgress"
 import { cn } from "@/lib/utils"
+import type { Frontmatter } from "@/lib/content-types"
 
 interface BusinessAnalysisLayoutProps {
     children: React.ReactNode
-    meta: any
+    meta: Frontmatter
 }
 
 export function BusinessAnalysisLayout({ children, meta }: BusinessAnalysisLayoutProps) {

@@ -70,9 +70,13 @@ export function Header() {
 
                 {/* Right side */}
                 <div className="flex items-center space-x-4">
-                    <button className="hidden sm:flex p-2 text-muted-foreground hover:text-foreground transition-colors">
+                    <Link
+                        href="/search"
+                        aria-label="Tìm kiếm"
+                        className="hidden sm:flex p-2 text-muted-foreground hover:text-foreground transition-colors"
+                    >
                         <Search size={20} strokeWidth={1.5} />
-                    </button>
+                    </Link>
 
                     <div className="h-6 w-px bg-border hidden sm:block"></div>
 
@@ -105,6 +109,16 @@ export function Header() {
                                 {link.label}
                             </Link>
                         ))}
+                        <Link
+                            href="/search"
+                            className={cn(
+                                "text-base font-medium transition-colors hover:text-accent px-4 py-2 rounded-md hover:bg-accent/5",
+                                pathname.startsWith("/search") ? "text-accent bg-accent/5" : "text-foreground"
+                            )}
+                            onClick={() => setMobileMenuOpen(false)}
+                        >
+                            Tìm kiếm
+                        </Link>
                     </nav>
                 </div>
             )}

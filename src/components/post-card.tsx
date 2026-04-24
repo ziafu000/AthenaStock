@@ -1,33 +1,9 @@
 import Link from "next/link"
-import { Post, ContentType } from "@/lib/content-types"
+import { getPostUrl, getTypeLabel, Post } from "@/lib/content-types"
 import { Calendar, Clock, ArrowUpRight } from "lucide-react"
 
 interface PostCardProps {
     post: Post
-}
-
-// Map content type to URL path
-function getPostUrl(type: ContentType, slug: string): string {
-    const pathMap: Record<ContentType, string> = {
-        article: "articles",
-        business: "business",
-        psychology: "psychology",
-        framework: "frameworks",
-        library: "library",
-    }
-    return `/${pathMap[type]}/${slug}`
-}
-
-// Map content type to Vietnamese label
-function getTypeLabel(type: ContentType): string {
-    const labelMap: Record<ContentType, string> = {
-        article: "Bài viết",
-        business: "Doanh nghiệp",
-        psychology: "Tâm lý",
-        framework: "Framework",
-        library: "Thư viện",
-    }
-    return labelMap[type]
 }
 
 export function PostCard({ post }: PostCardProps) {
