@@ -8,6 +8,8 @@ import { ReadingProvider } from "@/components/reading/ReadingContext"; // Update
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/lib/site";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from '@vercel/speed-insights/next';
+
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif" });
@@ -78,6 +80,7 @@ export default function RootLayout({
                     </ReadingProvider>
                 </ThemeProvider>
                 <Analytics />
+                <SpeedInsights />
             </body>
         </html>
     );
