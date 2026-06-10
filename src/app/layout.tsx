@@ -7,6 +7,7 @@ import { Footer } from "../components/layout/Footer"; // Updated import
 import { ReadingProvider } from "@/components/reading/ReadingContext"; // Updated import
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/lib/site";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif" });
@@ -76,6 +77,7 @@ export default function RootLayout({
                         </div>
                     </ReadingProvider>
                 </ThemeProvider>
+                <Analytics />
             </body>
         </html>
     );
