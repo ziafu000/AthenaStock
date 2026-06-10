@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Header } from "@/components/layout/Header"; // Updated import
 import { Footer } from "../components/layout/Footer"; // Updated import
 import { ReadingProvider } from "@/components/reading/ReadingContext"; // Updated import
+import { RecruitmentBubble } from "@/components/layout/RecruitmentBubble";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/lib/site";
 import { Analytics } from "@vercel/analytics/next";
@@ -76,6 +77,7 @@ export default function RootLayout({
                             <Header />
                             <main className="flex-1">{children}</main>
                             <Footer />
+                            <RecruitmentBubble />
                         </div>
                     </ReadingProvider>
                 </ThemeProvider>
