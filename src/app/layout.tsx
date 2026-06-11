@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google"; // Import Serif font
+import { Outfit, Playfair_Display } from "next/font/google"; // Import Serif font
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Header } from "@/components/layout/Header"; // Updated import
@@ -12,7 +12,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const outfit = Outfit({ subsets: ["latin"], variable: "--font-sans" });
 const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif" });
 
 export const metadata: Metadata = {
@@ -63,7 +63,7 @@ export default function RootLayout({
         <html lang="vi" suppressHydrationWarning>
             <body className={cn(
                 "min-h-screen bg-background font-sans antialiased",
-                inter.variable,
+                outfit.variable,
                 playfair.variable
             )}>
                 <ThemeProvider

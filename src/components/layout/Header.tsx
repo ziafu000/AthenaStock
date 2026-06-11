@@ -43,7 +43,7 @@ export function Header() {
                             <span className="font-serif font-bold text-lg tracking-tight text-primary group-hover:text-accent transition-colors leading-tight">
                                 Athena Stock
                             </span>
-                            <span className="text-[10px] text-muted-foreground tracking-wider uppercase">
+                            <span className="text-[10px] text-muted-foreground tracking-wider uppercase font-sans">
                                 Đầu tư tỉnh thức
                             </span>
                         </div>
@@ -51,16 +51,16 @@ export function Header() {
                 </div>
 
                 {/* Desktop Nav */}
-                <nav className="hidden lg:flex items-center space-x-8 text-sm font-medium">
+                <nav className="hidden lg:flex items-center space-x-1 text-sm font-medium">
                     {navLinks.map((link) => (
                         <Link
                             key={link.href}
                             href={link.href}
                             className={cn(
-                                "transition-colors hover:text-accent relative py-1",
+                                "transition-all duration-300 rounded-full px-4 py-2 hover:bg-secondary/40 font-sans",
                                 pathname.startsWith(link.href)
-                                    ? "text-foreground after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-accent"
-                                    : "text-muted-foreground"
+                                    ? "text-accent bg-accent/10 font-semibold"
+                                    : "text-muted-foreground hover:text-foreground"
                             )}
                         >
                             {link.label}
@@ -73,7 +73,7 @@ export function Header() {
                     <Link
                         href="/search"
                         aria-label="Tìm kiếm"
-                        className="hidden sm:flex p-2 text-muted-foreground hover:text-foreground transition-colors"
+                        className="hidden sm:flex p-2 text-muted-foreground hover:text-foreground hover:bg-secondary/40 rounded-full transition-all"
                     >
                         <Search size={20} strokeWidth={1.5} />
                     </Link>
@@ -84,7 +84,7 @@ export function Header() {
 
                     {/* Mobile menu button */}
                     <button
-                        className="lg:hidden p-2 hover:bg-accent/10 rounded-md"
+                        className="lg:hidden p-2 hover:bg-secondary/50 rounded-full transition-all"
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                     >
                         {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -94,15 +94,17 @@ export function Header() {
 
             {/* Mobile Nav */}
             {mobileMenuOpen && (
-                <div className="lg:hidden border-t bg-background absolute w-full left-0 shadow-lg animate-in slide-in-from-top-2">
-                    <nav className="container py-6 flex flex-col space-y-4">
+                <div className="lg:hidden border-t bg-background/95 backdrop-blur-md absolute w-full left-0 shadow-xl animate-in slide-in-from-top-2">
+                    <nav className="container py-6 flex flex-col space-y-2">
                         {navLinks.map((link) => (
                             <Link
                                 key={link.href}
                                 href={link.href}
                                 className={cn(
-                                    "text-base font-medium transition-colors hover:text-accent px-4 py-2 rounded-md hover:bg-accent/5",
-                                    pathname.startsWith(link.href) ? "text-accent bg-accent/5" : "text-foreground"
+                                    "text-base font-medium transition-all px-4 py-2.5 rounded-xl font-sans",
+                                    pathname.startsWith(link.href) 
+                                        ? "text-accent bg-accent/5 dark:bg-accent/10 font-semibold" 
+                                        : "text-foreground hover:bg-accent/5"
                                 )}
                                 onClick={() => setMobileMenuOpen(false)}
                             >
@@ -112,8 +114,10 @@ export function Header() {
                         <Link
                             href="/search"
                             className={cn(
-                                "text-base font-medium transition-colors hover:text-accent px-4 py-2 rounded-md hover:bg-accent/5",
-                                pathname.startsWith("/search") ? "text-accent bg-accent/5" : "text-foreground"
+                                "text-base font-medium transition-all px-4 py-2.5 rounded-xl font-sans",
+                                pathname.startsWith("/search") 
+                                    ? "text-accent bg-accent/5 dark:bg-accent/10 font-semibold" 
+                                    : "text-foreground hover:bg-accent/5"
                             )}
                             onClick={() => setMobileMenuOpen(false)}
                         >

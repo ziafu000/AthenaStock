@@ -22,15 +22,15 @@ export function ArticleLayout({ children, meta }: ArticleLayoutProps) {
             <ReadingProgress />
             <div className={cn("relative flex min-h-screen justify-center transition-colors duration-500")}>
                 <div className={cn(
-                    "relative flex w-full flex-col px-4 py-8 transition-all duration-500 md:px-8 md:py-12 lg:py-16",
+                    "relative flex w-full flex-col px-6 py-12 transition-all duration-500 md:px-8 md:py-16 lg:py-20",
                     lineWidth === "normal" ? "max-w-3xl" : "max-w-4xl"
                 )}>
                     {meta && (
-                        <div className="mb-8 space-y-4 text-center border-b pb-8">
-                            <h1 className="text-3xl font-serif font-bold tracking-tight md:text-5xl lg:text-5xl leading-tight">
+                        <div className="mb-12 space-y-6 text-center border-b border-border/60 pb-12">
+                            <h1 className="text-3xl font-serif font-bold tracking-tight md:text-4xl lg:text-5xl leading-[1.2] text-primary">
                                 {meta.title}
                             </h1>
-                            <div className="flex items-center justify-center space-x-4 text-sm text-muted-foreground font-medium">
+                            <div className="flex items-center justify-center space-x-4 text-xs tracking-wider uppercase text-muted-foreground font-semibold font-sans">
                                 <time dateTime={meta.date}>
                                     {new Date(meta.date).toLocaleDateString("vi-VN", {
                                         year: "numeric",
@@ -54,8 +54,8 @@ export function ArticleLayout({ children, meta }: ArticleLayoutProps) {
                             fontSize === "large" ? "prose-lg" : "prose-base",
                             // Custom typography overrides for premium feel
                             "prose-headings:font-serif prose-headings:font-bold prose-headings:tracking-tight",
-                            "prose-a:text-accent prose-a:no-underline hover:prose-a:underline",
-                            "prose-blockquote:border-l-accent prose-blockquote:bg-accent/5 prose-blockquote:py-2 prose-blockquote:pr-4"
+                            "prose-a:text-accent prose-a:no-underline hover:prose-a:underline transition-all duration-300",
+                            "prose-blockquote:border-l-accent prose-blockquote:bg-accent/[0.03] prose-blockquote:py-4 prose-blockquote:pr-4 prose-blockquote:pl-6 prose-blockquote:rounded-r-xl prose-blockquote:not-italic prose-blockquote:font-normal prose-blockquote:text-primary/90"
                         )}
                     >
                         {children}
