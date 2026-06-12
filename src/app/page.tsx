@@ -4,7 +4,18 @@ import { PostCard } from "@/components/post-card"
 import { getAllContent } from "@/lib/mdx"
 import { ArrowRight, BookOpen, Brain, TrendingUp, ShieldCheck, FileText, ListChecks, Compass } from "lucide-react"
 import { ScrollReveal } from "@/components/ui/ScrollReveal"
-import { ContentCarousel } from "@/components/ui/ContentCarousel"
+import dynamic from "next/dynamic"
+
+const ContentCarousel = dynamic(
+  () => import("@/components/ui/ContentCarousel").then((mod) => mod.ContentCarousel),
+  {
+    loading: () => (
+      <div className="w-full aspect-[16/9] md:aspect-[3/1] bg-card/20 animate-pulse rounded-2xl border border-border/40 flex items-center justify-center">
+        <span className="text-xs text-muted-foreground uppercase tracking-widest font-sans">Tải thư viện hoạt ảnh...</span>
+      </div>
+    ),
+  }
+)
 
 async function getFeaturedContent() {
     const allPosts = await getAllContent()
@@ -60,64 +71,54 @@ export default async function Home() {
                 {/* Background ambient glows and grids */}
                 <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
                 <div className="absolute inset-0 bg-gradient-to-b from-secondary/30 via-background to-background pointer-events-none" />
-                <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[700px] bg-accent/5 rounded-full blur-[100px] pointer-events-none" />
+                <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[700px] bg-accent/5 rounded-full blur-[50px] md:blur-[100px] pointer-events-none" />
 
                 <div className="container relative z-10 max-w-5xl text-center space-y-3">
                     {/* Logo with reveal */}
-                    <ScrollReveal duration={1000} direction="down">
-                        <div className="flex justify-center">
-                            <Image
-                                src="/logo.png"
-                                alt="Athena Stock"
-                                width={200}
-                                height={200}
-                                className="h-75 md:h-15 w-15 md:w-auto drop-shadow-2xl hover:scale-95 transition-transform duration-500"
-                                priority
-                            />
-                        </div>
-                    </ScrollReveal>
+                    <div className="flex justify-center animate-fade-in-up">
+                        <Image
+                            src="/logo.png"
+                            alt="Athena Stock"
+                            width={200}
+                            height={200}
+                            className="h-75 md:h-15 w-15 md:w-auto drop-shadow-2xl hover:scale-95 transition-transform duration-500"
+                            priority
+                        />
+                    </div>
 
-                    <ScrollReveal delay={200} duration={800}>
-                        <div className="inline-flex items-center rounded-full border border-accent/20 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-accent backdrop-blur-md bg-accent/5 shadow-sm">
-                            <span className="flex h-1.5 w-1.5 rounded-full bg-accent mr-2 animate-pulse"></span>
-                            Athena Stock • Đầu tư tỉnh thức
-                        </div>
-                    </ScrollReveal>
+                    <div className="inline-flex items-center rounded-full border border-accent/20 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-accent backdrop-blur-sm bg-accent/5 shadow-sm animate-fade-in-up-delay-1">
+                        <span className="flex h-1.5 w-1.5 rounded-full bg-accent mr-2 animate-pulse"></span>
+                        Athena Stock • Đầu tư tỉnh thức
+                    </div>
 
-                    <ScrollReveal delay={300} duration={900}>
-                        <h1 className="text-4xl font-serif font-bold tracking-tight text-primary sm:text-5xl md:text-6xl leading-[1.15]">
-                            <span className="block mb-2 md:mb-4">Ngủ ngon với</span>
-                            <span className="block text-accent italic font-medium">tiền của bạn</span>
-                        </h1>
-                    </ScrollReveal>
+                    <h1 className="text-4xl font-serif font-bold tracking-tight text-primary sm:text-5xl md:text-6xl leading-[1.15] animate-fade-in-up-delay-2">
+                        <span className="block mb-2 md:mb-4">Ngủ ngon với</span>
+                        <span className="block text-accent italic font-medium">tiền của bạn</span>
+                    </h1>
 
-                    <ScrollReveal delay={450} duration={900}>
-                        <p className="mx-auto max-w-2xl text-base text-muted-foreground md:text-lg leading-relaxed font-sans">
-                            Chúng tôi không giúp bạn kiếm tiền nhanh hơn.<br className="hidden sm:block" />
-                            Chúng tôi giúp bạn mắc ít sai lầm hơn — và bình an hơn với quyết định đầu tư.
-                        </p>
-                    </ScrollReveal>
+                    <p className="mx-auto max-w-2xl text-base text-muted-foreground md:text-lg leading-relaxed font-sans animate-fade-in-up-delay-3">
+                        Chúng tôi không giúp bạn kiếm tiền nhanh hơn.<br className="hidden sm:block" />
+                        Chúng tôi giúp bạn mắc ít sai lầm hơn — và bình an hơn với quyết định đầu tư.
+                    </p>
 
-                    <ScrollReveal delay={300} duration={1000} className="w-full pt-4">
+                    <div className="w-full pt-4 animate-fade-in-up-delay-4">
                         <ContentCarousel />
-                    </ScrollReveal>
+                    </div>
 
-                    <ScrollReveal delay={200} duration={1000}>
-                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
-                            <Link
-                                href="/advisory"
-                                className="w-full sm:w-auto h-12 px-8 rounded-lg border border-primary bg-primary text-primary-foreground font-semibold flex items-center justify-center hover:bg-primary/95 transition-all shadow-md shadow-primary/10 active:scale-[0.97]"
-                            >
-                                Tìm hiểu cách chúng tôi làm việc
-                            </Link>
-                            <Link
-                                href="/about"
-                                className="w-full sm:w-auto h-12 px-8 rounded-lg border border-border bg-background/50 hover:bg-muted/50 text-muted-foreground hover:text-foreground font-semibold flex items-center justify-center transition-all active:scale-[0.97]"
-                            >
-                                Về chúng tôi & Triết lý
-                            </Link>
-                        </div>
-                    </ScrollReveal>
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6 animate-fade-in-up-delay-4">
+                        <Link
+                            href="/advisory"
+                            className="w-full sm:w-auto h-12 px-8 rounded-lg border border-primary bg-primary text-primary-foreground font-semibold flex items-center justify-center hover:bg-primary/95 transition-all shadow-md shadow-primary/10 active:scale-[0.97]"
+                        >
+                            Tìm hiểu cách chúng tôi làm việc
+                        </Link>
+                        <Link
+                            href="/about"
+                            className="w-full sm:w-auto h-12 px-8 rounded-lg border border-border bg-background/50 hover:bg-muted/50 text-muted-foreground hover:text-foreground font-semibold flex items-center justify-center transition-all active:scale-[0.97]"
+                        >
+                            Về chúng tôi & Triết lý
+                        </Link>
+                    </div>
                 </div>
             </section>
 

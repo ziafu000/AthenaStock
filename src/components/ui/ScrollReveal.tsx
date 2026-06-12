@@ -39,7 +39,7 @@ export function ScrollReveal({
       },
       {
         threshold,
-        rootMargin: "0px 0px -50px 0px", // triggers slightly before entering viewport
+        rootMargin: "0px 0px 100px 0px", // triggers before entering viewport
       }
     );
 

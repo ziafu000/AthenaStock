@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import { cn } from "@/lib/utils";
+import React, { useEffect, useRef } from "react";
 
 interface CarouselItem {
   id: string;
@@ -51,7 +50,6 @@ const carouselItems: CarouselItem[] = [
 
 export function ContentCarousel() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isPlaying, setIsPlaying] = useState<Record<string, boolean>>({});
 
   // Duplicate items to ensure seamless infinite looping
   const items = [...carouselItems, ...carouselItems];
@@ -59,18 +57,10 @@ export function ContentCarousel() {
   const handleVideoIntersection = (entries: IntersectionObserverEntry[]) => {
     entries.forEach((entry) => {
       const video = entry.target as HTMLVideoElement;
-      const id = video.dataset.id;
-      if (!id) return;
-
       if (entry.isIntersecting) {
-        video.play().then(() => {
-          setIsPlaying((prev) => ({ ...prev, [id]: true }));
-        }).catch(() => {
-          setIsPlaying((prev) => ({ ...prev, [id]: false }));
-        });
+        video.play().catch(() => {});
       } else {
         video.pause();
-        setIsPlaying((prev) => ({ ...prev, [id]: false }));
       }
     });
   };
