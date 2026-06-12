@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=600, height=600" />
+    <title>Advisory & Growth</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 600px;
+        height: 600px;
+        overflow: hidden;
+        background: #020216;
+        color: #fff2e2;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+      }
+
+      /* Noise Overlay */
+      body::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.02;
+        pointer-events: none;
+        z-index: 100;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      }
+
+      .scene {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 600px;
+        height: 600px;
+        overflow: hidden;
+        background: #020216;
+      }
+
+      .scene-content {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        z-index: 10;
+      }
+
+      .grid-bg {
+        position: absolute;
+        inset: 0;
+        background-image: linear-gradient(to right, rgba(255, 242, 226, 0.02) 1px, transparent 1px),
+                          linear-gradient(to bottom, rgba(255, 242, 226, 0.02) 1px, transparent 1px);
+        background-size: 24px 24px;
+        pointer-events: none;
+      }
+
+      .glow-bg {
+        position: absolute;
+        width: 400px;
+        height: 400px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(187, 85, 4, 0.06) 0%, rgba(187, 85, 4, 0) 70%);
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+      }
+
+      /* Header */
+      .header-area {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .category {
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: #bb5504;
+        letter-spacing: 2px;
+      }
+
+      .title {
+        font-family: 'Playfair Display', serif;
+        font-size: 32px;
+        font-weight: 600;
+        color: #fff2e2;
+        line-height: 1.2;
+      }
+
+      /* Advisory Card Container */
+      .advisory-card {
+        position: relative;
+        width: 100%;
+        height: 320px;
+        border: 1px solid rgba(255, 242, 226, 0.08);
+        border-radius: 16px;
+        background: rgba(17, 17, 43, 0.3);
+        backdrop-filter: blur(4px);
+        padding: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        overflow: hidden;
+        margin-top: 15px;
+      }
+
+      /* SVG Pie/Donut Chart */
+      .chart-box {
+        position: relative;
+        width: 160px;
+        height: 160px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .donut-svg {
+        width: 100%;
+        height: 100%;
+        transform: rotate(-90deg);
+        overflow: visible;
+      }
+
+      .donut-base {
+        fill: none;
+        stroke: rgba(255, 242, 226, 0.05);
+        stroke-width: 14;
+      }
+
+      /* 80% Gold segment */
+      .donut-segment-1 {
+        fill: none;
+        stroke: #bb5504;
+        stroke-width: 14;
+        stroke-dasharray: 440;
+        stroke-dashoffset: 440;
+        filter: drop-shadow(0 0 4px rgba(187, 85, 4, 0.5));
+      }
+
+      /* 20% secondary Navy segment */
+      .donut-segment-2 {
+        fill: none;
+        stroke: rgba(255, 242, 226, 0.4);
+        stroke-width: 14;
+        stroke-dasharray: 440;
+        stroke-dashoffset: 440;
+      }
+
+      .chart-label {
+        position: absolute;
+        font-size: 20px;
+        font-weight: 700;
+        color: #fff2e2;
+        opacity: 0;
+      }
+
+      /* Content Stats panel */
+      .stats-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        width: calc(100% - 190px);
+      }
+
+      .stat-item {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        opacity: 0;
+      }
+
+      .stat-label {
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: #bb5504;
+        letter-spacing: 1px;
+      }
+
+      .stat-value {
+        font-size: 26px;
+        font-weight: 700;
+        color: #fff2e2;
+      }
+
+      .stat-subtext {
+        font-size: 11px;
+        color: rgba(255, 242, 226, 0.5);
+      }
+    </style>
+  </head>
+  <body>
+    <div data-composition-id="root" data-width="600" data-height="600" data-start="0">
+      <div id="scene-advisory" class="scene clip" data-start="0" data-duration="4" data-track-index="1">
+        <div class="grid-bg"></div>
+        <div class="glow-bg"></div>
+        <div class="scene-content">
+          <div class="header-area">
+            <span class="category">Dịch vụ • Advisory</span>
+            <h2 class="title">Đồng Hành Tư Vấn</h2>
+          </div>
+          
+          <div class="advisory-card">
+            <!-- Left side: Donut Chart -->
+            <div class="chart-box">
+              <svg class="donut-svg" viewBox="0 0 160 160">
+                <circle class="donut-base" cx="80" cy="80" r="70" />
+                <!-- Segment 1: Cổ phiếu giá trị (80% = 352 offset) -->
+                <circle class="donut-segment-1" id="seg-1" cx="80" cy="80" r="70" />
+                <!-- Segment 2: Tiền mặt phòng thủ (20% = 88 offset, offset by 352) -->
+                <circle class="donut-segment-2" id="seg-2" cx="80" cy="80" r="70" />
+              </svg>
+              <div class="chart-label" id="c-label">80/20</div>
+            </div>
+            
+            <!-- Right side: Stats -->
+            <div class="stats-panel">
+              <!-- Stat 1 -->
+              <div class="stat-item" id="stat-1">
+                <span class="stat-label">Cơ cấu danh mục</span>
+                <span class="stat-value">80% Cổ Phiếu</span>
+                <span class="stat-subtext">20% Tiền mặt & Phòng vệ</span>
+              </div>
+              
+              <!-- Stat 2 -->
+              <div class="stat-item" id="stat-2">
+                <span class="stat-label">Hiệu quả kỳ vọng</span>
+                <span class="stat-value" id="compound-val">0.0%</span>
+                <span class="stat-subtext">Mục tiêu tăng trưởng bền vững</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      // Initial states
+      gsap.set("#c-label", { scale: 0.8 });
+      gsap.set([ "#stat-1", "#stat-2" ], { x: 10 });
+
+      // Animate Donut Chart segment 1 (80% length of 440 = 352)
+      // Circumference = 2 * PI * 70 ≈ 439.8
+      tl.to("#seg-1", {
+        strokeDashoffset: 88, // 440 - 352
+        duration: 1.0,
+        ease: "power2.out"
+      }, 0.2);
+
+      // Animate Donut Chart segment 2 (20% length = 88, offset by 352)
+      // To start where segment 1 ends, we can rotate/dashoffset accordingly.
+      // For simplicity, we just set dasharray/dashoffset to animate it in.
+      tl.to("#seg-2", {
+        strokeDasharray: "440",
+        strokeDashoffset: 352, // starts at 352, wraps 88
+        duration: 0.6,
+        ease: "power2.out"
+      }, 0.8);
+
+      // Show chart center label
+      tl.to("#c-label", {
+        opacity: 1,
+        scale: 1,
+        duration: 0.4,
+        ease: "back.out(1.7)"
+      }, 0.8);
+
+      // Show Stats list items
+      tl.to("#stat-1", { opacity: 1, x: 0, duration: 0.5 }, 0.5);
+      tl.to("#stat-2", { opacity: 1, x: 0, duration: 0.5 }, 0.8);
+
+      // Counter animation for compound growth
+      tl.to("#compound-val", {
+        textContent: "18.4%",
+        duration: 1.5,
+        ease: "power1.out",
+        snap: { textContent: 0.1 }
+      }, 0.8);
+
+      // Outro and reset
+      tl.to([".donut-segment-1", ".donut-segment-2", "#c-label", ".stat-item"], {
+        opacity: 0,
+        duration: 0.3
+      }, 3.5);
+
+      window.__timelines["root"] = tl;
+    </script>
+  </body>
+</html>

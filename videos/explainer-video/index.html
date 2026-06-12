@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Athena Stock — Đầu tư tỉnh thức</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #020216;
+        color: #fff2e2;
+        font-family: 'Space Mono', monospace;
+      }
+
+      /* Noise Material Overlay */
+      body::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.025;
+        pointer-events: none;
+        z-index: 100;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      }
+
+      /* Scenes base styling */
+      .scene {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: transparent;
+      }
+
+      /* Wrapper to handle visual transitions cleanly without modifying the timed clip element */
+      .scene-wrapper {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        background: #020216;
+        overflow: hidden;
+      }
+
+      .scene-content {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        padding: 120px 160px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 10;
+      }
+
+      /* Dark Vignette */
+      .vignette {
+        position: absolute;
+        inset: 0;
+        box-shadow: inset 0 0 200px rgba(0, 0, 0, 0.95);
+        pointer-events: none;
+        z-index: 2;
+      }
+
+      /* Background Ambient Glows */
+      .bg-glow {
+        position: absolute;
+        width: 800px;
+        height: 800px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(187, 85, 4, 0.12) 0%, rgba(187, 85, 4, 0) 70%);
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      /* Typography */
+      .headline {
+        font-family: 'Oswald', sans-serif;
+        text-transform: uppercase;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+      }
+
+      .body-text {
+        font-family: 'Space Mono', monospace;
+        font-size: 26px;
+        line-height: 1.6;
+        color: #fff2e2;
+      }
+
+      .label-mono {
+        font-family: 'Space Mono', monospace;
+        color: #d86a12;
+        font-size: 18px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        font-weight: bold;
+      }
+
+      /* Scene 1: Hook */
+      #scene1 .title-lockup {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+        text-align: center;
+      }
+
+      #scene1 .divider-line {
+        width: 400px;
+        height: 2px;
+        background: #bb5504;
+        transform-origin: center;
+      }
+
+      #scene1 .main-title {
+        font-size: 110px;
+        color: #fff2e2;
+        letter-spacing: 0.05em;
+      }
+
+      #scene1 .subtitle {
+        font-size: 28px;
+        letter-spacing: 0.15em;
+        color: #fff2e2;
+        opacity: 0.8;
+      }
+
+      /* Scene 2: Core Pillars */
+      #scene2 .grid-layout {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 48px;
+        margin-top: 40px;
+      }
+
+      #scene2 .pillar-card {
+        background: #11112b;
+        border: 2px solid rgba(187, 85, 4, 0.15);
+        border-top: 4px solid #bb5504;
+        border-radius: 12px;
+        padding: 50px 40px;
+        height: 520px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 24px;
+        box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+      }
+
+      #scene2 .pillar-title {
+        font-size: 38px;
+        color: #fff2e2;
+      }
+
+      #scene2 .pillar-desc {
+        font-size: 20px;
+        line-height: 1.6;
+        color: rgba(255, 242, 226, 0.75);
+      }
+
+      #scene2 .scene-header {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      #scene2 .scene-title {
+        font-size: 54px;
+        color: #fff2e2;
+      }
+
+      /* Scene 3: Philosophy */
+      #scene3 .quote-container {
+        max-width: 1300px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 40px;
+      }
+
+      #scene3 .quote-text {
+        font-size: 46px;
+        font-style: italic;
+        line-height: 1.6;
+        color: #fff2e2;
+      }
+
+      #scene3 .quote-bg-text {
+        position: absolute;
+        font-family: 'Oswald', sans-serif;
+        font-size: 300px;
+        color: rgba(187, 85, 4, 0.03);
+        text-transform: uppercase;
+        pointer-events: none;
+        white-space: nowrap;
+        letter-spacing: 0.1em;
+        z-index: 1;
+      }
+
+      #scene3 .quote-mark {
+        font-size: 140px;
+        font-family: 'Oswald', sans-serif;
+        color: #bb5504;
+        line-height: 1;
+        opacity: 0.35;
+      }
+
+      /* Scene 4: CTA */
+      #scene4 .cta-lockup {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 45px;
+      }
+
+      #scene4 .logo-mark {
+        width: 140px;
+        height: 140px;
+        border-radius: 30px;
+        border: 3px solid #bb5504;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #11112b;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      }
+
+      #scene4 .logo-inner {
+        font-family: 'Oswald', sans-serif;
+        font-size: 64px;
+        color: #bb5504;
+      }
+
+      #scene4 .cta-title {
+        font-size: 72px;
+        color: #fff2e2;
+      }
+
+      #scene4 .cta-link {
+        font-size: 48px;
+        color: #bb5504;
+        letter-spacing: 0.1em;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="15"
+      data-width="1920"
+      data-height="1080"
+    >
+      
+      <!-- SCENE 1: THE HOOK (0s - 3s) -->
+      <div id="scene1" class="clip scene" data-start="0" data-duration="3" data-track-index="1">
+        <div id="s1-wrapper" class="scene-wrapper">
+          <div class="vignette"></div>
+          <div class="bg-glow bg-glow-pulse"></div>
+          <div class="scene-content">
+            <div class="title-lockup">
+              <div id="s1-label" class="label-mono">Athena Stock</div>
+              <h1 id="s1-title" class="headline main-title">Đầu tư tỉnh thức</h1>
+              <div id="s1-line" class="divider-line"></div>
+              <div id="s1-subtitle" class="subtitle">Ngủ ngon với tiền của bạn</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENE 2: CORE PILLARS (2.5s - 8s) -->
+      <div id="scene2" class="clip scene" data-start="2.5" data-duration="5.5" data-track-index="2">
+        <div id="s2-wrapper" class="scene-wrapper" style="opacity: 0;">
+          <div class="vignette"></div>
+          <div class="bg-glow"></div>
+          <div class="scene-content">
+            <div id="s2-header" class="scene-header">
+              <div class="label-mono">Triết lý cốt lõi</div>
+              <h2 class="headline scene-title">Ba trụ cột giá trị</h2>
+            </div>
+            
+            <div class="grid-layout">
+              <!-- Pillar 1 -->
+              <div id="s2-card1" class="pillar-card">
+                <div class="label-mono">Pillar 01</div>
+                <h3 class="headline pillar-title">Business Mindset</h3>
+                <p class="pillar-desc">
+                  Không mua mã chứng khoán, mà sở hữu một phần doanh nghiệp. Hiểu rõ mô hình kinh doanh, lợi thế cạnh tranh.
+                </p>
+              </div>
+              
+              <!-- Pillar 2 -->
+              <div id="s2-card2" class="pillar-card">
+                <div class="label-mono">Pillar 02</div>
+                <h3 class="headline pillar-title">Margin of Safety</h3>
+                <p class="pillar-desc">
+                  Luôn đòi hỏi biên an toàn trong mọi quyết định. Bảo vệ vốn là ưu tiên hàng đầu, tối ưu hóa lợi nhuận là thứ hai.
+                </p>
+              </div>
+              
+              <!-- Pillar 3 -->
+              <div id="s2-card3" class="pillar-card">
+                <div class="label-mono">Pillar 03</div>
+                <h3 class="headline pillar-title">Behavioral Control</h3>
+                <p class="pillar-desc">
+                  Nhận diện thiên kiến tâm lý (FOMO, Loss Aversion). Chiến thắng chính mình khó hơn chiến thắng thị trường.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENE 3: PHILOSOPHY (7.6s - 12s) -->
+      <div id="scene3" class="clip scene" data-start="7.6" data-duration="4.4" data-track-index="1">
+        <div id="s3-wrapper" class="scene-wrapper" style="opacity: 0;">
+          <div class="vignette"></div>
+          <div id="s3-bgtext" class="quote-bg-text" data-layout-allow-overflow>PATIENCE IS KEY</div>
+          <div class="scene-content">
+            <div class="quote-container">
+              <div id="s3-mark" class="quote-mark">“</div>
+              <p id="s3-quote" class="quote-text">
+                Thị trường chứng khoán là công cụ chuyển tiền từ túi người thiếu kiên nhẫn sang túi người kiên nhẫn.
+              </p>
+              <div id="s3-cit" class="label-mono">— Warren Buffett</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENE 4: CTA (11.5s - 15s) -->
+      <div id="scene4" class="clip scene" data-start="11.5" data-duration="3.5" data-track-index="2">
+        <div id="s4-wrapper" class="scene-wrapper" style="opacity: 0;">
+          <div class="vignette"></div>
+          <div class="bg-glow"></div>
+          <div class="scene-content">
+            <div class="cta-lockup">
+              <div id="s4-logo" class="logo-mark">
+                <div class="logo-inner">A</div>
+              </div>
+              <h2 id="s4-title" class="headline cta-title">Sẵn sàng đầu tư tỉnh thức?</h2>
+              <div id="s4-link" class="cta-link">athenastock.com</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Animation Script -->
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      // ==========================================
+      // AMBIENT MOTIONS
+      // ==========================================
+      // Ambient radial glow scale pulses
+      tl.to(".bg-glow-pulse", { scale: 1.12, duration: 1.5, yoyo: true, repeat: 9, ease: "sine.inOut" }, 0);
+      // Ambient slow drift on background text
+      tl.to("#s3-bgtext", { x: 80, duration: 4.4, ease: "none" }, 7.6);
+
+      // ==========================================
+      // SCENE 1: ENTRANCES & TIMING
+      // ==========================================
+      tl.fromTo("#s1-label", { y: -20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, 0.2);
+      tl.fromTo("#s1-title", { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, 0.3);
+      tl.fromTo("#s1-line", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power2.out" }, 0.5);
+      tl.fromTo("#s1-subtitle", { y: 20, opacity: 0 }, { y: 0, opacity: 0.8, duration: 0.6, ease: "sine.out" }, 0.7);
+
+      // ==========================================
+      // TRANSITION 1: SCENE 1 -> SCENE 2
+      // ==========================================
+      // Starts at 2.5s, ends at 3.0s (0.5s duration)
+      tl.to("#s1-wrapper", { opacity: 0, filter: "blur(15px)", scale: 1.05, duration: 0.5, ease: "power2.in" }, 2.5);
+      tl.fromTo("#s2-wrapper", 
+        { opacity: 0, filter: "blur(15px)", scale: 0.95 }, 
+        { opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.5, ease: "power2.out" }, 
+        2.5
+      );
+      tl.set("#s1-wrapper", { visibility: "hidden" }, 3.0);
+
+      // ==========================================
+      // SCENE 2: ENTRANCES
+      // ==========================================
+      tl.fromTo("#s2-header", { y: -30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, 2.7);
+      tl.fromTo("#s2-card1", { x: -80, opacity: 0 }, { x: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 2.9);
+      tl.fromTo("#s2-card2", { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 3.1);
+      tl.fromTo("#s2-card3", { x: 80, opacity: 0 }, { x: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 3.3);
+
+      // ==========================================
+      // TRANSITION 2: SCENE 2 -> SCENE 3
+      // ==========================================
+      // Starts at 7.6s, ends at 8.0s (0.4s duration) - Whip Pan Style
+      tl.to("#s2-wrapper", { x: -1920, opacity: 0, duration: 0.4, ease: "power3.in" }, 7.6);
+      tl.fromTo("#s3-wrapper", 
+        { x: 1920, opacity: 0 }, 
+        { x: 0, opacity: 1, duration: 0.4, ease: "power3.out" }, 
+        7.6
+      );
+      tl.set("#s2-wrapper", { visibility: "hidden" }, 8.0);
+
+      // ==========================================
+      // SCENE 3: ENTRANCES
+      // ==========================================
+      tl.fromTo("#s3-mark", { y: -20, opacity: 0 }, { y: 0, opacity: 0.35, duration: 0.6, ease: "power2.out" }, 7.8);
+      tl.fromTo("#s3-quote", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: "power2.out" }, 8.0);
+      tl.fromTo("#s3-cit", { x: 20, opacity: 0 }, { x: 0, opacity: 1, duration: 0.6, ease: "power1.out" }, 8.6);
+
+      // ==========================================
+      // TRANSITION 3: SCENE 3 -> SCENE 4
+      // ==========================================
+      // Starts at 11.5s, ends at 12.0s (0.5s duration)
+      tl.to("#s3-wrapper", { opacity: 0, filter: "blur(15px)", scale: 1.05, duration: 0.5, ease: "power2.in" }, 11.5);
+      tl.fromTo("#s4-wrapper", 
+        { opacity: 0, filter: "blur(15px)", scale: 0.95 }, 
+        { opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.5, ease: "power2.out" }, 
+        11.5
+      );
+      tl.set("#s3-wrapper", { visibility: "hidden" }, 12.0);
+
+      // ==========================================
+      // SCENE 4: ENTRANCES
+      // ==========================================
+      tl.fromTo("#s4-logo", { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.7, ease: "back.out(1.5)" }, 11.7);
+      tl.fromTo("#s4-title", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 11.9);
+      tl.fromTo("#s4-link", { scale: 0.95, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.8, ease: "power2.out" }, 12.1);
+
+      // Final fade out to black
+      tl.to("#s4-wrapper", { opacity: 0, duration: 0.8, ease: "power2.inOut" }, 14.2);
+      tl.set("#s4-wrapper", { visibility: "hidden" }, 15.0);
+
+      // Register timeline
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

@@ -4,6 +4,7 @@ import { PostCard } from "@/components/post-card"
 import { getAllContent } from "@/lib/mdx"
 import { ArrowRight, BookOpen, Brain, TrendingUp, ShieldCheck, FileText, ListChecks, Compass } from "lucide-react"
 import { ScrollReveal } from "@/components/ui/ScrollReveal"
+import { ContentCarousel } from "@/components/ui/ContentCarousel"
 
 async function getFeaturedContent() {
     const allPosts = await getAllContent()
@@ -55,13 +56,13 @@ export default async function Home() {
     return (
         <div className="flex flex-col min-h-screen overflow-x-hidden">
             {/* HERO SECTION */}
-            <section className="relative py-20 md:py-32 overflow-hidden bg-background">
+            <section className="relative py-5 md:py-15 overflow-hidden bg-background">
                 {/* Background ambient glows and grids */}
                 <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
                 <div className="absolute inset-0 bg-gradient-to-b from-secondary/30 via-background to-background pointer-events-none" />
-                <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[120px] pointer-events-none" />
+                <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[700px] bg-accent/5 rounded-full blur-[100px] pointer-events-none" />
 
-                <div className="container relative z-10 max-w-5xl text-center space-y-8">
+                <div className="container relative z-10 max-w-5xl text-center space-y-3">
                     {/* Logo with reveal */}
                     <ScrollReveal duration={1000} direction="down">
                         <div className="flex justify-center">
@@ -70,7 +71,7 @@ export default async function Home() {
                                 alt="Athena Stock"
                                 width={200}
                                 height={200}
-                                className="h-32 md:h-40 w-auto drop-shadow-2xl hover:scale-105 transition-transform duration-500"
+                                className="h-75 md:h-15 w-15 md:w-auto drop-shadow-2xl hover:scale-95 transition-transform duration-500"
                                 priority
                             />
                         </div>
@@ -97,7 +98,11 @@ export default async function Home() {
                         </p>
                     </ScrollReveal>
 
-                    <ScrollReveal delay={600} duration={1000}>
+                    <ScrollReveal delay={300} duration={1000} className="w-full pt-4">
+                        <ContentCarousel />
+                    </ScrollReveal>
+
+                    <ScrollReveal delay={200} duration={1000}>
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
                             <Link
                                 href="/advisory"
@@ -220,7 +225,7 @@ export default async function Home() {
                                 href="/articles"
                                 className="group inline-flex items-center text-sm font-semibold text-accent hover:text-accent/80 transition-colors"
                             >
-                                Xem tất cả 
+                                Xem tất cả
                                 <ArrowRight size={16} className="ml-1.5 transition-transform duration-300 group-hover:translate-x-1" />
                             </Link>
                         </ScrollReveal>
@@ -250,7 +255,7 @@ export default async function Home() {
             <section className="py-20 md:py-28 bg-background relative overflow-hidden">
                 {/* Background decor */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-accent/3 rounded-full blur-[100px] pointer-events-none" />
-                
+
                 <div className="container max-w-4xl relative z-10">
                     <ScrollReveal duration={1000}>
                         <div className="relative border border-accent/20 bg-accent/[0.02] dark:bg-accent/[0.01] rounded-3xl p-10 md:p-16 text-center shadow-xl shadow-accent/[0.02] backdrop-blur-sm">
