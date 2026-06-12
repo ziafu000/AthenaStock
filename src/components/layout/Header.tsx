@@ -102,8 +102,8 @@ export function Header() {
                                 href={link.href}
                                 className={cn(
                                     "text-base font-medium transition-all px-4 py-2.5 rounded-xl font-sans",
-                                    pathname.startsWith(link.href) 
-                                        ? "text-accent bg-accent/5 dark:bg-accent/10 font-semibold" 
+                                    pathname.startsWith(link.href)
+                                        ? "text-accent bg-accent/5 dark:bg-accent/10 font-semibold"
                                         : "text-foreground hover:bg-accent/5"
                                 )}
                                 onClick={() => setMobileMenuOpen(false)}
@@ -115,8 +115,8 @@ export function Header() {
                             href="/search"
                             className={cn(
                                 "text-base font-medium transition-all px-4 py-2.5 rounded-xl font-sans",
-                                pathname.startsWith("/search") 
-                                    ? "text-accent bg-accent/5 dark:bg-accent/10 font-semibold" 
+                                pathname.startsWith("/search")
+                                    ? "text-accent bg-accent/5 dark:bg-accent/10 font-semibold"
                                     : "text-foreground hover:bg-accent/5"
                             )}
                             onClick={() => setMobileMenuOpen(false)}

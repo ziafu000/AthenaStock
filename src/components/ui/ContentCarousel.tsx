@@ -95,8 +95,8 @@ export function ContentCarousel() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-accent/5 rounded-full blur-[100px] pointer-events-none" />
 
       {/* Fade Gradients for edge masking */}
-      <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-background to-transparent z-20 pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-background to-transparent z-20 pointer-events-none" />
+      <div className="absolute left-0 top-0 bottom-0 w-5 md:w-10 bg-gradient-to-r from-background to-transparent z-20 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-5 md:w-10 bg-gradient-to-l from-background to-transparent z-20 pointer-events-none" />
 
       {/* Infinite Marquee Track */}
       <div
