@@ -28,10 +28,11 @@ export function Header() {
             "fixed top-0 left-0 right-0 z-50 w-full flex justify-center bg-transparent px-4 py-3 transition-all duration-300",
             isFocusMode ? "-translate-y-20 opacity-0" : "translate-y-0 opacity-100"
         )}>
-            <div className="w-full max-w-5xl h-14 rounded-full border border-border/40 bg-background/70 backdrop-blur-md shadow-md hover:shadow-lg transition-all flex items-center justify-between px-4 md:px-6 relative">
-                {/* Logo */}
+            {/* Desktop Layout: Three separate sections */}
+            <div className="hidden lg:flex w-full max-w-7xl items-center justify-between px-6">
+                {/* Left: Brand Logo & Title (no background) */}
                 <div className="flex items-center">
-                    <Link href="/" className="flex items-center space-x-2 group">
+                    <Link href="/" className="flex items-center space-x-2.5 group">
                         <Image
                             src="/logo.png"
                             alt="Athena Stock"
@@ -41,35 +42,38 @@ export function Header() {
                             priority
                         />
                         <div className="flex flex-col">
-                            <span className="font-serif font-bold text-sm md:text-base tracking-tight text-primary leading-tight">
+                            <span className="font-serif font-bold text-base tracking-tight text-primary leading-tight">
                                 Athena Stock
                             </span>
-                            <span className="text-[8px] text-muted-foreground tracking-wider uppercase font-sans hidden sm:inline">
+                            <span className="text-[8px] text-muted-foreground tracking-wider uppercase font-sans">
                                 Đầu tư tỉnh thức
                             </span>
                         </div>
                     </Link>
                 </div>
 
-                {/* Desktop Nav */}
-                <nav className="hidden lg:flex items-center space-x-1">
-                    {navLinks.map((link) => (
-                        <Link
-                            key={link.href}
-                            href={link.href}
-                            className={cn(
-                                "transition-all duration-300 rounded-full px-3.5 py-1.5 hover:bg-secondary/40 font-serif font-bold text-xs md:text-sm",
-                                pathname.startsWith(link.href)
-                                    ? "text-[#e61c5c] bg-[#e61c5c]/5"
-                                    : "text-muted-foreground hover:text-foreground"
-                            )}
-                        >
-                            {link.label}
-                        </Link>
-                    ))}
-                </nav>
+                {/* Center: Floating Navigation Capsule/Pill */}
+                <div className="h-14 rounded-full border border-border/40 bg-background/70 backdrop-blur-md shadow-md hover:shadow-lg transition-all flex items-center justify-between px-6 space-x-6">
+                    <nav className="flex items-center space-x-1">
+                        {navLinks.map((link) => (
+                            <Link
+                                key={link.href}
+                                href={link.href}
+                                className={cn(
+                                    "transition-all duration-300 rounded-full px-3.5 py-1.5 hover:bg-secondary/40 font-serif font-bold text-xs md:text-sm",
+                                    pathname.startsWith(link.href)
+                                        ? "text-[#e61c5c] bg-[#e61c5c]/5"
+                                        : "text-muted-foreground hover:text-foreground"
+                                )}
+                            >
+                                {link.label}
+                            </Link>
+                        ))}
+                    </nav>
 
-                {/* Right side */}
+                </div>
+
+                {/* Right: Actions (no background) */}
                 <div className="flex items-center space-x-2.5">
                     <Link
                         href="/search"
@@ -79,13 +83,45 @@ export function Header() {
                         <Search size={18} strokeWidth={1.5} />
                     </Link>
 
-                    <div className="h-4 w-px bg-border hidden sm:block"></div>
+                    <div className="h-4 w-px bg-border"></div>
+
+                    <ModeToggle />
+                </div>
+            </div>
+
+            {/* Mobile Layout: Unified Floating Capsule */}
+            <div className="lg:hidden w-full max-w-5xl h-14 rounded-full border border-border/40 bg-background/70 backdrop-blur-md shadow-md flex items-center justify-between px-4 relative">
+                {/* Logo */}
+                <div className="flex items-center">
+                    <Link href="/" className="flex items-center space-x-2 group">
+                        <Image
+                            src="/logo.png"
+                            alt="Athena Stock"
+                            width={28}
+                            height={28}
+                            className="h-7 w-auto"
+                            priority
+                        />
+                        <span className="font-serif font-bold text-sm text-primary leading-tight">
+                            Athena Stock
+                        </span>
+                    </Link>
+                </div>
+
+                {/* Actions */}
+                <div className="flex items-center space-x-1">
+                    <Link
+                        href="/search"
+                        aria-label="Tìm kiếm"
+                        className="p-1.5 text-muted-foreground hover:text-foreground rounded-full transition-all"
+                    >
+                        <Search size={18} strokeWidth={1.5} />
+                    </Link>
 
                     <ModeToggle />
 
-                    {/* Mobile menu button */}
                     <button
-                        className="lg:hidden p-2 hover:bg-secondary/50 rounded-full transition-all"
+                        className="p-1.5 hover:bg-secondary/50 rounded-full transition-all"
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                     >
                         {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -94,7 +130,7 @@ export function Header() {
 
                 {/* Mobile Nav Card Dropdown */}
                 {mobileMenuOpen && (
-                    <div className="lg:hidden absolute top-[4.5rem] left-0 right-0 border border-border/40 bg-background/95 backdrop-blur-md rounded-3xl p-4 shadow-xl flex flex-col space-y-1 animate-in fade-in slide-in-from-top-2 duration-300 z-50">
+                    <div className="absolute top-[4.5rem] left-0 right-0 border border-border/40 bg-background/95 backdrop-blur-md rounded-3xl p-4 shadow-xl flex flex-col space-y-1 animate-in fade-in slide-in-from-top-2 duration-300 z-50">
                         <nav className="flex flex-col space-y-1">
                             {navLinks.map((link) => (
                                 <Link

@@ -68,7 +68,7 @@ export function Footer() {
 
                 <div className="mt-12 pt-8 border-t border-border/50 flex flex-col md:flex-row justify-between items-center text-xs text-muted-foreground gap-4 font-sans">
                     <p>
-                        © {new Date().getFullYear()} Athena Stock. All rights reserved.
+                        © {new Date().getFullYear()} Athena Stock. All rights reserved. <span className="mx-1.5 opacity-40">•</span> Developed by Aaron Nguyen.
                     </p>
                     <p className="opacity-70 text-center md:text-right">
                         Nội dung chỉ mang tính chất chia sẻ cá nhân, không phải khuyến nghị đầu tư.
