@@ -5,119 +5,91 @@
 @layer base {
   :root {
     /* 
-      Reference Palette "Athena":
-      - Primary Dark: #000047 (Deep Navy)
-      - Secondary/Text: #2c3345 (Dark Slate)
-      - Accent: #bb5504 (Bronze/Burnt Orange)
-      - Background: #fffdfc (Warm Paper)
-      - Surface: #fff2e2 (Light Cream/Peach - likely for cards or highlights)
+      Reference Palette "Athena Logo-Aligned":
+      - Primary Wine Red: #9c1850 (Deep Maroon/Wine Red from logo text)
+      - Secondary Steel Blue: #4271b3 (Steel Blue from logo arrow)
+      - Accent Crimson: #e61c5c (Bright Magenta/Crimson from logo body)
+      - Background Light: #faf8f6 (Warm paper cream)
+      - Background Dark: #090d16 (Navy slate dark)
     */
 
     /* Background: Warm paper-like white */
-    --background: 30 20% 99%; /* #fffdfc approx */
-    /* Foreground: Dark Slate */
-    --foreground: 223 22% 22%; /* #2c3345 */
+    --background: 30 15% 98%; /* #faf8f6 */
+    /* Foreground: Deep Slate/Navy */
+    --foreground: 222 47% 11%;
 
-    /* Card: White or very light cream */
+    /* Card: White */
     --card: 0 0% 100%;
-    --card-foreground: 223 22% 22%;
+    --card-foreground: 222 47% 11%;
 
     /* Popover */
     --popover: 0 0% 100%;
-    --popover-foreground: 223 22% 22%;
+    --popover-foreground: 222 47% 11%;
 
-    /* Primary: Deep Navy (#000047) */
-    --primary: 240 100% 14%; 
+    /* Primary: Deep Wine Red (#9c1850) */
+    --primary: 334 73% 35%; 
     --primary-foreground: 0 0% 100%;
 
-    /* Secondary: Light Cream/Peach (#fff2e2) */
-    --secondary: 33 50% 94%;
-    --secondary-foreground: 240 100% 14%;
+    /* Secondary: Steel Blue (#4271b3) */
+    --secondary: 214 46% 48%;
+    --secondary-foreground: 0 0% 100%;
 
-    /* Muted: Cool Grey */
+    /* Muted: Soft grey-blue */
     --muted: 210 20% 96%;
     --muted-foreground: 215 16% 47%;
 
-    /* Accent: Bronze/Burnt Orange (#bb5504) */
-    --accent: 27 95% 37%;
+    /* Accent: Crimson/Magenta (#e61c5c) */
+    --accent: 343 80% 51%;
     --accent-foreground: 0 0% 100%;
 
     /* Destructive */
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    /* Border */
     --border: 220 13% 91%;
     --input: 220 13% 91%;
-    --ring: 240 100% 14%;
+    --ring: 334 73% 35%;
 
     --radius: 0.5rem;
+
+    /* Coverflow 3D Card Translation Multipliers */
+    --coverflow-translate-x-1: 108%;
+    --coverflow-translate-x-2: 195%;
   }
 
   .dark {
-    /* Dark Mode: Deep Navy/Slate Theme (Calm) */
-    
-    /* Background: Dark Slate/Navy */
-    --background: 222 47% 11%; /* #0f172a */
+    /* Background: Navy slate dark (#090d16) */
+    --background: 222 44% 6%;
     --foreground: 210 40% 98%;
 
-    /* Card: Slightly lighter Navy */
-    --card: 217 33% 17%;
+    /* Card: Lighter Navy slate */
+    --card: 222 44% 10%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 217 33% 17%;
+    --popover: 222 44% 10%;
     --popover-foreground: 210 40% 98%;
 
-    /* Primary: Soft Blue-White */
+    /* Primary: Silver-white on dark mode */
     --primary: 210 40% 98%;
-    --primary-foreground: 222 47% 11%;
+    --primary-foreground: 222 44% 6%;
 
-    /* Secondary: Darker Bronze or Muted Blue */
-    --secondary: 217 33% 17%;
-    --secondary-foreground: 210 40% 98%;
+    /* Secondary: Steel Blue */
+    --secondary: 214 46% 48%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 217 33% 17%;
+    --muted: 222 44% 12%;
     --muted-foreground: 215 20% 65%;
 
-    /* Accent: Bronze/Orange (same but maybe brighter for dark mode?) */
-    --accent: 27 95% 45%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 62.8% 30.6%;
-    /* Dark Mode: Deep Navy/Slate Theme (Calm) */
-    
-    /* Background: Dark Slate/Navy */
-    --background: 222 47% 11%; /* #0f172a */
-    --foreground: 210 40% 98%;
-
-    /* Card: Slightly lighter Navy */
-    --card: 217 33% 17%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 217 33% 17%;
-    --popover-foreground: 210 40% 98%;
-
-    /* Primary: Soft Blue-White */
-    --primary: 210 40% 98%;
-    --primary-foreground: 222 47% 11%;
-
-    /* Secondary: Darker Bronze or Muted Blue */
-    --secondary: 217 33% 17%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217 33% 17%;
-    --muted-foreground: 215 20% 65%;
-
-    /* Accent: Bronze/Orange (same but maybe brighter for dark mode?) */
-    --accent: 27 95% 45%;
+    /* Accent: Crimson/Magenta */
+    --accent: 343 80% 51%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 217 33% 17%;
-    --input: 217 33% 17%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 222 44% 15%;
+    --input: 222 44% 15%;
+    --ring: 343 80% 51%;
   }
 }
 
@@ -337,5 +309,9 @@
 @media (max-width: 767px) {
   body::after {
     content: none !important;
+  }
+  :root {
+    --coverflow-translate-x-1: 72%;
+    --coverflow-translate-x-2: 125%;
   }
 }

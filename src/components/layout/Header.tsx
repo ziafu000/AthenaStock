@@ -25,25 +25,26 @@ export function Header() {
 
     return (
         <header className={cn(
-            "sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md transition-all duration-300",
-            isFocusMode ? "-translate-y-full opacity-0" : "translate-y-0 opacity-100"
+            "fixed top-0 left-0 right-0 z-50 w-full flex justify-center bg-transparent px-4 py-3 transition-all duration-300",
+            isFocusMode ? "-translate-y-20 opacity-0" : "translate-y-0 opacity-100"
         )}>
-            <div className="container flex h-16 items-center justify-between">
+            <div className="w-full max-w-5xl h-14 rounded-full border border-border/40 bg-background/70 backdrop-blur-md shadow-md hover:shadow-lg transition-all flex items-center justify-between px-4 md:px-6 relative">
                 {/* Logo */}
                 <div className="flex items-center">
-                    <Link href="/" className="flex items-center space-x-3 group">
+                    <Link href="/" className="flex items-center space-x-2 group">
                         <Image
                             src="/logo.png"
                             alt="Athena Stock"
-                            width={48}
-                            height={48}
-                            className="h-10 w-auto transition-transform group-hover:scale-105"
+                            width={32}
+                            height={32}
+                            className="h-8 w-auto transition-transform group-hover:scale-105"
+                            priority
                         />
-                        <div className="hidden sm:flex flex-col">
-                            <span className="font-serif font-bold text-lg tracking-tight text-primary group-hover:text-accent transition-colors leading-tight">
+                        <div className="flex flex-col">
+                            <span className="font-serif font-bold text-sm md:text-base tracking-tight text-primary leading-tight">
                                 Athena Stock
                             </span>
-                            <span className="text-[10px] text-muted-foreground tracking-wider uppercase font-sans">
+                            <span className="text-[8px] text-muted-foreground tracking-wider uppercase font-sans hidden sm:inline">
                                 Đầu tư tỉnh thức
                             </span>
                         </div>
@@ -51,15 +52,15 @@ export function Header() {
                 </div>
 
                 {/* Desktop Nav */}
-                <nav className="hidden lg:flex items-center space-x-1 text-sm font-medium">
+                <nav className="hidden lg:flex items-center space-x-1">
                     {navLinks.map((link) => (
                         <Link
                             key={link.href}
                             href={link.href}
                             className={cn(
-                                "transition-all duration-300 rounded-full px-4 py-2 hover:bg-secondary/40 font-sans",
+                                "transition-all duration-300 rounded-full px-3.5 py-1.5 hover:bg-secondary/40 font-serif font-bold text-xs md:text-sm",
                                 pathname.startsWith(link.href)
-                                    ? "text-accent bg-accent/10 font-semibold"
+                                    ? "text-[#e61c5c] bg-[#e61c5c]/5"
                                     : "text-muted-foreground hover:text-foreground"
                             )}
                         >
@@ -69,16 +70,16 @@ export function Header() {
                 </nav>
 
                 {/* Right side */}
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2.5">
                     <Link
                         href="/search"
                         aria-label="Tìm kiếm"
-                        className="hidden sm:flex p-2 text-muted-foreground hover:text-foreground hover:bg-secondary/40 rounded-full transition-all"
+                        className="p-2 text-muted-foreground hover:text-foreground hover:bg-secondary/40 rounded-full transition-all"
                     >
-                        <Search size={20} strokeWidth={1.5} />
+                        <Search size={18} strokeWidth={1.5} />
                     </Link>
 
-                    <div className="h-6 w-px bg-border hidden sm:block"></div>
+                    <div className="h-4 w-px bg-border hidden sm:block"></div>
 
                     <ModeToggle />
 
@@ -87,45 +88,53 @@ export function Header() {
                         className="lg:hidden p-2 hover:bg-secondary/50 rounded-full transition-all"
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                     >
-                        {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                        {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
                     </button>
                 </div>
-            </div>
 
-            {/* Mobile Nav */}
-            {mobileMenuOpen && (
-                <div className="lg:hidden border-t bg-background/95 backdrop-blur-md absolute w-full left-0 shadow-xl animate-in slide-in-from-top-2">
-                    <nav className="container py-6 flex flex-col space-y-2">
-                        {navLinks.map((link) => (
+                {/* Mobile Nav Card Dropdown */}
+                {mobileMenuOpen && (
+                    <div className="lg:hidden absolute top-[4.5rem] left-0 right-0 border border-border/40 bg-background/95 backdrop-blur-md rounded-3xl p-4 shadow-xl flex flex-col space-y-1 animate-in fade-in slide-in-from-top-2 duration-300 z-50">
+                        <nav className="flex flex-col space-y-1">
+                            {navLinks.map((link) => (
+                                <Link
+                                    key={link.href}
+                                    href={link.href}
+                                    className={cn(
+                                        "text-sm transition-all px-4 py-2.5 rounded-xl font-serif font-bold",
+                                        pathname.startsWith(link.href)
+                                            ? "text-[#e61c5c] bg-[#e61c5c]/5"
+                                            : "text-foreground hover:bg-secondary/35"
+                                    )}
+                                    onClick={() => setMobileMenuOpen(false)}
+                                >
+                                    {link.label}
+                                </Link>
+                            ))}
                             <Link
-                                key={link.href}
-                                href={link.href}
+                                href="/search"
                                 className={cn(
-                                    "text-base font-medium transition-all px-4 py-2.5 rounded-xl font-sans",
-                                    pathname.startsWith(link.href)
-                                        ? "text-accent bg-accent/5 dark:bg-accent/10 font-semibold"
-                                        : "text-foreground hover:bg-accent/5"
+                                    "text-sm transition-all px-4 py-2.5 rounded-xl font-serif font-bold flex items-center gap-2",
+                                    pathname.startsWith("/search")
+                                        ? "text-[#e61c5c] bg-[#e61c5c]/5"
+                                        : "text-foreground hover:bg-secondary/35"
                                 )}
                                 onClick={() => setMobileMenuOpen(false)}
                             >
-                                {link.label}
+                                <Search size={16} />
+                                Tìm kiếm
                             </Link>
-                        ))}
-                        <Link
-                            href="/search"
-                            className={cn(
-                                "text-base font-medium transition-all px-4 py-2.5 rounded-xl font-sans",
-                                pathname.startsWith("/search")
-                                    ? "text-accent bg-accent/5 dark:bg-accent/10 font-semibold"
-                                    : "text-foreground hover:bg-accent/5"
-                            )}
-                            onClick={() => setMobileMenuOpen(false)}
-                        >
-                            Tìm kiếm
-                        </Link>
-                    </nav>
-                </div>
-            )}
+                            <Link
+                                href="/advisory"
+                                className="mt-2 text-sm font-serif font-bold text-center text-white bg-[#090d16] dark:text-[#090d16] dark:bg-[#faf8f6] py-2.5 rounded-xl hover:opacity-90 active:scale-[0.98] transition-all"
+                                onClick={() => setMobileMenuOpen(false)}
+                            >
+                                Tư vấn & Đồng hành
+                            </Link>
+                        </nav>
+                    </div>
+                )}
+            </div>
         </header>
     )
 }

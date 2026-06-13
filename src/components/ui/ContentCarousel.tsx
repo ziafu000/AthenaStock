@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 interface CarouselItem {
   id: string;
@@ -49,90 +49,157 @@ const carouselItems: CarouselItem[] = [
 ];
 
 export function ContentCarousel() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(2); // Start with center card (Frameworks) active
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
-  // Duplicate items to ensure seamless infinite looping
-  const items = [...carouselItems, ...carouselItems];
+  // Function to calculate relative offset from center active card
+  const getOffset = (index: number) => {
+    let offset = index - activeIndex;
+    // Circular wrapping for 5 items
+    if (offset < -2) offset += 5;
+    if (offset > 2) offset -= 5;
+    return offset;
+  };
 
-  const handleVideoIntersection = (entries: IntersectionObserverEntry[]) => {
-    entries.forEach((entry) => {
-      const video = entry.target as HTMLVideoElement;
-      if (entry.isIntersecting) {
+  // Play only the active video, pause others
+  useEffect(() => {
+    videoRefs.current.forEach((video, idx) => {
+      if (!video) return;
+      if (idx === activeIndex) {
         video.play().catch(() => {});
       } else {
         video.pause();
       }
     });
-  };
+  }, [activeIndex]);
 
+  // Autoplay interval every 2.5 seconds (2500ms)
   useEffect(() => {
-    const observer = new IntersectionObserver(handleVideoIntersection, {
-      threshold: 0.1,
-      rootMargin: "100px 0px 100px 0px", // pre-load
-    });
+    const timer = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % carouselItems.length);
+    }, 2500);
 
-    const videos = containerRef.current?.querySelectorAll("video");
-    videos?.forEach((video) => observer.observe(video));
-
-    return () => {
-      videos?.forEach((video) => observer.unobserve(video));
-    };
+    return () => clearInterval(timer);
   }, []);
 
   return (
-    <div className="relative w-full overflow-hidden py-10 group">
-      {/* Ambient backgrounds */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-accent/5 rounded-full blur-[100px] pointer-events-none" />
-
-      {/* Fade Gradients for edge masking */}
-      <div className="absolute left-0 top-0 bottom-0 w-5 md:w-10 bg-gradient-to-r from-background to-transparent z-20 pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-5 md:w-10 bg-gradient-to-l from-background to-transparent z-20 pointer-events-none" />
-
-      {/* Infinite Marquee Track */}
-      <div
-        ref={containerRef}
-        className="flex w-max gap-4 hover:[animation-play-state:paused] animate-marquee"
-        style={{
-          animation: "marquee 30s linear infinite",
-        }}
+    <div 
+      className="relative w-full max-w-5xl mx-auto py-10 flex flex-col items-center justify-center select-none"
+    >
+      {/* 3D Coverflow Container */}
+      <div 
+        className="relative w-full h-[320px] md:h-[480px] flex items-center justify-center"
+        style={{ perspective: "1000px" }}
       >
-        {items.map((item, index) => (
-          <div
-            key={`${item.id}-${index}`}
-            className="w-[150px] md:w-[280px] shrink-0 rounded-2xl border border-border/40 bg-card/30 backdrop-blur-md overflow-hidden hover:border-accent/40 hover:scale-[1.02] hover:bg-card/50 hover:shadow-2xl hover:shadow-accent/5 transition-all duration-500 flex flex-col group/card"
-          >
-            {/* Visual Header / Meta */}
-            <div className="p-5 pb-3 flex flex-col gap-1.5 z-10">
-              <span className="text-[9px] md:text-xs font-bold uppercase tracking-wider text-accent">
-                {item.category}
-              </span>
-              <h3 className="font-serif font-bold text-sm md:text-xl text-primary leading-snug">
-                {item.title}
-              </h3>
-            </div>
+        {carouselItems.map((item, index) => {
+          const offset = getOffset(index);
+          const isActive = offset === 0;
 
-            {/* Video Preview Container */}
-            <div className="relative aspect-square w-full bg-[#020216]/60 border-t border-b border-border/25 overflow-hidden">
-              <video
-                data-id={`${item.id}-${index}`}
-                src={item.videoSrc}
-                className="w-full h-full object-cover opacity-90 group-hover/card:opacity-100 transition-opacity duration-500"
-                loop
-                muted
-                playsInline
-                preload="none"
-              />
-              {/* Inner shadow/border glow */}
-              <div className="absolute inset-0 border border-white/5 pointer-events-none" />
-            </div>
+          // Calculate visual transformations based on offset
+          let translateX = "0px";
+          let scale = 1;
+          let rotateY = 0;
+          let zIndex = 30;
+          let opacity = 1;
 
-            {/* Bottom info */}
-            <div className="p-5 pt-4 flex-grow flex flex-col justify-between">
-              <p className="text-[9px] md:text-[12px] text-muted-foreground leading-relaxed font-sans">
-                {item.subtitle}
-              </p>
+          if (offset === 1) {
+            translateX = "var(--coverflow-translate-x-1)";
+            scale = 0.82;
+            rotateY = -28;
+            zIndex = 20;
+            opacity = 0.65;
+          } else if (offset === -1) {
+            translateX = "calc(-1 * var(--coverflow-translate-x-1))";
+            scale = 0.82;
+            rotateY = 28;
+            zIndex = 20;
+            opacity = 0.65;
+          } else if (offset === 2) {
+            translateX = "var(--coverflow-translate-x-2)";
+            scale = 0.65;
+            rotateY = -35;
+            zIndex = 10;
+            opacity = 0.2;
+          } else if (offset === -2) {
+            translateX = "calc(-1 * var(--coverflow-translate-x-2))";
+            scale = 0.65;
+            rotateY = 35;
+            zIndex = 10;
+            opacity = 0.2;
+          }
+
+          return (
+            <div
+              key={item.id}
+              onClick={() => setActiveIndex(index)}
+              className="absolute w-[200px] md:w-[320px] h-[300px] md:h-[450px] rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-[#090d16]/80 backdrop-blur-md cursor-pointer transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col group/card"
+              style={{
+                transform: `translateX(${translateX}) scale(${scale}) rotateY(${rotateY}deg)`,
+                zIndex: zIndex,
+                opacity: opacity,
+                transformStyle: "preserve-3d",
+              }}
+            >
+              {/* Category Header (Visible on active center card or slightly faded) */}
+              <div 
+                className={`p-5 pb-3 flex flex-col gap-1 z-10 transition-opacity duration-500 ${isActive ? "opacity-100" : "opacity-0"}`}
+              >
+                <span className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-[#e61c5c]">
+                  {item.category}
+                </span>
+                <h3 className="font-serif font-bold text-base md:text-xl text-white leading-snug">
+                  {item.title}
+                </h3>
+              </div>
+
+              {/* Video Preview Container */}
+              <div className="relative flex-grow w-full bg-black/40 overflow-hidden flex items-center justify-center">
+                {/* Inner relative wrapper matching the video size */}
+                <div className="relative w-[95%] h-auto flex items-center justify-center rounded-2xl overflow-hidden">
+                  <video
+                    ref={(el) => {
+                      videoRefs.current[index] = el;
+                    }}
+                    src={item.videoSrc}
+                    className="w-full h-full object-cover opacity-85 group-hover/card:opacity-100 transition-opacity duration-500"
+                    loop
+                    muted
+                    playsInline
+                    preload="auto"
+                  />
+                  
+                  {/* Dark overlay gradient for text legibility - fits the video exactly */}
+                  <div 
+                    className={`absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent transition-opacity duration-500 ${isActive ? "opacity-100" : "opacity-0"}`} 
+                  />
+                </div>
+              </div>
+
+              {/* Bottom Info text overlay */}
+              <div 
+                className={`p-5 pt-4 absolute bottom-0 left-0 right-0 z-10 transition-opacity duration-500 ${isActive ? "opacity-100" : "opacity-0"}`}
+              >
+                <p className="text-xs md:text-sm text-gray-200 leading-relaxed font-sans">
+                  {item.subtitle}
+                </p>
+              </div>
             </div>
-          </div>
+          );
+        })}
+      </div>
+
+
+      {/* Dot Indicators */}
+      <div className="flex gap-2.5 mt-6 z-40">
+        {carouselItems.map((_, idx) => (
+          <button
+            key={idx}
+            onClick={() => setActiveIndex(idx)}
+            className={`w-2 h-2 rounded-full transition-all duration-300 ${
+              idx === activeIndex ? "bg-[#e61c5c] w-6" : "bg-gray-300/60 hover:bg-gray-300"
+            }`}
+            aria-label={`Go to slide ${idx + 1}`}
+          />
         ))}
       </div>
     </div>
