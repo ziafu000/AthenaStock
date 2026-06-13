@@ -87,38 +87,18 @@ export async function POST(req: NextRequest) {
             throw new Error("Không thể khởi tạo link Google Meet từ API.")
         }
 
-        // 3. Prepare pre-filled mailto templates for Admin quick reply actions
-        const confirmSubject = "Xác nhận lịch hẹn trao đổi cùng Athena Stock"
-        const confirmBody = `Chào ${name},
-
-Athena Stock xác nhận buổi hẹn trao đổi online của chúng ta vào lúc: ${timeBlock} ngày ${new Date(date).toLocaleDateString("vi-VN")}.
-
-Dưới đây là link Google Meet dành cho buổi hẹn: ${hangoutLink}
-
-Hẹn gặp bạn đúng giờ nhé!
-
-Trân trọng,
-Athena Stock.`
-
-        const rescheduleSubject = "Trao đổi lại lịch hẹn cùng Athena Stock"
-        const rescheduleBody = `Chào ${name},
-
-Athena Stock đã nhận được yêu cầu đặt lịch hẹn của bạn vào lúc: ${timeBlock} ngày ${new Date(date).toLocaleDateString("vi-VN")}.
-
-Tuy nhiên, khung giờ này Admin có lịch bận đột xuất. Bạn có thể đề xuất một khung giờ rảnh khác hoặc chuyển qua các khung giờ sau được không:
-- [Đề xuất giờ 1]
-- [Đề xuất giờ 2]
-
-Trân trọng,
-Athena Stock.`
-
-        const confirmMailto = `mailto:${email}?subject=${encodeURIComponent(confirmSubject)}&body=${encodeURIComponent(confirmBody)}`
-        const rescheduleMailto = `mailto:${email}?subject=${encodeURIComponent(rescheduleSubject)}&body=${encodeURIComponent(rescheduleBody)}`
+        // 3. Generate dynamic URLs for Admin actions
+        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+        const token = process.env.BOOKING_SECRET || "athena_secret_2026"
+        const approveUrl = `${baseUrl}/api/booking/confirm?id=${eventResponse.data.id}&name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&date=${date}&timeBlock=${encodeURIComponent(timeBlock)}&meet=${encodeURIComponent(hangoutLink)}&token=${token}`
+        const rescheduleUrl = `${baseUrl}/booking/reschedule?id=${eventResponse.data.id}&name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&date=${date}&timeBlock=${encodeURIComponent(timeBlock)}&token=${token}`
 
         // 4. Send email notification to Admin using Resend
         const resend = new Resend(resendApiKey)
+        const systemSender = process.env.SENDER_EMAIL || "Athena Stock <contact@athenastock.com>"
+
         await resend.emails.send({
-            from: "Athena Stock <onboarding@resend.dev>",
+            from: systemSender.includes("onboarding@resend.dev") ? "Athena Stock <onboarding@resend.dev>" : systemSender,
             to: adminEmail,
             subject: `[Athena Stock] Yêu cầu lịch hẹn mới từ ${name}`,
             html: `
@@ -153,14 +133,14 @@ Athena Stock.`
                     </tr>
                 </table>
 
-                <div style="margin-top: 30px; padding-top: 20px; border-t: 1px solid #eee; text-align: center;">
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; text-align: center;">
                     <p style="font-size: 13px; color: #666; margin-bottom: 20px;">Nhấp vào các nút hành động nhanh bên dưới để phản hồi email tự động cho khách hàng:</p>
                     
                     <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-                        <a href="${confirmMailto}" style="display: inline-block; padding: 12px 24px; border-radius: 30px; background-color: #9c1850; color: white; text-decoration: none; font-weight: bold; font-size: 13px; margin: 5px;">
-                            Đồng ý & Xác nhận Meet
+                        <a href="${approveUrl}" style="display: inline-block; padding: 12px 24px; border-radius: 30px; background-color: #9c1850; color: white; text-decoration: none; font-weight: bold; font-size: 13px; margin: 5px;">
+                            Phê duyệt & Gửi xác nhận cho khách
                         </a>
-                        <a href="${rescheduleMailto}" style="display: inline-block; padding: 12px 24px; border-radius: 30px; background-color: #555; color: white; text-decoration: none; font-weight: bold; font-size: 13px; margin: 5px;">
+                        <a href="${rescheduleUrl}" style="display: inline-block; padding: 12px 24px; border-radius: 30px; background-color: #555; color: white; text-decoration: none; font-weight: bold; font-size: 13px; margin: 5px;">
                             Bận & Đề xuất đổi lịch
                         </a>
                     </div>
