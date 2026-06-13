@@ -1,5 +1,6 @@
 import Link from "next/link"
-import { BookOpen, ArrowRight } from "lucide-react"
+import { BookOpen, ArrowRight, ShieldAlert } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 export const metadata = {
     title: "Series – Đầu tư tỉnh thức",
@@ -9,7 +10,7 @@ export const metadata = {
 const seriesData = [
     {
         title: "Nền tảng Đầu tư Tỉnh thức",
-        description: "Bắt đầu từ đây: hiểu triết lý, nhận diện sai lầm, và có hệ thống đánh giá doanh nghiệp.",
+        description: "Bắt đầu từ đây: hiểu sâu sắc triết lý cốt lõi, nhận diện các sai lầm hành vi kinh điển, và nắm vững checklist phân tích mô hình doanh nghiệp.",
         articles: [
             { slug: "/articles/triet-ly-dai-han", title: "Triết lý Đầu tư Dài hạn & Margin of Safety" },
             { slug: "/psychology/sai-lam-hanh-vi", title: "Sai lầm Hành vi: FOMO, Tham-Sợ & Nghiện Giao dịch" },
@@ -19,14 +20,14 @@ const seriesData = [
     },
     {
         title: "Đọc hiểu Báo cáo Tài chính",
-        description: "Loạt bài giúp bạn đọc và hiểu những con số trong báo cáo tài chính một cách đơn giản.",
+        description: "Loạt bài giúp bạn đọc vị và thấu hiểu những con số khô khan trong báo cáo tài chính một cách đơn giản, thực dụng nhất.",
         articles: [],
         comingSoon: true,
         color: "blue",
     },
     {
-        title: "Tâm lý học Đầu tư",
-        description: "Khám phá các thiên kiến nhận thức và cách vượt qua chúng.",
+        title: "Tâm lý học Đầu tư chuyên sâu",
+        description: "Giải mã chuyên sâu các thiên kiến nhận thức phức tạp và xây dựng bộ giáp tâm lý kiên cố trước mọi chu kỳ điên cuồng của đám đông.",
         articles: [],
         comingSoon: true,
         color: "orange",
@@ -35,70 +36,95 @@ const seriesData = [
 
 export default function SeriesPage() {
     return (
-        <div className="min-h-screen">
-            {/* Hero Section */}
-            <section className="py-16 md:py-24 bg-secondary/30">
-                <div className="container max-w-4xl text-center">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-accent/10 mb-6">
-                        <BookOpen className="w-8 h-8 text-accent" />
+        <div className="flex flex-col min-h-screen overflow-x-hidden">
+            {/* HERO SECTION (Light/Dark Dynamic Theme with Serene Background) */}
+            <section className="relative py-20 md:py-28 overflow-hidden bg-background">
+                {/* Serene misty grass background - Light Mode */}
+                <div
+                    className="absolute inset-0 bg-cover bg-center opacity-70 mix-blend-multiply pointer-events-none dark:hidden"
+                    style={{ backgroundImage: "url('/images/misty_hero_bg.png')" }}
+                />
+
+                {/* Serene misty grass background - Dark Mode */}
+                <div
+                    className="absolute inset-0 bg-cover bg-center opacity-25 mix-blend-screen pointer-events-none hidden dark:block"
+                    style={{ backgroundImage: "url('/images/misty_hero_bg_dark.png')" }}
+                />
+
+                {/* Gradient overlay to transition smoothly into the dark section below */}
+                <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/10 to-[#090d16] pointer-events-none" />
+
+                <div className="container relative z-10 max-w-4xl text-center space-y-4">
+                    <div className="flex justify-center mb-4">
+                        <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-accent/10 text-accent border border-accent/20">
+                            <BookOpen className="h-6 w-6" />
+                        </div>
                     </div>
-                    <h1 className="text-4xl md:text-5xl font-serif font-bold text-primary mb-4">
-                        Series
+                    
+                    <h1 className="text-4xl md:text-5xl font-serif font-bold tracking-tight text-[#9c1850] dark:text-[#faf8f6] leading-tight">
+                        Lộ trình & <span className="text-[#e61c5c] italic font-medium">Series học tập</span>
                     </h1>
-                    <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                        Lộ trình đọc có hệ thống. Mỗi series là một hành trình học tập,
-                        giúp bạn xây dựng nền tảng vững chắc.
+                    <p className="mx-auto max-w-xl text-base text-gray-650 dark:text-[#a0a5b5] leading-relaxed font-sans">
+                        Hệ thống bài đọc được sắp xếp bài bản từ dễ đến khó, giúp bạn tự xây dựng nền móng tư duy vững vàng.
                     </p>
                 </div>
             </section>
 
-            {/* Series List */}
-            <section className="py-12 md:py-16">
-                <div className="container max-w-4xl">
-                    <div className="space-y-6">
+            {/* BODY SECTION (Dark Theme) */}
+            <section className="py-24 bg-[#090d16] text-white relative flex-grow">
+                <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-[#e61c5c]/3 rounded-full blur-[120px] pointer-events-none" />
+
+                <div className="container max-w-4xl relative z-10 space-y-16">
+                    
+                    {/* Series Cards Stack */}
+                    <div className="space-y-8">
                         {seriesData.map((series, index) => (
                             <div
                                 key={index}
-                                className={`rounded-2xl border bg-card p-6 md:p-8 transition-all ${series.comingSoon ? "opacity-70" : "hover:shadow-lg hover:border-accent/40"
-                                    }`}
+                                className={cn(
+                                    "rounded-3xl border border-white/[0.06] bg-white/[0.01] p-6 md:p-8 transition-all duration-500",
+                                    series.comingSoon 
+                                        ? "opacity-60" 
+                                        : "hover:border-[#e61c5c]/40 hover:shadow-xl hover:shadow-[#e61c5c]/5"
+                                )}
                             >
                                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
-                                    <div className="flex-1">
-                                        <div className="flex items-center gap-3 mb-2">
-                                            <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-accent/10 text-accent font-bold text-sm">
+                                    <div className="flex-1 space-y-2">
+                                        <div className="flex items-center gap-3">
+                                            <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#e61c5c]/10 text-[#e61c5c] border border-[#e61c5c]/20 font-bold text-sm font-sans">
                                                 {index + 1}
                                             </span>
-                                            <h2 className="text-xl md:text-2xl font-serif font-bold">
+                                            <h2 className="text-xl md:text-2xl font-serif font-bold text-white">
                                                 {series.title}
                                             </h2>
                                         </div>
-                                        <p className="text-muted-foreground leading-relaxed">
+                                        <p className="text-sm text-[#a0a5b5] leading-relaxed font-sans">
                                             {series.description}
                                         </p>
                                     </div>
                                     {series.comingSoon && (
-                                        <span className="self-start text-xs text-muted-foreground border px-3 py-1 rounded-full">
-                                            Đang cập nhật
+                                        <span className="self-start text-[10px] text-muted-foreground border border-white/10 px-3 py-1 rounded-full uppercase tracking-wider font-sans">
+                                            Sắp ra mắt
                                         </span>
                                     )}
                                 </div>
 
                                 {series.articles.length > 0 && (
-                                    <div className="border-t pt-6">
-                                        <ol className="space-y-3">
+                                    <div className="border-t border-white/[0.06] pt-6">
+                                        <ol className="space-y-4">
                                             {series.articles.map((article, i) => (
                                                 <li key={i}>
                                                     <Link
                                                         href={article.slug}
-                                                        className="group flex items-center gap-3 text-foreground/80 hover:text-foreground transition-colors"
+                                                        className="group flex items-center gap-4 text-[#a0a5b5] hover:text-white transition-colors"
                                                     >
-                                                        <span className="flex items-center justify-center w-6 h-6 rounded-full bg-muted text-xs font-medium">
+                                                        <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white/[0.04] text-xs font-semibold font-sans">
                                                             {i + 1}
                                                         </span>
-                                                        <span className="group-hover:underline underline-offset-4">
+                                                        <span className="font-sans text-sm group-hover:underline underline-offset-4 decoration-[#e61c5c]">
                                                             {article.title}
                                                         </span>
-                                                        <ArrowRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                                                        <ArrowRight className="w-4 h-4 text-[#e61c5c] opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
                                                     </Link>
                                                 </li>
                                             ))}
@@ -108,19 +134,17 @@ export default function SeriesPage() {
                             </div>
                         ))}
                     </div>
-                </div>
-            </section>
 
-            {/* Tip Section */}
-            <section className="py-12 bg-muted/30">
-                <div className="container max-w-4xl">
-                    <div className="rounded-lg border bg-background p-6">
-                        <h2 className="font-semibold mb-2">💡 Gợi ý</h2>
-                        <p className="text-muted-foreground text-sm leading-relaxed">
-                            Nếu bạn mới bắt đầu, hãy đọc theo thứ tự từ Series 1.
-                            Mỗi bài viết được thiết kế để xây dựng dựa trên kiến thức từ bài trước.
+                    {/* Tip Box */}
+                    <div className="max-w-4xl mx-auto border border-white/[0.06] bg-white/[0.01] rounded-2xl p-6 md:p-8 space-y-3">
+                        <h2 className="text-lg font-serif font-bold text-[#faf8f6] flex items-center gap-2">
+                            <ShieldAlert className="w-5 h-5 text-accent" /> Đề xuất lộ trình đọc
+                        </h2>
+                        <p className="text-sm text-[#a0a5b5] leading-relaxed font-sans">
+                            Nếu bạn là người mới ghé thăm website, chúng tôi khuyến khích đọc một cách có hệ thống theo đúng thứ tự từ trên xuống của Series 1. Mỗi bài viết đã được xây dựng làm tiền đề kiến thức hỗ trợ cho bài tiếp theo.
                         </p>
                     </div>
+
                 </div>
             </section>
         </div>

@@ -160,13 +160,6 @@ export function Header() {
                                 <Search size={16} />
                                 Tìm kiếm
                             </Link>
-                            <Link
-                                href="/advisory"
-                                className="mt-2 text-sm font-serif font-bold text-center text-white bg-[#090d16] dark:text-[#090d16] dark:bg-[#faf8f6] py-2.5 rounded-xl hover:opacity-90 active:scale-[0.98] transition-all"
-                                onClick={() => setMobileMenuOpen(false)}
-                            >
-                                Tư vấn & Đồng hành
-                            </Link>
                         </nav>
                     </div>
                 )}

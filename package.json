@@ -14,6 +14,7 @@
     "@vercel/speed-insights": "^2.0.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
+    "googleapis": "^173.0.0",
     "gray-matter": "^4.0.3",
     "lucide-react": "^0.563.0",
     "next": "^16.2.4",
@@ -25,6 +26,7 @@
     "rehype-pretty-code": "^0.14.1",
     "rehype-slug": "^6.0.0",
     "remark-gfm": "^4.0.1",
+    "resend": "^6.12.4",
     "shiki": "^3.22.0",
     "tailwind-merge": "^3.4.0"
   },

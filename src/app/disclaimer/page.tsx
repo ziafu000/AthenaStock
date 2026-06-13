@@ -1,113 +1,151 @@
-import { ShieldAlert } from "lucide-react"
+import { ShieldAlert, BookOpen, TrendingUp, Search, RefreshCw, Award, Database } from "lucide-react"
 
 export const metadata = {
-    title: "Miễn trừ Trách nhiệm – Đầu tư tỉnh thức",
+    title: "Miễn trừ Trách nhiệm – Athena Stock",
     description: "Tuyên bố miễn trừ trách nhiệm pháp lý về nội dung trên website.",
 }
 
+const disclaimerClauses = [
+    {
+        title: "Không phải Tư vấn Đầu tư",
+        icon: BookOpen,
+        content: (
+            <>
+                Tất cả nội dung trên website <strong className="text-white">Athena Stock</strong> — bao gồm bài viết, phân tích doanh nghiệp, framework, và các tài liệu khác — chỉ mang tính chất <strong className="text-white">thông tin và giáo dục</strong>. Nội dung này <strong className="text-red-400">KHÔNG</strong> phải là tư vấn đầu tư, khuyến nghị mua/bán chứng khoán, hay cam kết về lợi nhuận.
+            </>
+        ),
+    },
+    {
+        title: "Rủi ro Đầu tư",
+        icon: TrendingUp,
+        content: (
+            <>
+                Đầu tư chứng khoán luôn tiềm ẩn rủi ro, bao gồm khả năng <strong className="text-white">mất một phần hoặc toàn bộ vốn đầu tư</strong>. Kết quả quá khứ không đảm bảo cho tương lai. Mọi quyết định cần dựa trên tình hình tài chính, mức chấp nhận rủi ro và mục tiêu của bạn.
+            </>
+        ),
+    },
+    {
+        title: "Độ chính xác của Thông tin",
+        icon: RefreshCw,
+        content: (
+            <>
+                Mặc dù chúng tôi nỗ lực đảm bảo tính chính xác của thông tin, chúng tôi <strong className="text-white">không cam kết</strong> rằng mọi nội dung đều hoàn toàn chính xác, đầy đủ hay cập nhật. Các dự báo phản ánh đánh giá cá nhân tại thời điểm viết và có thể thay đổi không báo trước.
+            </>
+        ),
+    },
+    {
+        title: "Không liên kết Doanh nghiệp",
+        icon: Search,
+        content: (
+            <>
+                Việc phân tích bất kỳ doanh nghiệp nào trên website không có nghĩa là chúng tôi có liên kết, hợp tác, tài trợ hay đại diện cho doanh nghiệp đó dưới bất kỳ hình thức nào.
+            </>
+        ),
+    },
+    {
+        title: "Tự chịu Trách nhiệm",
+        icon: Award,
+        content: (
+            <>
+                Bạn hoàn toàn tự chịu trách nhiệm về mọi quyết định đầu tư của mình. Chúng tôi <strong className="text-white">không chịu trách nhiệm</strong> về bất kỳ tổn thất tài chính nào phát sinh trực tiếp hoặc gián tiếp từ việc sử dụng thông tin trên website này.
+            </>
+        ),
+    },
+    {
+        title: "Không thu thập giao dịch",
+        icon: Database,
+        content: (
+            <>
+                Website không thu thập thông tin về danh mục đầu tư hay giao dịch của bạn. Mọi ghi chú (notes/highlights) đều được lưu trữ cục bộ trên trình duyệt của bạn (<strong className="text-white">localStorage</strong>) và không được gửi về máy chủ.
+            </>
+        ),
+    },
+]
+
 export default function DisclaimerPage() {
     return (
-        <div className="min-h-screen">
-            {/* Hero Section */}
-            <section className="py-16 md:py-20 bg-secondary/30">
-                <div className="container max-w-4xl text-center">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-red-100/50 dark:bg-red-900/20 mb-6">
-                        <ShieldAlert className="w-8 h-8 text-red-700 dark:text-red-300" />
+        <div className="flex flex-col min-h-screen overflow-x-hidden">
+            {/* HERO SECTION (Light/Dark Dynamic Theme with Serene Background) */}
+            <section className="relative py-20 md:py-28 overflow-hidden bg-background">
+                {/* Serene misty grass background - Light Mode */}
+                <div
+                    className="absolute inset-0 bg-cover bg-center opacity-70 mix-blend-multiply pointer-events-none dark:hidden"
+                    style={{ backgroundImage: "url('/images/misty_hero_bg.png')" }}
+                />
+
+                {/* Serene misty grass background - Dark Mode */}
+                <div
+                    className="absolute inset-0 bg-cover bg-center opacity-25 mix-blend-screen pointer-events-none hidden dark:block"
+                    style={{ backgroundImage: "url('/images/misty_hero_bg_dark.png')" }}
+                />
+
+                {/* Gradient overlay to transition smoothly into the dark section below */}
+                <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/10 to-[#090d16] pointer-events-none" />
+
+                <div className="container relative z-10 max-w-4xl text-center space-y-4">
+                    <div className="flex justify-center mb-4">
+                        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#e61c5c]/10 text-[#e61c5c] border border-[#e61c5c]/20">
+                            <ShieldAlert className="w-8 h-8" />
+                        </div>
                     </div>
-                    <h1 className="text-4xl md:text-5xl font-serif font-bold text-primary mb-4">
-                        Miễn trừ Trách nhiệm
+
+                    <h1 className="text-4xl md:text-5xl font-serif font-bold tracking-tight text-[#9c1850] dark:text-[#faf8f6] leading-tight">
+                        Miễn trừ <span className="text-[#e61c5c] italic font-medium">Trách nhiệm</span>
                     </h1>
-                    <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                        Vui lòng đọc kỹ các điều khoản sau trước khi sử dụng nội dung từ website này.
+                    <p className="mx-auto max-w-xl text-base text-gray-650 dark:text-[#a0a5b5] leading-relaxed font-sans">
+                        Vui lòng đọc kỹ các điều khoản sau trước khi tham khảo nội dung từ website của chúng tôi.
                     </p>
                 </div>
             </section>
 
-            {/* Content */}
-            <section className="py-12 md:py-16">
-                <div className="container max-w-3xl">
-                    <article className="prose prose-neutral dark:prose-invert mx-auto">
-                        <h2>1. Không phải Tư vấn Đầu tư</h2>
-                        <p>
-                            Tất cả nội dung trên website <strong>Đầu tư tỉnh thức</strong> — bao gồm
-                            bài viết, phân tích doanh nghiệp, framework, và các tài liệu khác —
-                            chỉ mang tính chất <strong>thông tin và giáo dục</strong>.
-                        </p>
-                        <p>
-                            Nội dung này <strong>KHÔNG</strong> phải là:
-                        </p>
-                        <ul>
-                            <li>Tư vấn đầu tư (investment advice)</li>
-                            <li>Khuyến nghị mua hoặc bán bất kỳ chứng khoán nào</li>
-                            <li>Lời hứa hoặc cam kết về lợi nhuận</li>
-                            <li>Phân tích chính thức từ tổ chức tài chính được cấp phép</li>
-                        </ul>
+            {/* BODY SECTION (Dark Glassmorphic Theme) */}
+            <section className="py-24 bg-[#090d16] text-white relative">
+                <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-[#e61c5c]/3 rounded-full blur-[120px] pointer-events-none" />
 
-                        <h2>2. Rủi ro Đầu tư</h2>
-                        <p>
-                            Đầu tư chứng khoán và các công cụ tài chính khác luôn tiềm ẩn rủi ro,
-                            bao gồm khả năng <strong>mất một phần hoặc toàn bộ vốn đầu tư</strong>.
-                        </p>
-                        <p>
-                            Kết quả trong quá khứ không đảm bảo kết quả trong tương lai.
-                            Mọi quyết định đầu tư cần được cân nhắc kỹ lưỡng dựa trên
-                            tình hình tài chính cá nhân, mức độ chấp nhận rủi ro, và
-                            mục tiêu đầu tư của riêng bạn.
-                        </p>
+                <div className="container max-w-4xl relative z-10 space-y-16">
+                    {/* Clauses Grid */}
+                    <div className="grid md:grid-cols-2 gap-6">
+                        {disclaimerClauses.map((clause, idx) => {
+                            const Icon = clause.icon
+                            return (
+                                <div
+                                    key={idx}
+                                    className="relative overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6 backdrop-blur-md flex flex-col space-y-4"
+                                >
+                                    <div className="flex items-center gap-3">
+                                        <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-[#e61c5c]/10 text-[#e61c5c] border border-[#e61c5c]/20">
+                                            <Icon className="h-5 w-5" />
+                                        </div>
+                                        <h2 className="text-lg font-serif font-bold text-white">
+                                            {idx + 1}. {clause.title}
+                                        </h2>
+                                    </div>
+                                    <p className="text-sm text-[#a0a5b5] leading-relaxed font-sans">
+                                        {clause.content}
+                                    </p>
+                                </div>
+                            )
+                        })}
+                    </div>
 
-                        <h2>3. Độ chính xác của Thông tin</h2>
-                        <p>
-                            Mặc dù chúng tôi nỗ lực đảm bảo tính chính xác của thông tin,
-                            chúng tôi <strong>không cam kết</strong> rằng tất cả nội dung đều
-                            hoàn toàn chính xác, đầy đủ, hoặc cập nhật.
-                        </p>
-                        <p>
-                            Các ước tính, dự đoán, và quan điểm được trình bày phản ánh
-                            đánh giá cá nhân tại thời điểm viết và có thể thay đổi mà không báo trước.
-                        </p>
-
-                        <h2>4. Không liên kết với Doanh nghiệp</h2>
-                        <p>
-                            Việc phân tích bất kỳ doanh nghiệp nào trên website không có nghĩa
-                            là chúng tôi có liên kết, hợp tác, hoặc đại diện cho doanh nghiệp đó.
-                        </p>
-
-                        <h2>5. Tự chịu Trách nhiệm</h2>
-                        <p>
-                            Bạn hoàn toàn tự chịu trách nhiệm về mọi quyết định đầu tư của mình.
-                            Chúng tôi không chịu trách nhiệm về bất kỳ tổn thất tài chính nào
-                            phát sinh từ việc sử dụng thông tin trên website.
-                        </p>
-                        <p>
-                            Trước khi đưa ra quyết định đầu tư quan trọng, bạn nên tham khảo
-                            ý kiến của chuyên gia tài chính được cấp phép.
-                        </p>
-
-                        <h2>6. Không Bảo mật Thông tin Giao dịch</h2>
-                        <p>
-                            Website không thu thập thông tin về danh mục đầu tư hay
-                            giao dịch chứng khoán của bạn. Mọi ghi chú (notes/highlights)
-                            đều được lưu trữ cục bộ trên trình duyệt của bạn (localStorage)
-                            và không được gửi về máy chủ.
-                        </p>
-                    </article>
-                </div>
-            </section>
-
-            {/* Footer Info */}
-            <section className="py-12 bg-muted/30">
-                <div className="container max-w-3xl">
-                    <div className="rounded-lg border bg-background p-6 text-center">
-                        <p className="text-sm text-muted-foreground mb-2">
-                            <strong className="text-foreground">Ngày có hiệu lực:</strong> 01/01/2024
-                        </p>
-                        <p className="text-sm text-muted-foreground">
-                            <strong className="text-foreground">Cập nhật lần cuối:</strong> 01/01/2024
-                        </p>
-                        <p className="text-sm text-muted-foreground mt-4">
-                            Nếu có bất kỳ câu hỏi nào về các điều khoản này,
-                            vui lòng liên hệ qua trang <a href="/about" className="text-accent hover:text-accent/80 underline">Giới thiệu</a>.
-                        </p>
+                    {/* Footer Info Box */}
+                    <div className="relative border border-white/[0.06] bg-white/[0.02] rounded-3xl p-8 text-center shadow-2xl backdrop-blur-md max-w-2xl mx-auto">
+                        <div className="absolute -inset-px bg-gradient-to-br from-[#9c1850]/5 to-[#4271b3]/5 pointer-events-none rounded-3xl" />
+                        <div className="flex flex-col space-y-2 text-sm text-[#a0a5b5] font-sans">
+                            <p>
+                                <strong className="text-white">Ngày có hiệu lực:</strong> 01/01/2024
+                            </p>
+                            <p>
+                                <strong className="text-white">Cập nhật lần cuối:</strong> 01/01/2024
+                            </p>
+                            <p className="mt-4 pt-4 border-t border-white/[0.06] text-xs">
+                                Nếu có bất kỳ câu hỏi nào về các điều khoản này, vui lòng liên hệ qua trang{" "}
+                                <a href="/about" className="text-[#e61c5c] hover:text-[#e61c5c]/80 underline transition-colors">
+                                    Giới thiệu
+                                </a>
+                                .
+                            </p>
+                        </div>
                     </div>
                 </div>
             </section>

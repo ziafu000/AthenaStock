@@ -22,14 +22,14 @@ export function BusinessAnalysisLayout({ children, meta }: BusinessAnalysisLayou
                     "relative flex w-full flex-col px-4 py-8 md:px-8 md:py-12 lg:py-16 transition-all duration-300",
                     lineWidth === "normal" ? "max-w-4xl" : "max-w-6xl"
                 )}>
-                    <div className="mb-8 border-b pb-8">
+                    <div className="mb-8 border-b border-border/60 pb-8">
                         <div className="flex items-center space-x-2 text-sm font-medium text-muted-foreground mb-4">
-                            <span className="uppercase tracking-widest text-xs font-bold text-accent">Business Analysis</span>
+                            <span className="uppercase tracking-widest text-xs font-bold text-[#e61c5c]">Business Analysis</span>
                             {meta.tickers && <span className="text-secondary-foreground/20">• {meta.tickers.join(", ")}</span>}
                             {meta.market && <span className="text-secondary-foreground/20">• {meta.market}</span>}
                         </div>
 
-                        <h1 className="text-4xl font-serif font-bold tracking-tight md:text-6xl mb-6 text-primary leading-tight">
+                        <h1 className="text-4xl font-serif font-bold tracking-tight md:text-6xl mb-6 text-[#9c1850] dark:text-[#faf8f6] leading-tight">
                             {meta.title}
                         </h1>
 
@@ -37,7 +37,7 @@ export function BusinessAnalysisLayout({ children, meta }: BusinessAnalysisLayou
                             {meta.description}
                         </p>
 
-                        <div className="mt-8 flex flex-wrap gap-6 text-sm border-t pt-6 w-full">
+                        <div className="mt-8 flex flex-wrap gap-6 text-sm border-t border-border/60 pt-6 w-full">
                             <div className="flex flex-col">
                                 <span className="text-muted-foreground text-[10px] uppercase tracking-wider font-bold">Analysis Date</span>
                                 <time dateTime={meta.date} className="font-medium mt-1">
@@ -77,16 +77,17 @@ export function BusinessAnalysisLayout({ children, meta }: BusinessAnalysisLayou
                         {children}
                     </div>
 
-                    <div className="mt-16 border-t pt-8">
-                        <h3 className="text-lg font-serif font-bold mb-4">Disclaimer & Sleep-well Test</h3>
-                        <div className="bg-secondary/30 p-6 rounded-lg text-sm text-muted-foreground space-y-4 border border-secondary">
-                            <p>
-                                <strong className="text-primary">Disclaimer:</strong> Bài viết này chỉ mang tính chất phân tích giáo dục, giúp hiểu rõ bản chất doanh nghiệp.
+                    <div className="mt-16 border-t border-border/60 pt-8">
+                        <h3 className="text-lg font-serif font-bold mb-4 text-[#9c1850] dark:text-white">Disclaimer & Sleep-well Test</h3>
+                        <div className="relative overflow-hidden rounded-2xl border border-stone-200/80 bg-stone-50 dark:border-white/[0.06] dark:bg-white/[0.02] p-6 backdrop-blur-md text-sm text-muted-foreground space-y-4 shadow-sm">
+                            <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#e61c5c]" />
+                            <p className="pl-4">
+                                <strong className="text-[#9c1850] dark:text-white">Disclaimer:</strong> Bài viết này chỉ mang tính chất phân tích giáo dục, giúp hiểu rõ bản chất doanh nghiệp.
                                 Đây KHÔNG phải là lời khuyên mua/bán cổ phiếu. Tác giả có thể nắm giữ vị thế trong doanh nghiệp được nhắc đến.
                             </p>
-                            <p>
-                                <strong className="text-primary">Sleep-well Test:</strong> Nếu thị trường đóng cửa 5 năm, bạn có lo lắng khi nắm giữ doanh nghiệp này không?
-                                Nếu câu trả lời là "Có", hãy cân nhắc lại margin of safety của bạn.
+                            <p className="pl-4">
+                                <strong className="text-[#9c1850] dark:text-white">Sleep-well Test:</strong> Nếu thị trường đóng cửa 5 năm, bạn có lo lắng khi nắm giữ doanh nghiệp này không?
+                                Nếu câu trả lời là "Có", hãy cân nhắc lại biên an toàn (margin of safety) của bạn.
                             </p>
                         </div>
                     </div>

@@ -177,7 +177,7 @@ export function ContentCarousel() {
 
               {/* Bottom Info text overlay */}
               <div 
-                className={`p-5 pt-4 absolute bottom-0 left-0 right-0 z-10 transition-opacity duration-500 ${isActive ? "opacity-100" : "opacity-0"}`}
+                className={`p-5 pt-4 bottom-0 left-0 right-0 z-10 transition-opacity duration-500 ${isActive ? "opacity-100" : "opacity-0"}`}
               >
                 <p className="text-xs md:text-sm text-gray-200 leading-relaxed font-sans">
                   {item.subtitle}

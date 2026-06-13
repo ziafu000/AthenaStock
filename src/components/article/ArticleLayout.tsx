@@ -20,14 +20,14 @@ export function ArticleLayout({ children, meta }: ArticleLayoutProps) {
     return (
         <>
             <ReadingProgress />
-            <div className={cn("relative flex min-h-screen justify-center transition-colors duration-500")}>
+            <div className={cn("relative py-20 md:py-15 flex min-h-screen justify-center transition-colors duration-500")}>
                 <div className={cn(
                     "relative flex w-full flex-col px-6 py-12 transition-all duration-500 md:px-8 md:py-16 lg:py-20",
                     lineWidth === "normal" ? "max-w-3xl" : "max-w-4xl"
                 )}>
                     {meta && (
                         <div className="mb-12 space-y-6 text-center border-b border-border/60 pb-12">
-                            <h1 className="text-3xl font-serif font-bold tracking-tight md:text-4xl lg:text-5xl leading-[1.2] text-primary">
+                            <h1 className="text-3xl font-serif font-bold tracking-tight md:text-4xl lg:text-5xl leading-[1.2] text-[#9c1850] dark:text-[#faf8f6]">
                                 {meta.title}
                             </h1>
                             <div className="flex items-center justify-center space-x-4 text-xs tracking-wider uppercase text-muted-foreground font-semibold font-sans">

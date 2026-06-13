@@ -1,4 +1,4 @@
-import { Check, X, Clock, MessageCircle, FileSearch, Users } from "lucide-react"
+import { Check, X, Clock, MessageCircle, FileSearch, Users, ShieldAlert, ChevronRight } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -9,301 +9,235 @@ export const metadata = {
 
 export default function AdvisoryPage() {
     return (
-        <div className="min-h-screen">
-            {/* Hero Section */}
-            <section className="py-16 md:py-24 bg-secondary/30">
-                <div className="container max-w-4xl text-center">
-                    <Image
-                        src="/logo.png"
-                        alt="Athena Stock"
-                        width={80}
-                        height={80}
-                        className="mx-auto mb-8"
-                    />
-                    <h1 className="text-4xl md:text-5xl font-serif font-bold text-primary mb-6">
-                        Tư vấn & Đồng hành
+        <div className="flex flex-col min-h-screen overflow-x-hidden">
+            {/* HERO SECTION (Light/Dark Dynamic Theme with Serene Background) */}
+            <section className="relative py-20 md:py-28 overflow-hidden bg-background">
+                {/* Serene misty grass background - Light Mode */}
+                <div
+                    className="absolute inset-0 bg-cover bg-center opacity-70 mix-blend-multiply pointer-events-none dark:hidden"
+                    style={{ backgroundImage: "url('/images/misty_hero_bg.png')" }}
+                />
+
+                {/* Serene misty grass background - Dark Mode */}
+                <div
+                    className="absolute inset-0 bg-cover bg-center opacity-25 mix-blend-screen pointer-events-none hidden dark:block"
+                    style={{ backgroundImage: "url('/images/misty_hero_bg_dark.png')" }}
+                />
+
+                {/* Gradient overlay to transition smoothly into the dark section below */}
+                <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/10 to-[#090d16] pointer-events-none" />
+
+                <div className="container relative z-10 max-w-4xl text-center space-y-4">
+                    <div className="flex justify-center mb-4">
+                        <Image
+                            src="/logo.png"
+                            alt="Athena Stock"
+                            width={110}
+                            height={110}
+                            className="h-24 w-auto drop-shadow-2xl hover:scale-95 transition-transform duration-500"
+                        />
+                    </div>
+                    
+                    <h1 className="text-4xl md:text-5xl font-serif font-bold tracking-tight text-[#9c1850] dark:text-[#faf8f6] leading-tight">
+                        Tư vấn & <span className="text-[#e61c5c] italic font-medium">Đồng hành</span>
                     </h1>
-                    <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                        Nếu bạn cần người đồng hành để trao đổi nghiêm túc về đầu tư dài hạn —
-                        không phải để xin mã, mà để hiểu cách tư duy.
+                    <p className="mx-auto max-w-xl text-base text-gray-650 dark:text-[#a0a5b5] leading-relaxed font-sans">
+                        Chúng tôi ở đây để đồng hành cùng tư duy dài hạn của bạn — không phải cung cấp mã độc lập, mà giúp bạn làm chủ quyết định.
                     </p>
                 </div>
             </section>
 
-            {/* Clear Statement */}
-            <section className="py-12 border-b">
-                <div className="container max-w-3xl">
-                    <div className="bg-primary/5 border-l-4 border-primary rounded-r-lg p-6 md:p-8">
-                        <p className="text-lg font-medium text-primary mb-3">
-                            Tuyên bố rõ ràng
+            {/* BODY SECTION (Dark Theme) */}
+            <section className="py-24 bg-[#090d16] text-white relative">
+                <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-[#e61c5c]/3 rounded-full blur-[120px] pointer-events-none" />
+
+                <div className="container max-w-4xl relative z-10 space-y-24">
+                    
+                    {/* Clear Statement Box */}
+                    <div className="relative border border-red-500/20 bg-red-950/[0.04] rounded-3xl p-6 md:p-8 backdrop-blur-md">
+                        <p className="text-lg font-serif font-bold text-[#e61c5c] mb-2">Tuyên bố rõ ràng</p>
+                        <p className="text-[#a0a5b5] text-sm md:text-base leading-relaxed font-sans">
+                            Đây <strong className="text-white font-medium">không phải</strong> dịch vụ phím hàng hay khuyến nghị mua bán ngắn hạn. Chúng tôi chỉ cung cấp hệ thống tư duy phân tích định tính và đồng hành cùng sự an yên của bạn.
                         </p>
-                        <p className="text-muted-foreground leading-relaxed">
-                            Đây <strong className="text-foreground">không phải</strong> dịch vụ bán "kèo" hay khuyến nghị mua bán cổ phiếu.
-                            Chúng tôi cung cấp góc nhìn, kinh nghiệm, và đồng hành trong hành trình đầu tư dài hạn của bạn.
-                        </p>
                     </div>
-                </div>
-            </section>
 
-            {/* What I Don't Do / What I Do */}
-            <section className="py-16 md:py-20">
-                <div className="container max-w-5xl">
-                    <div className="grid md:grid-cols-2 gap-8 md:gap-12">
-                        {/* What I DON'T Do */}
-                        <div className="bg-red-50/50 dark:bg-red-950/20 rounded-2xl p-8">
-                            <h2 className="text-2xl font-serif font-bold text-primary mb-6 flex items-center gap-3">
-                                <span className="w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
-                                    <X className="w-5 h-5 text-red-600" />
-                                </span>
-                                Chúng tôi KHÔNG giúp bạn
+                    {/* Do vs Don't Lists */}
+                    <div className="grid md:grid-cols-2 gap-8">
+                        {/* What we DON'T do */}
+                        <div className="group relative overflow-hidden rounded-3xl border border-red-500/10 bg-red-950/[0.03] backdrop-blur-md p-8">
+                            <div className="mb-6 inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-red-500/10 text-red-500 border border-red-500/20">
+                                <X className="h-6 w-6" />
+                            </div>
+                            <h3 className="mb-6 text-xl font-bold font-serif text-white">Chúng tôi KHÔNG giúp bạn</h3>
+                            <ul className="space-y-4 text-[#a0a5b5] text-sm font-sans">
+                                <li className="flex items-start gap-3">
+                                    <span className="text-red-500 font-bold shrink-0">✕</span>
+                                    <span>Lựa chọn cổ phiếu ăn bằng lần ngắn hạn.</span>
+                                </li>
+                                <li className="flex items-start gap-3">
+                                    <span className="text-red-500 font-bold shrink-0">✕</span>
+                                    <span>Cam kết mức sinh lời X% một cách cơ học.</span>
+                                </li>
+                                <li className="flex items-start gap-3">
+                                    <span className="text-red-500 font-bold shrink-0">✕</span>
+                                    <span>Đoán trước đỉnh đáy hay xu hướng thị trường hàng ngày.</span>
+                                </li>
+                                <li className="flex items-start gap-3">
+                                    <span className="text-red-500 font-bold shrink-0">✕</span>
+                                    <span>Giao dịch liên tục hoặc tạo áp lực doanh số.</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        {/* What we CAN do */}
+                        <div className="group relative overflow-hidden rounded-3xl border border-green-500/10 bg-green-950/[0.03] backdrop-blur-md p-8">
+                            <div className="mb-6 inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-green-500/10 text-green-500 border border-green-500/20">
+                                <Check className="h-6 w-6" />
+                            </div>
+                            <h3 className="mb-6 text-xl font-bold font-serif text-white">Chúng tôi có thể giúp bạn</h3>
+                            <ul className="space-y-4 text-[#a0a5b5] text-sm font-sans">
+                                <li className="flex items-start gap-3">
+                                    <span className="text-green-500 font-bold shrink-0">✓</span>
+                                    <span>Định hình phương pháp đầu tư giá trị có nguyên tắc.</span>
+                                </li>
+                                <li className="flex items-start gap-3">
+                                    <span className="text-green-500 font-bold shrink-0">✓</span>
+                                    <span>Review và sàng lọc danh mục theo khía cạnh kinh doanh.</span>
+                                </li>
+                                <li className="flex items-start gap-3">
+                                    <span className="text-green-500 font-bold shrink-0">✓</span>
+                                    <span>Khắc chế các bẫy tâm lý tham lam & sợ hãi.</span>
+                                </li>
+                                <li className="flex items-start gap-3">
+                                    <span className="text-green-500 font-bold shrink-0">✓</span>
+                                    <span>Làm chỗ dựa tâm lý trước các cú sập thị trường.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    {/* Who it fits */}
+                    <div className="space-y-10">
+                        <h2 className="text-2xl md:text-3xl font-sans font-bold text-white text-center">
+                            Ai phù hợp với <span className="font-serif italic font-light text-[#e61c5c]">Athena Stock?</span>
+                        </h2>
+                        
+                        <div className="grid md:grid-cols-2 gap-6">
+                            <div className="border border-white/[0.06] bg-white/[0.01] rounded-2xl p-6 md:p-8">
+                                <h3 className="text-lg font-bold text-green-400 mb-4 flex items-center gap-2">
+                                    <Check className="w-5 h-5 text-green-400" /> Phù hợp
+                                </h3>
+                                <ul className="space-y-3 text-sm text-[#a0a5b5] font-sans">
+                                    <li>• Muốn thoát ly khỏi vòng xoáy trading liên tục để hướng đến sự bền vững dài hạn.</li>
+                                    <li>• Muốn tìm kiếm sự an tâm sâu thẳm, ngủ ngon giấc kể cả khi thị trường giảm điểm.</li>
+                                    <li>• Muốn học cách tự tư duy độc lập thay vì chạy theo các room VIP hóng tin đồn.</li>
+                                </ul>
+                            </div>
+
+                            <div className="border border-white/[0.06] bg-white/[0.01] rounded-2xl p-6 md:p-8">
+                                <h3 className="text-lg font-bold text-red-400 mb-4 flex items-center gap-2">
+                                    <X className="w-5 h-5 text-red-400" /> Không phù hợp
+                                </h3>
+                                <ul className="space-y-3 text-sm text-[#a0a5b5] font-sans">
+                                    <li>• Tìm kiếm bí kíp nhân đôi tài sản cấp tốc hoặc các kèo phím nhanh chóng.</li>
+                                    <li>• Muốn người khác cầm tay chỉ việc hoặc đưa sẵn đáp án mà không cần suy nghĩ.</li>
+                                    <li>• Mong đợi một cam kết lợi nhuận cứng nhắc từ dịch vụ tư vấn.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Service Types */}
+                    <div className="space-y-10">
+                        <div className="text-center space-y-3">
+                            <h2 className="text-2xl md:text-3xl font-sans font-bold text-white">
+                                Hình thức <span className="font-serif italic font-light text-[#4271b3]">đồng hành</span>
                             </h2>
-                            <ul className="space-y-4">
-                                {[
-                                    "Tìm mã nào nên mua ngay",
-                                    "Đạt lợi nhuận X% trong Y tháng",
-                                    "Timing thị trường",
-                                    "Giao dịch thường xuyên hơn",
-                                    "Cam kết hay hứa hẹn kết quả"
-                                ].map((item, idx) => (
-                                    <li key={idx} className="flex items-start gap-3 text-muted-foreground">
-                                        <X className="w-5 h-5 text-red-500 mt-0.5 shrink-0" />
-                                        <span>{item}</span>
-                                    </li>
-                                ))}
-                            </ul>
+                            <p className="text-[#a0a5b5] text-xs md:text-sm font-sans">Chúng tôi chỉ tập trung vào hiệu quả và sự phù hợp dài hạn.</p>
                         </div>
 
-                        {/* What I CAN Do */}
-                        <div className="bg-green-50/50 dark:bg-green-950/20 rounded-2xl p-8">
-                            <h2 className="text-2xl font-serif font-bold text-primary mb-6 flex items-center gap-3">
-                                <span className="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                                    <Check className="w-5 h-5 text-green-600" />
-                                </span>
-                                Chúng tôi có thể giúp bạn
-                            </h2>
-                            <ul className="space-y-4">
-                                {[
-                                    "Xây dựng khung tư duy đầu tư dài hạn",
-                                    "Review lại danh mục hiện tại (góc nhìn định tính)",
-                                    "Nhận diện thiên kiến tâm lý đang ảnh hưởng quyết định",
-                                    "Phân tích mô hình kinh doanh doanh nghiệp",
-                                    "Đồng hành trong các giai đoạn thị trường khó khăn"
-                                ].map((item, idx) => (
-                                    <li key={idx} className="flex items-start gap-3 text-muted-foreground">
-                                        <Check className="w-5 h-5 text-green-600 mt-0.5 shrink-0" />
-                                        <span>{item}</span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Who This Is For */}
-            <section className="py-16 md:py-20 bg-secondary/30">
-                <div className="container max-w-5xl">
-                    <h2 className="text-3xl font-serif font-bold text-primary text-center mb-12">
-                        Ai phù hợp đồng hành cùng chúng tôi?
-                    </h2>
-                    <div className="grid md:grid-cols-2 gap-8 md:gap-12">
-                        {/* Who IS for */}
-                        <div className="bg-background rounded-2xl p-8 border">
-                            <h3 className="text-xl font-bold text-green-700 dark:text-green-400 mb-6">
-                                Phù hợp
-                            </h3>
-                            <ul className="space-y-4">
-                                {[
-                                    "Nhà đầu tư cá nhân muốn chuyển từ 'lướt sóng' sang dài hạn",
-                                    "Người đang cảm thấy bất an với quyết định đầu tư của mình",
-                                    "Người muốn có một góc nhìn độc lập, không bán hàng",
-                                    "Người sẵn sàng học cách tư duy thay vì nhận 'đáp án'"
-                                ].map((item, idx) => (
-                                    <li key={idx} className="flex items-start gap-3 text-muted-foreground">
-                                        <Check className="w-5 h-5 text-green-600 mt-0.5 shrink-0" />
-                                        <span>{item}</span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-
-                        {/* Who is NOT for */}
-                        <div className="bg-background rounded-2xl p-8 border">
-                            <h3 className="text-xl font-bold text-red-700 dark:text-red-400 mb-6">
-                                Không phù hợp
-                            </h3>
-                            <ul className="space-y-4">
-                                {[
-                                    "Người tìm kiếm lợi nhuận nhanh",
-                                    "Người muốn có 'đáp án' thay vì học cách tư duy",
-                                    "Người kỳ vọng cam kết lợi nhuận cụ thể",
-                                    "Người muốn được chỉ mã mua/bán"
-                                ].map((item, idx) => (
-                                    <li key={idx} className="flex items-start gap-3 text-muted-foreground">
-                                        <X className="w-5 h-5 text-red-500 mt-0.5 shrink-0" />
-                                        <span>{item}</span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Service Types */}
-            <section className="py-16 md:py-20">
-                <div className="container max-w-5xl">
-                    <h2 className="text-3xl font-serif font-bold text-primary text-center mb-4">
-                        Hình thức tư vấn
-                    </h2>
-                    <p className="text-muted-foreground text-center mb-12 max-w-2xl mx-auto">
-                        Không có package "VIP" hay upsell. Chọn hình thức phù hợp với nhu cầu của bạn.
-                    </p>
-
-                    <div className="grid md:grid-cols-3 gap-6">
-                        {/* Service 1 */}
-                        <div className="border rounded-2xl p-6 hover:border-accent/40 transition-colors">
-                            <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
-                                <MessageCircle className="w-6 h-6 text-accent" />
-                            </div>
-                            <h3 className="text-xl font-bold mb-2">Buổi trao đổi đầu tiên</h3>
-                            <p className="text-sm text-muted-foreground mb-4">60 phút</p>
-                            <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                                Miễn phí, không cam kết — để xem chúng ta có phù hợp làm việc cùng nhau không.
-                            </p>
-                            <p className="text-accent font-medium">Miễn phí</p>
-                        </div>
-
-                        {/* Service 2 */}
-                        <div className="border rounded-2xl p-6 hover:border-accent/40 transition-colors">
-                            <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
-                                <Users className="w-6 h-6 text-accent" />
-                            </div>
-                            <h3 className="text-xl font-bold mb-2">Đồng hành định kỳ</h3>
-                            <p className="text-sm text-muted-foreground mb-4">Hàng tháng</p>
-                            <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                                Trao đổi hàng tháng về triết lý, mindset, và các quyết định đầu tư.
-                            </p>
-                            <p className="text-muted-foreground text-sm">Liên hệ để trao đổi</p>
-                        </div>
-
-                        {/* Service 3 */}
-                        <div className="border rounded-2xl p-6 hover:border-accent/40 transition-colors">
-                            <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
-                                <FileSearch className="w-6 h-6 text-accent" />
-                            </div>
-                            <h3 className="text-xl font-bold mb-2">Review danh mục</h3>
-                            <p className="text-sm text-muted-foreground mb-4">Một lần</p>
-                            <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                                Deep-dive vào danh mục hiện tại từ góc độ định tính và tư duy dài hạn.
-                            </p>
-                            <p className="text-muted-foreground text-sm">Liên hệ để trao đổi</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Process Timeline */}
-            <section className="py-16 md:py-20 bg-secondary/30">
-                <div className="container max-w-4xl">
-                    <h2 className="text-3xl font-serif font-bold text-primary text-center mb-12">
-                        Quy trình làm việc
-                    </h2>
-
-                    <div className="space-y-0">
-                        {[
-                            {
-                                step: 1,
-                                title: "Trao đổi đầu tiên",
-                                duration: "60 phút, miễn phí",
-                                description: "Hiểu mục tiêu, kỳ vọng, và đánh giá xem chúng ta có fit để làm việc cùng nhau không."
-                            },
-                            {
-                                step: 2,
-                                title: "Đề xuất hình thức phù hợp",
-                                duration: "Không áp lực",
-                                description: "Bạn hoàn toàn tự quyết định có muốn tiếp tục hay không. Không có follow-up email hay sale call."
-                            },
-                            {
-                                step: 3,
-                                title: "Bắt đầu làm việc",
-                                duration: "Theo thỏa thuận",
-                                description: "Trao đổi thẳng thắn, không màu mè. Chúng tôi sẽ nói rõ những gì chúng tôi biết và không biết."
-                            },
-                            {
-                                step: 4,
-                                title: "Đánh giá định kỳ",
-                                duration: "Linh hoạt",
-                                description: "Điều chỉnh nếu cần. Mục tiêu là bạn tự tin hơn với quyết định của mình, không phải phụ thuộc vào chúng tôi."
-                            }
-                        ].map((item, idx) => (
-                            <div key={idx} className="relative flex gap-6">
-                                {/* Timeline line */}
-                                <div className="flex flex-col items-center">
-                                    <div className="w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm shrink-0">
-                                        {item.step}
+                        <div className="grid md:grid-cols-3 gap-6">
+                            {[
+                                { icon: MessageCircle, title: "Trao đổi ban đầu", desc: "60 phút trao đổi thoải mái để thấu hiểu tư duy và định hướng đầu tư của nhau.", fee: "Miễn phí (Không cam kết)" },
+                                { icon: Users, title: "Đồng hành định kỳ", desc: "Trao đổi hàng tháng để review doanh nghiệp, cập nhật mindset và giải quyết các bài toán tâm lý.", fee: "Liên hệ thỏa thuận" },
+                                { icon: FileSearch, title: "Định giá & Phân tích", desc: "Deep-dive vào danh mục hiện tại và kiểm tra kỹ lưỡng mô hình kinh doanh của các doanh nghiệp đang nắm giữ.", fee: "Liên hệ thỏa thuận" }
+                            ].map((item, idx) => {
+                                const Icon = item.icon
+                                return (
+                                    <div key={idx} className="border border-white/[0.06] bg-white/[0.01] hover:border-[#4271b3]/40 rounded-2xl p-6 transition-all duration-300 flex flex-col justify-between">
+                                        <div>
+                                            <div className="w-12 h-12 rounded-xl bg-white/[0.03] text-[#4271b3] border border-white/[0.08] flex items-center justify-center mb-4">
+                                                <Icon className="w-6 h-6" />
+                                            </div>
+                                            <h3 className="text-lg font-bold mb-2">{item.title}</h3>
+                                            <p className="text-xs text-[#a0a5b5] leading-relaxed mb-6 font-sans">{item.desc}</p>
+                                        </div>
+                                        <p className="text-sm font-semibold text-[#e61c5c] font-sans">{item.fee}</p>
                                     </div>
-                                    {idx < 3 && (
-                                        <div className="w-0.5 h-full bg-border min-h-[60px]" />
-                                    )}
-                                </div>
-                                {/* Content */}
-                                <div className="pb-8">
-                                    <h3 className="text-lg font-bold mb-1">{item.title}</h3>
-                                    <p className="text-sm text-accent mb-2">{item.duration}</p>
-                                    <p className="text-muted-foreground text-sm leading-relaxed">
-                                        {item.description}
-                                    </p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* CTA Section */}
-            <section className="py-16 md:py-20">
-                <div className="container max-w-3xl text-center">
-                    <h2 className="text-3xl font-serif font-bold text-primary mb-6">
-                        Sẵn sàng trao đổi?
-                    </h2>
-                    <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
-                        Nếu bạn thấy phù hợp với cách chúng tôi làm việc, chúng ta có thể bắt đầu bằng một buổi trao đổi không cam kết.
-                    </p>
-                    <a
-                        href="mailto:contact@athenastock.vn?subject=Đặt lịch trao đổi"
-                        className="inline-flex items-center gap-2 px-8 py-4 rounded-md border-2 border-primary text-primary font-medium hover:bg-primary hover:text-primary-foreground transition-all"
-                    >
-                        <Clock className="w-5 h-5" />
-                        Đặt lịch trao đổi đầu tiên (không cam kết)
-                    </a>
-                </div>
-            </section>
-
-            {/* Disclaimer */}
-            <section className="py-12 bg-muted/50">
-                <div className="container max-w-3xl">
-                    <div className="border rounded-lg p-6 bg-background">
-                        <h3 className="font-bold text-primary mb-4">
-                            Miễn trừ trách nhiệm
-                        </h3>
-                        <div className="text-sm text-muted-foreground space-y-3 leading-relaxed">
-                            <p>
-                                <strong>Không phải tư vấn đầu tư chuyên nghiệp:</strong> Nội dung trao đổi mang tính chất chia sẻ kinh nghiệm và góc nhìn cá nhân, không phải tư vấn đầu tư theo quy định pháp luật.
-                            </p>
-                            <p>
-                                <strong>Không đảm bảo lợi nhuận:</strong> Mọi quyết định đầu tư đều có rủi ro. Chúng tôi không cam kết hay hứa hẹn bất kỳ kết quả tài chính cụ thể nào.
-                            </p>
-                            <p>
-                                <strong>Tự chịu trách nhiệm:</strong> Bạn hoàn toàn tự chịu trách nhiệm về mọi quyết định đầu tư của mình.
-                            </p>
+                                )
+                            })}
                         </div>
-                        <div className="mt-4 pt-4 border-t">
-                            <Link href="/disclaimer" className="text-sm text-accent hover:text-accent/80 transition-colors">
-                                Đọc đầy đủ Miễn trừ trách nhiệm →
+                    </div>
+
+                    {/* Workflow Process */}
+                    <div className="space-y-10">
+                        <h2 className="text-2xl md:text-3xl font-sans font-bold text-white text-center">
+                            Quy trình <span className="font-serif italic font-light text-[#e61c5c]">kết nối</span>
+                        </h2>
+
+                        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {[
+                                { step: "01", title: "Kết nối & Lắng nghe", desc: "Buổi gặp mặt trực tuyến đầu tiên để thấu hiểu bối cảnh và mục tiêu tài chính của bạn." },
+                                { step: "02", title: "Đánh giá mức độ fit", desc: "Cả hai bên cùng đưa ra lựa chọn có tiếp tục đồng hành hay không. Tuyệt đối không chèo kéo." },
+                                { step: "03", title: "Ký kết & Thực hiện", desc: "Bắt đầu quy trình định kỳ hàng tuần/hàng tháng để mài sắc mindset đầu tư có kỷ luật." },
+                                { step: "04", title: "Tự chủ hành trình", desc: "Mục đích tối thượng là giúp bạn tự đứng vững và tự tin ra quyết định không phụ thuộc bất kỳ ai." }
+                            ].map((item, idx) => (
+                                <div key={idx} className="border border-white/[0.04] bg-white/[0.01] rounded-2xl p-6 relative">
+                                    <span className="absolute top-4 right-6 text-4xl font-serif font-black text-white/[0.03]">{item.step}</span>
+                                    <h3 className="text-base font-bold mb-2 font-serif text-white">{item.title}</h3>
+                                    <p className="text-xs text-[#a0a5b5] leading-relaxed font-sans">{item.desc}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* CTA Email Box */}
+                    <div className="relative border border-white/[0.06] bg-white/[0.02] rounded-3xl p-8 md:p-12 text-center shadow-2xl backdrop-blur-md">
+                        <div className="absolute -inset-px bg-gradient-to-br from-[#9c1850]/5 to-[#4271b3]/5 pointer-events-none rounded-3xl" />
+                        <h3 className="text-xl md:text-2xl font-serif font-medium leading-relaxed italic text-white mb-6">
+                            Sẵn sàng trao đổi cùng chúng tôi?
+                        </h3>
+                        <p className="text-sm text-[#a0a5b5] max-w-md mx-auto mb-8 font-sans">
+                            Nếu phong cách đầu tư bền bỉ này phù hợp với triết lý sống của bạn, chúng ta có thể đặt lịch cho buổi nói chuyện đầu tiên.
+                        </p>
+                        <div className="flex justify-center">
+                            <Link
+                                href="?booking=open"
+                                className="inline-flex items-center gap-2 h-12 px-8 rounded-full bg-[#9c1850] hover:bg-[#861244] text-white font-semibold transition-all shadow-md active:scale-[0.97]"
+                            >
+                                <Clock className="w-4 h-4" />
+                                Đặt lịch buổi hẹn đầu tiên (Miễn phí)
                             </Link>
                         </div>
                     </div>
+
+                    {/* Disclaimer Box */}
+                    <div className="border border-white/[0.06] bg-white/[0.01] rounded-2xl p-6 md:p-8 space-y-4">
+                        <h3 className="text-base font-serif font-bold text-white flex items-center gap-2">
+                            <ShieldAlert className="w-5 h-5 text-accent" /> Miễn trừ trách nhiệm quan trọng
+                        </h3>
+                        <div className="text-xs text-[#a0a5b5] space-y-2 leading-relaxed font-sans">
+                            <p><strong>• Không tư vấn pháp lý tài chính:</strong> Toàn bộ nội dung trao đổi chỉ là góc nhìn, kinh nghiệm và chia sẻ cá nhân, không cấu thành lời khuyên đầu tư chuyên nghiệp được pháp luật bảo trợ.</p>
+                            <p><strong>• Rủi ro vốn có:</strong> Thị trường chứng khoán luôn có những biến số bất ngờ. Chúng tôi không cam kết, hứa hẹn hay bảo lãnh bất kỳ tỷ suất sinh lời nào.</p>
+                            <p><strong>• Quyết định tự chủ:</strong> Bạn chịu trách nhiệm hoàn toàn 100% đối với tài sản của mình và mọi quyết định giải ngân trên tài khoản cá nhân.</p>
+                        </div>
+                        <div className="pt-4 border-t border-white/[0.04]">
+                            <Link href="/disclaimer" className="text-xs text-accent hover:underline flex items-center gap-1">
+                                Đọc bản miễn trừ trách nhiệm đầy đủ <ChevronRight className="w-3.5 h-3.5" />
+                            </Link>
+                        </div>
+                    </div>
+
                 </div>
             </section>
         </div>

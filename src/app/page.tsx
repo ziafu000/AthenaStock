@@ -105,7 +105,7 @@ export default async function Home() {
                     {/* Headline combining Playfair Serif Bold & Playfair Serif Italic */}
                     <h1 className="text-4xl font-serif font-bold tracking-tight text-[#9c1850] dark:text-[#faf8f6] sm:text-5xl md:text-6xl lg:text-7xl leading-[1.15] animate-fade-in-up-delay-2">
                         <span className="block mb-1">Ngủ ngon với</span>
-                        <span className="text-[#e61c5c] italic font-medium block mt-1">tiền của bạn</span>
+                        <span className="text-[#e61c5c] italic font-medium block mt-3">tiền của bạn</span>
                     </h1>
 
                     <p className="mx-auto max-w-2xl text-sm md:text-base text-gray-650 dark:text-[#a0a5b5] leading-relaxed font-sans animate-fade-in-up-delay-3">
