@@ -7,7 +7,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
     <style>
       * {
@@ -21,9 +21,9 @@
         width: 600px;
         height: 600px;
         overflow: hidden;
-        background: #020216;
-        color: #fff2e2;
-        font-family: 'Plus Jakarta Sans', sans-serif;
+        background: #090d16;
+        color: #f1f5f9;
+        font-family: 'Outfit', sans-serif;
       }
 
       /* Noise Overlay */
@@ -34,7 +34,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        opacity: 0.02;
+        opacity: 0.035;
         pointer-events: none;
         z-index: 100;
         background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
@@ -47,7 +47,7 @@
         width: 600px;
         height: 600px;
         overflow: hidden;
-        background: #020216;
+        background: #090d16;
       }
 
       .scene-content {
@@ -65,8 +65,8 @@
       .grid-bg {
         position: absolute;
         inset: 0;
-        background-image: linear-gradient(to right, rgba(255, 242, 226, 0.02) 1px, transparent 1px),
-                          linear-gradient(to bottom, rgba(255, 242, 226, 0.02) 1px, transparent 1px);
+        background-image: linear-gradient(to right, rgba(241, 245, 249, 0.015) 1px, transparent 1px),
+                          linear-gradient(to bottom, rgba(241, 245, 249, 0.015) 1px, transparent 1px);
         background-size: 24px 24px;
         pointer-events: none;
       }
@@ -76,7 +76,7 @@
         width: 400px;
         height: 400px;
         border-radius: 50%;
-        background: radial-gradient(circle, rgba(187, 85, 4, 0.06) 0%, rgba(187, 85, 4, 0) 70%);
+        background: radial-gradient(circle, rgba(230, 28, 92, 0.08) 0%, rgba(230, 28, 92, 0) 70%);
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
@@ -94,7 +94,7 @@
         font-size: 12px;
         font-weight: 700;
         text-transform: uppercase;
-        color: #bb5504;
+        color: #e61c5c;
         letter-spacing: 2px;
       }
 
@@ -102,7 +102,7 @@
         font-family: 'Playfair Display', serif;
         font-size: 32px;
         font-weight: 600;
-        color: #fff2e2;
+        color: #f1f5f9;
         line-height: 1.2;
       }
 
@@ -111,9 +111,9 @@
         position: relative;
         width: 100%;
         height: 320px;
-        border: 1px solid rgba(255, 242, 226, 0.08);
+        border: 1px solid rgba(241, 245, 249, 0.08);
         border-radius: 16px;
-        background: rgba(17, 17, 43, 0.3);
+        background: rgba(17, 22, 37, 0.5);
         backdrop-filter: blur(4px);
         overflow: hidden;
         margin-top: 15px;
@@ -126,8 +126,8 @@
         left: 0;
         width: 100%;
         height: 2px;
-        background: #bb5504;
-        box-shadow: 0 0 12px rgba(187, 85, 4, 0.6);
+        background: #e61c5c;
+        box-shadow: 0 0 12px rgba(230, 28, 92, 0.6);
       }
 
       .intrinsic-label {
@@ -135,12 +135,12 @@
         top: 112px;
         right: 20px;
         font-size: 10px;
-        color: #bb5504;
+        color: #e61c5c;
         font-weight: 700;
         letter-spacing: 1px;
-        background: #020216;
+        background: #090d16;
         padding: 2px 8px;
-        border: 1px solid rgba(187, 85, 4, 0.3);
+        border: 1px solid rgba(230, 28, 92, 0.3);
         border-radius: 4px;
       }
 
@@ -151,27 +151,27 @@
         left: 0;
         width: 100%;
         height: 120px;
-        background: linear-gradient(to bottom, rgba(187, 85, 4, 0.12), transparent);
+        background: linear-gradient(to bottom, rgba(230, 28, 92, 0.12), transparent);
         opacity: 0;
       }
 
       /* Price line */
       .price-line {
         fill: none;
-        stroke: #fff2e2;
+        stroke: #f1f5f9;
         stroke-width: 3.5;
         stroke-linecap: round;
         stroke-linejoin: round;
-        filter: drop-shadow(0 0 4px rgba(255, 242, 226, 0.2));
+        filter: drop-shadow(0 0 4px rgba(241, 245, 249, 0.2));
       }
 
       .price-dot {
         position: absolute;
         width: 12px;
         height: 12px;
-        background: #fff2e2;
+        background: #f1f5f9;
         border-radius: 50%;
-        box-shadow: 0 0 12px #fff2e2;
+        box-shadow: 0 0 12px #f1f5f9;
         transform: translate(-50%, -50%);
         top: 140px;
         left: 0;
@@ -183,9 +183,9 @@
         position: absolute;
         bottom: 20px;
         left: 20px;
-        background: rgba(187, 85, 4, 0.2);
-        border: 1px solid #bb5504;
-        color: #fff2e2;
+        background: rgba(230, 28, 92, 0.2);
+        border: 1px solid #e61c5c;
+        color: #f1f5f9;
         padding: 4px 10px;
         border-radius: 6px;
         font-size: 11px;

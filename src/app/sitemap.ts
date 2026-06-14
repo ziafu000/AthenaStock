@@ -14,7 +14,6 @@ const staticRoutes = [
     "/series",
     "/library",
     "/disclaimer",
-    "/search",
 ]
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

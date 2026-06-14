@@ -5,9 +5,10 @@ import Image from "next/image"
 import { ModeToggle } from "@/components/ui/ModeToggle"
 import { useReading } from "@/components/reading/ReadingContext"
 import { cn } from "@/lib/utils"
-import { Menu, X, Search } from "lucide-react"
+import { Menu, X } from "lucide-react"
 import { useState } from "react"
 import { usePathname } from "next/navigation"
+import { SearchBubble } from "@/components/layout/SearchBubble"
 
 const navLinks = [
     { href: "/about", label: "Về chúng tôi" },
@@ -70,18 +71,11 @@ export function Header() {
                             </Link>
                         ))}
                     </nav>
-
                 </div>
 
                 {/* Right: Actions (no background) */}
                 <div className="flex items-center space-x-2.5">
-                    <Link
-                        href="/search"
-                        aria-label="Tìm kiếm"
-                        className="p-2 text-muted-foreground hover:text-foreground hover:bg-secondary/40 rounded-full transition-all"
-                    >
-                        <Search size={18} strokeWidth={1.5} />
-                    </Link>
+                    <SearchBubble />
 
                     <div className="h-4 w-px bg-border"></div>
 
@@ -109,26 +103,21 @@ export function Header() {
                 </div>
 
                 {/* Actions */}
-                <div className="flex items-center space-x-1">
-                    <Link
-                        href="/search"
-                        aria-label="Tìm kiếm"
-                        className="p-1.5 text-muted-foreground hover:text-foreground rounded-full transition-all"
-                    >
-                        <Search size={18} strokeWidth={1.5} />
-                    </Link>
+                <div className="flex items-center space-x-1.5">
+                    <SearchBubble />
 
                     <ModeToggle />
 
                     <button
                         className="p-1.5 hover:bg-secondary/50 rounded-full transition-all"
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                        aria-label="Toggle Menu"
                     >
                         {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
                     </button>
                 </div>
 
-                {/* Mobile Nav Card Dropdown */}
+                {/* Mobile Nav Dropdown */}
                 {mobileMenuOpen && (
                     <div className="absolute top-[4.5rem] left-0 right-0 border border-border/40 bg-background/95 backdrop-blur-md rounded-3xl p-4 shadow-xl flex flex-col space-y-1 animate-in fade-in slide-in-from-top-2 duration-300 z-50">
                         <nav className="flex flex-col space-y-1">
@@ -147,19 +136,6 @@ export function Header() {
                                     {link.label}
                                 </Link>
                             ))}
-                            <Link
-                                href="/search"
-                                className={cn(
-                                    "text-sm transition-all px-4 py-2.5 rounded-xl font-serif font-bold flex items-center gap-2",
-                                    pathname.startsWith("/search")
-                                        ? "text-[#e61c5c] bg-[#e61c5c]/5"
-                                        : "text-foreground hover:bg-secondary/35"
-                                )}
-                                onClick={() => setMobileMenuOpen(false)}
-                            >
-                                <Search size={16} />
-                                Tìm kiếm
-                            </Link>
                         </nav>
                     </div>
                 )}
