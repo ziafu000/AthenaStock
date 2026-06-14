@@ -9,7 +9,7 @@ export const metadata = {
 
 export default function NotFound() {
     return (
-        <div className="flex min-h-[80vh] flex-col items-center justify-center p-6 text-center">
+        <div className="flex min-h-[80vh] py-20 md:py-15 flex-col items-center justify-center p-6 text-center">
             {/* Visual Icon */}
             <ScrollReveal duration={1000} direction="down">
                 <div className="relative mb-8 group inline-block">
