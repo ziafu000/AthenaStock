@@ -56,7 +56,7 @@ export function RelatedPosts({ posts }: RelatedPostsProps) {
                                 <span>✓ Đăng ký thành công! Hãy check email.</span>
                             </div>
                         ) : (
-                            <div className="flex flex-col gap-1.5 w-full font-sans">
+                            <div className="flex flex-col gap-1.5 w-full font-sans items-center">
                                 <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3 items-center w-full max-w-xl">
                                     <input
                                         type="email"
