@@ -8,6 +8,14 @@ This directory documents AthenaStock, an **Investment Thinking House** that help
 
 ## Documentation Files
 
+### [IMPLEMENTATION-MAP.md](./IMPLEMENTATION-MAP.md)
+**Read before implementation - audited delivery plan**
+
+- File-by-file implementation scope
+- Workstream ownership and dependency order
+- Security, migration, QA, and release gates
+- Parallel-agent boundaries and rollback plan
+
 ### 🧭 [PRODUCT-DIRECTION.md](./PRODUCT-DIRECTION.md)
 **Read first — canonical redesign direction**
 
