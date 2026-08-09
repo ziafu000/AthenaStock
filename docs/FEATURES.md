@@ -2,7 +2,19 @@
 
 ## Overview
 
+> [PRODUCT-DIRECTION.md](./PRODUCT-DIRECTION.md) defines the target product experience. This document inventories implementation features and must not override that direction.
+
 This document details the implementation of key features in Athena Stock.
+
+---
+
+## Redesign Priorities
+
+- Make business understanding, decision frameworks, and investment psychology the primary journeys.
+- Preserve useful reading, search, booking, SEO, and subscription capabilities.
+- Prefer clear editorial hierarchy and restrained motion over decorative interaction.
+- Add visible research freshness, sources, disclaimers, and legal trust signals.
+- Meet mobile, keyboard, contrast, reduced-motion, performance, and metadata requirements.
 
 ---
 
@@ -220,7 +232,7 @@ Email customer with Meet link
 **Template Styling:**
 - Serene, professional design
 - Responsive HTML
-- Brand colors (wine/crimson)
+- Brand colors aligned with the target navy, ivory, champagne, and sage system; wine/crimson is legacy styling
 - Clear CTAs
 
 ---

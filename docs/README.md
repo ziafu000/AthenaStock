@@ -2,11 +2,20 @@
 
 ## Overview
 
-This directory contains comprehensive documentation for the Athena Stock project - a value investing education platform built with Next.js 16, React 19, and TypeScript.
+This directory documents AthenaStock, an **Investment Thinking House** that helps long-term investors think like business owners. The product is built with Next.js 16, React 19, and TypeScript.
 
 ---
 
 ## Documentation Files
+
+### 🧭 [PRODUCT-DIRECTION.md](./PRODUCT-DIRECTION.md)
+**Read first — canonical redesign direction**
+
+- North Star, audience, positioning, and voice
+- Target navigation, routes, and homepage narrative
+- Company-research standard and visual direction
+- Component requirements and implementation guardrails
+- Overrides older docs or current UI when they conflict
 
 ### 📐 [ARCHITECTURE.md](./ARCHITECTURE.md)
 **248 lines** - Core architecture and tech stack
@@ -24,7 +33,7 @@ This directory contains comprehensive documentation for the Athena Stock project
 
 - Content types (article, business, psychology, framework)
 - Frontmatter schemas for each type
-- Business Analysis template (10 required sections)
+- Business Analysis template (12 required sections)
 - MDX components usage (Callout, Image, etc.)
 - Writing guidelines and tone rules
 - Step-by-step content creation workflow
@@ -83,10 +92,11 @@ This directory contains comprehensive documentation for the Athena Stock project
 
 ## Quick Start
 
-1. **Architecture first**: Start with [ARCHITECTURE.md](./ARCHITECTURE.md) to understand the system
-2. **Add content**: Follow [CONTENT-GUIDE.md](./CONTENT-GUIDE.md) to create articles
-3. **Customize components**: Reference [COMPONENT-API.md](./COMPONENT-API.md) for component props
-4. **Deploy**: Use [DEPLOYMENT.md](./DEPLOYMENT.md) for production setup
+1. **Product direction first**: Read [PRODUCT-DIRECTION.md](./PRODUCT-DIRECTION.md) before making product or design decisions
+2. **Understand the system**: Use [ARCHITECTURE.md](./ARCHITECTURE.md)
+3. **Add content**: Follow [CONTENT-GUIDE.md](./CONTENT-GUIDE.md)
+4. **Customize components**: Reference [COMPONENT-API.md](./COMPONENT-API.md)
+5. **Deploy**: Use [DEPLOYMENT.md](./DEPLOYMENT.md)
 
 ---
 
@@ -95,6 +105,7 @@ This directory contains comprehensive documentation for the Athena Stock project
 - **No database** - All content is MDX files
 - **Static-first** - Pre-rendered at build time
 - **Type-safe** - Full TypeScript coverage
+- **Business-owner thinking** - Teach investors how to understand and own businesses
 - **Calm design** - No aggressive CTAs or FOMO tactics
 
 ---

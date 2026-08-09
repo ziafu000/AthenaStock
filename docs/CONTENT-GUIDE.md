@@ -2,6 +2,10 @@
 
 ## Overview
 
+> [PRODUCT-DIRECTION.md](./PRODUCT-DIRECTION.md) is the canonical source for positioning, audience, voice, information architecture, and visual intent.
+
+AthenaStock is an Investment Thinking House. Write in a calm, deep, kind, systematic, and philosophical voice. Be direct, concise, and clear. Teach readers to understand businesses, make decisions with a framework, and manage their own psychology. Never publish tips, signals, FOMO hooks, performance promises, or guaranteed-return language.
+
 This guide covers how to create, structure, and publish content on Athena Stock. All content is stored as MDX files in the \content/\ directory.
 
 ---
@@ -138,9 +142,28 @@ downloadable: true                    # Optional: if checklist can be downloaded
 
 ---
 
-## Business Analysis Template (10 Required Sections)
+## Canonical Business Analysis Template (12 Required Sections)
 
-All business analysis posts MUST include these 10 sections:
+Every new or migrated company research page must use these sections in order:
+
+1. Tổng quan
+2. Mô hình kinh doanh
+3. Lợi thế cạnh tranh
+4. Ban lãnh đạo
+5. Chất lượng tài chính
+6. Động lực tăng trưởng
+7. Rủi ro
+8. Định giá
+9. Biên an toàn
+10. Luận điểm đầu tư
+11. Điều gì khiến luận điểm sai
+12. Ngày cập nhật nghiên cứu
+
+Separate facts, assumptions, and judgment; cite sources; expose uncertainty; include the last-reviewed date; and never turn research into a buy/sell instruction.
+
+## Legacy 10-Section Reference (Deprecated)
+
+The material below documents the previous format for migration reference only. Do not use it as the structure for new content.
 
 ### Section 1: Summary
 
@@ -410,7 +433,7 @@ Copy appropriate template from above and fill in all required fields.
 
 ### Step 3: Write Content
 
-Follow the template structure for your content type. For business analysis, all 10 sections are required.
+Follow the template structure for your content type. For company research, all 12 canonical sections are required.
 
 ### Step 4: Test Locally
 
@@ -425,7 +448,9 @@ Before publishing:
 
 - [ ] All frontmatter fields filled correctly
 - [ ] No forbidden language (buy/sell recommendations)
-- [ ] Business analysis has all 10 sections
+- [ ] Company research has all 12 canonical sections
+- [ ] Facts, assumptions, and judgment are visibly separated
+- [ ] The research update date is present
 - [ ] Risk section is present and detailed
 - [ ] All data has source citations
 - [ ] Images optimized and have alt text

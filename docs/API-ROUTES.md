@@ -2,6 +2,8 @@
 
 ## Overview
 
+> The redesign preserves these service capabilities. User-facing copy, validation feedback, search labels, booking language, privacy treatment, and disclaimers must follow [PRODUCT-DIRECTION.md](./PRODUCT-DIRECTION.md).
+
 Athena Stock provides REST API endpoints for booking appointments, email subscriptions, and content search.
 
 All API routes are located in \src/app/api/\.

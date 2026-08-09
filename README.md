@@ -1,10 +1,17 @@
-# Đầu tư tỉnh thức – Mindful Investing
+# AthenaStock — Investment Thinking House
 
-Website giúp nhà đầu tư cá nhân hiểu đúng bản chất doanh nghiệp và làm chủ tâm lý hành vi để đầu tư bền vững.
+**Đầu tư như một người chủ doanh nghiệp.**
 
-## 🎯 Triết lý
+AthenaStock giúp nhà đầu tư hiểu doanh nghiệp, hiểu chính mình và xây dựng tài sản bền vững. Đây là nền tảng phát triển năng lực đầu tư, không phải nơi bán mã cổ phiếu, tín hiệu hay lời hứa lợi nhuận.
+
+> Định hướng sản phẩm chính thức nằm tại [docs/PRODUCT-DIRECTION.md](./docs/PRODUCT-DIRECTION.md). Mọi thay đổi về nội dung, kiến trúc thông tin và thiết kế phải đọc tài liệu này trước.
+
+## 🎯 Nguyên tắc
 
 - **Không khuyến nghị mua/bán** – Chúng tôi phân tích, không chỉ đạo
+- **Cổ phiếu là doanh nghiệp** – Giá thị trường không đồng nghĩa với giá trị
+- **Biên an toàn là kỷ luật** – Quyết định dựa trên giá trị và khoảng an toàn
+- **Tâm lý là một trụ cột** – Hiểu và điều chỉnh hành vi để ra quyết định tốt hơn
 - **Trình bày cả rủi ro** – Mọi phân tích đều có phần "Risks & What could prove me wrong"
 - **Typography-first UX** – Thiết kế tập trung vào trải nghiệm đọc
 - **Calm design** – Không pop-up, không countdown, không CTA áp lực
@@ -120,7 +127,9 @@ citations:
 ---
 ```
 
-### Template Business Analysis (10 phần bắt buộc)
+### Template Business Analysis cũ (deprecated)
+
+Không dùng template 10 phần bên dưới cho nội dung mới. Chuẩn chính thức là framework 12 phần trong [Product Direction](./docs/PRODUCT-DIRECTION.md) và [Content Guide](./docs/CONTENT-GUIDE.md); block này chỉ giữ để đối chiếu khi migrate.
 
 ```markdown
 ## 1. Summary
@@ -237,6 +246,7 @@ Trước khi publish bài mới, kiểm tra:
 - [ ] Không có ngôn ngữ "kèo/đánh/vào lệnh"
 - [ ] Không có CTA tạo áp lực
 - [ ] Business analysis có phần Risks
+- [ ] Company research có đủ 12 phần chuẩn và ngày cập nhật nghiên cứu
 - [ ] Business analysis có "What could prove me wrong"
 - [ ] Tất cả dữ kiện có citations
 - [ ] Frontmatter đầy đủ và chính xác
@@ -244,7 +254,7 @@ Trước khi publish bài mới, kiểm tra:
 
 ## 🛠 Tech Stack
 
-- [Next.js 14](https://nextjs.org/) – App Router
+- [Next.js 16](https://nextjs.org/) – App Router
 - [TypeScript](https://www.typescriptlang.org/)
 - [Tailwind CSS](https://tailwindcss.com/) + Typography plugin
 - [next-mdx-remote](https://github.com/hashicorp/next-mdx-remote) – MDX processing

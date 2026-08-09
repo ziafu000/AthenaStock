@@ -2,6 +2,8 @@
 
 ## Overview
 
+> Release acceptance for the redesign is governed by [PRODUCT-DIRECTION.md](./PRODUCT-DIRECTION.md), in addition to the technical checks in this guide.
+
 This guide covers deploying Athena Stock to Vercel and configuring production environment.
 
 ---
@@ -149,6 +151,11 @@ Vercel automatically detects Next.js settings. Manual config in \ercel.json\ (o
 - [ ] Robots.txt accessible at \/robots.txt\
 - [ ] Dark mode works correctly
 - [ ] All content renders properly
+- [ ] Target Vietnamese routes, navigation, and legacy redirects work
+- [ ] Company research pages expose all 12 sections and the update date
+- [ ] Privacy, terms, contact, and disclaimer surfaces are accessible
+- [ ] Metadata, keyboard navigation, focus states, contrast, and reduced motion pass QA
+- [ ] Mobile layout and Core Web Vitals are acceptable
 
 ---
 

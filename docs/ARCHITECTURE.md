@@ -2,7 +2,9 @@
 
 ## Overview
 
-**Athena Stock** is a content-focused investment education platform built with Next.js 16 App Router, React 19, and TypeScript 5.
+**AthenaStock** is an Investment Thinking House built with Next.js 16 App Router, React 19, and TypeScript 5.
+
+> Product, information architecture, and visual decisions must follow [PRODUCT-DIRECTION.md](./PRODUCT-DIRECTION.md). This file documents how that direction is implemented technically.
 
 ### Design Philosophy
 
@@ -11,6 +13,16 @@
 - **Typography-first**: Reading experience is priority
 - **Calm design**: No popups, countdowns, or aggressive CTAs
 - **Type-safe**: Full TypeScript coverage
+
+---
+
+## Target Product Architecture
+
+- Preserve the current Next.js, MDX, search, booking, SEO, and static-content foundations.
+- Migrate public routes to the Vietnamese information architecture defined in the product direction.
+- Treat current English routes as legacy migration surfaces; add redirects or compatibility mappings instead of letting them define the new navigation.
+- Build shared sections and cards from typed data so content order and presentation remain consistent across pages.
+- Keep business research and investment psychology as equal product pillars.
 
 ---
 
@@ -134,7 +146,9 @@ Content here...
 
 ---
 
-## Routing Architecture
+## Current Routing Architecture (Legacy During Migration)
+
+The routes below describe the current implementation. The target public routes and navigation are defined in [PRODUCT-DIRECTION.md](./PRODUCT-DIRECTION.md).
 
 ### Static Routes
 - \/\ - Homepage
@@ -180,7 +194,7 @@ Content here...
 - Related posts sidebar
 
 **BusinessAnalysisLayout** (\components/article/BusinessAnalysisLayout.tsx\)
-- 10-section structured layout
+- Canonical 12-section research layout
 - Risk callouts
 - Citation links
 - Stock ticker badges
@@ -213,7 +227,18 @@ Content here...
 
 ## Styling System
 
-### Tailwind Configuration
+### Target Design Tokens
+
+- Deep navy: authority, focus, and primary surfaces
+- Ivory: warm reading background
+- Muted gold or champagne: restrained emphasis
+- Soft sage: reflection and calm
+- Red: warnings and errors only
+- Serif for editorial authority; sans-serif for navigation, controls, and data
+
+### Current Tailwind Configuration (Legacy Tokens)
+
+The wine/crimson configuration below documents the current code only; it must not constrain the redesign.
 
 \\\	ypescript
 // tailwind.config.ts

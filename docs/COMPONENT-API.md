@@ -2,7 +2,17 @@
 
 ## Overview
 
+> Component decisions for the redesign must follow [PRODUCT-DIRECTION.md](./PRODUCT-DIRECTION.md). Existing APIs below describe the current implementation unless marked as target.
+
 This document provides detailed API documentation for all React components in the Athena Stock project.
+
+---
+
+## Target Redesign Component System
+
+The redesign must provide reusable, typed, data-driven versions of: Header, Footer, Hero, SectionHeading, CTAGroup, PrincipleCard, FrameworkStep, CompanyCard, PsychologyTopicCard, InspirationCard, ArticleCard, QuoteBlock, DarkStatementSection, Breadcrumb, Search, Filter, Pagination or LoadMore, Disclaimer, and responsive navigation.
+
+All target components must support mobile layouts, keyboard navigation, visible focus states, semantic markup, restrained motion, and reduced-motion preferences.
 
 ---
 
@@ -19,6 +29,8 @@ This document provides detailed API documentation for all React components in th
 - Dark/light mode toggle
 - Mobile hamburger menu
 - Active route highlighting
+
+**Target contract:** Use the Vietnamese navigation defined in the product direction and include the primary CTA “Trao đổi cùng Athena”. “About” belongs under Triết lý Athena and in the footer.
 
 **Usage:**
 
@@ -127,7 +139,7 @@ import { ArticleLayout } from '@/components/article/ArticleLayout'
 
 **Location:** \src/components/article/BusinessAnalysisLayout.tsx\
 
-**Description:** Specialized layout for business analysis posts with 10-section structure.
+**Description:** Specialized layout for company research using the canonical 12-section structure.
 
 **Props:**
 
@@ -151,7 +163,9 @@ import { BusinessAnalysisLayout } from '@/components/article/BusinessAnalysisLay
 - Risk level indicator
 - Citation links
 - Market/sector tags
-- Structured 10-section navigation
+- Structured 12-section navigation
+- Visible last-researched date and disclaimer
+- Clear separation between facts, assumptions, and judgment
 
 ---
 
@@ -296,6 +310,8 @@ import { ModeToggle } from '@/components/ui/ModeToggle'
 **Location:** \src/components/ui/ContentCarousel.tsx\
 
 **Description:** Animated carousel for showcasing featured content on homepage.
+
+**Status:** Legacy presentation component. It is not the default pattern for the redesigned homepage or hero; use only when the content genuinely benefits from horizontal browsing.
 
 **Props:**
 
