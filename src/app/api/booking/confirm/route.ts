@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from "next/server"
-import { claimConfirmation, finishConfirmation, getBooking } from "@/lib/booking/database"
+import {
+    BookingConfirmationConflictError,
+    claimConfirmation,
+    finishConfirmation,
+    getBooking,
+} from "@/lib/booking/database"
 import { getEmailConfig, sendBookingEmail } from "@/lib/booking/email"
 import { asHttpUrl, escapeHtml } from "@/lib/booking/html"
 import { createBookingCalendar } from "@/lib/booking/ics"
@@ -69,6 +74,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
     let bookingId = ""
+    let claimed = false
     try {
         const token = await tokenFromPost(req)
         const payload = verifyActionToken(token, "confirm")
@@ -82,6 +88,7 @@ export async function POST(req: NextRequest) {
             return page("Không thể phê duyệt", "Yêu cầu đang được xử lý hoặc không còn hợp lệ.", 409)
         }
 
+        claimed = true
         const { adminEmail, senderEmail } = getEmailConfig()
         const formattedDate = formatBookingDate(booking.bookingDate)
         const meetingUrl = asHttpUrl(booking.meetingLocation)
@@ -119,7 +126,14 @@ export async function POST(req: NextRequest) {
         return page("Phê duyệt thành công", "Email xác nhận kèm file .ics đã được gửi cho khách hàng.")
     } catch (error) {
         console.error("Booking confirmation failed:", error)
-        if (bookingId) await finishConfirmation(bookingId, false).catch(console.error)
+        if (error instanceof BookingConfirmationConflictError) {
+            return page(
+                "Khung giờ đã được xác nhận",
+                "Một yêu cầu khác trong cùng khung giờ đã được duyệt. Hãy dùng liên kết đề xuất đổi lịch cho khách hàng này.",
+                409
+            )
+        }
+        if (claimed && bookingId) await finishConfirmation(bookingId, false).catch(console.error)
         const status = error instanceof InvalidActionTokenError ? 403 : 502
         return page("Không thể phê duyệt", status === 403 ? "Liên kết không hợp lệ hoặc đã hết hạn." : "Email chưa gửi được. Bạn có thể thử lại bằng liên kết cũ.", status)
     }

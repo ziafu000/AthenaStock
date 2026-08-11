@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
             throw error
         }
 
-        return NextResponse.json({ success: true, bookingId: booking.id })
+        return NextResponse.json({ success: true, bookingId: booking.id, duplicate: !created })
     } catch (error) {
         console.error("Booking request failed:", error)
         if (error instanceof ValidationError) {

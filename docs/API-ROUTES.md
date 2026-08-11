@@ -4,7 +4,7 @@ Các contract backend dưới đây giữ nguyên UI/UX hiện tại. Booking d�
 
 ## POST `/api/booking`
 
-Tạo yêu cầu booking, giữ chỗ trong database và gửi email duyệt tới quản trị viên.
+Tạo yêu cầu booking ở trạng thái `pending` và gửi email duyệt tới quản trị viên.
 
 ```json
 {
@@ -25,14 +25,15 @@ Thành công:
 { "success": true, "bookingId": "uuid", "duplicate": false }
 ```
 
-Gửi lại cùng email và thời điểm là idempotent. Nếu thời điểm đã thuộc booking khác, API trả `409`. Lỗi cấu hình hoặc email trả `503` nhưng bản ghi được giữ để retry.
+Gửi lại cùng email và thời điểm là idempotent. Nhiều khách hàng khác nhau có thể gửi yêu cầu cho cùng một khung giờ; mỗi yêu cầu mới đều được lưu và thông báo cho quản trị viên. Lỗi cấu hình hoặc email trả `503` nhưng bản ghi được giữ để retry.
 
 ## GET và POST `/api/booking/confirm?token=...`
 
 Link trong email quản trị dùng token HMAC có mục đích `confirm`, booking ID và hạn dùng.
 
 - `GET`: chỉ hiển thị trang xem trước; không đổi dữ liệu và không gửi email.
-- `POST`: xác minh token, claim thao tác trong database, gửi email xác nhận kèm file `.ics`, rồi chuyển booking sang `confirmed`.
+- `POST`: xác minh token và atomically chuyển booking sang `confirmed` trước khi gửi email kèm file `.ics`. Unique index đảm bảo chỉ một yêu cầu trong mỗi khung giờ được xác nhận, kể cả khi hai thao tác duyệt chạy đồng thời.
+- Nếu gửi email khách hàng lỗi, slot vẫn được giữ bởi booking `confirmed`; quản trị viên có thể retry bằng cùng liên kết.
 - Token hết hạn, sai chữ ký hoặc sai mục đích bị từ chối.
 - Thao tác đã gửi thành công không được phát lại.
 
@@ -84,7 +85,7 @@ BOOKING_MEETING_LOCATION=
 | `400` | Input không hợp lệ |
 | `401` | Token sai hoặc hết hạn |
 | `404` | Không tìm thấy booking |
-| `409` | Trùng slot hoặc action đã hoàn tất/đang xử lý |
+| `409` | Khung giờ đã có booking được xác nhận hoặc action đã hoàn tất/đang xử lý |
 | `503` | Database, email hoặc cấu hình chưa sẵn sàng |
 
 Không trả raw provider error cho client. User input được validate trước khi lưu và escape trước khi đưa vào HTML email.

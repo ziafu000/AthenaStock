@@ -12,8 +12,10 @@ Release phải giữ nguyên frontend hiện tại và cấu hình đầy đủ 
 ## 1. Database
 
 1. Tạo Supabase project và lấy URI **Transaction Pooler** (port `6543`) có `sslmode=require` cho app/Vercel.
-2. Chạy lần lượt [`001_create_bookings.sql`](../database/migrations/001_create_bookings.sql) rồi [`002_enable_bookings_rls.sql`](../database/migrations/002_enable_bookings_rls.sql) trong SQL Editor.
-3. Xác nhận bảng `bookings`, partial unique index và RLS đã bật.
+2. Chạy lần lượt mọi file trong [`database/migrations/`](../database/migrations/) theo thứ tự tên (`001`, `002`, `003`, ...).
+3. Xác nhận bảng `bookings`, RLS và hai partial unique index `bookings_customer_active_start_at_idx`, `bookings_confirmed_start_at_idx` đã có.
+
+Với production đã chạy migration `001` cũ: deploy code tương thích trước, sau đó chạy `003_allow_competing_booking_requests.sql`. Migration này cho phép nhiều request `pending` cùng slot nhưng chỉ một request được `confirmed`.
 
 Không cần Google Cloud Console hoặc thông tin thẻ tín dụng Google.
 

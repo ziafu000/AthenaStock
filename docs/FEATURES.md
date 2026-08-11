@@ -189,7 +189,7 @@ darkMode: ['class']
 
 **Components:**
 1. BookingModal - User-facing form
-2. PostgreSQL - Booking state, slot uniqueness, and retry control
+2. PostgreSQL - Booking state, confirmed-slot uniqueness, request deduplication, and retry control
 3. Resend - Admin and customer email notifications
 4. ICS generator - Provider-independent calendar invitation/cancellation
 
@@ -200,7 +200,7 @@ User submits form
     ↓
 POST /api/booking
     ↓
-Persist pending booking and reserve slot
+Persist pending request; different customers may request the same slot
     ↓
 Email admin with approve/reschedule buttons
     ↓
@@ -208,7 +208,7 @@ Admin clicks approve
     ↓
 GET preview → POST /api/booking/confirm
     ↓
-Atomically claim and confirm booking
+Atomically confirm one booking per slot
     ↓
 Email customer with .ics attachment
 \\\

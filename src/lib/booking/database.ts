@@ -67,6 +67,15 @@ function mapBooking(row: DatabaseRow): BookingRecord {
 
 export class SlotUnavailableError extends Error {}
 
+export class BookingConfirmationConflictError extends Error {}
+
+function isUniqueViolation(error: unknown) {
+    return typeof error === "object"
+        && error !== null
+        && "code" in error
+        && error.code === "23505"
+}
+
 export async function createOrGetBooking(input: BookingInput) {
     const sql = getSql()
     const id = randomUUID()
@@ -80,7 +89,7 @@ export async function createOrGetBooking(input: BookingInput) {
             ${input.date}, ${input.timeBlock}, ${input.startAt}, ${input.endAt},
             'Asia/Ho_Chi_Minh', ${meetingLocation}
         )
-        ON CONFLICT (start_at) WHERE status IN ('pending', 'confirmed') DO NOTHING
+        ON CONFLICT DO NOTHING
         RETURNING *
     `
 
@@ -88,11 +97,12 @@ export async function createOrGetBooking(input: BookingInput) {
 
     const existing = await sql`
         SELECT * FROM bookings
-        WHERE start_at = ${input.startAt}
+        WHERE lower(customer_email) = lower(${input.email})
+          AND start_at = ${input.startAt}
           AND status IN ('pending', 'confirmed')
         LIMIT 1
     `
-    if (!existing[0] || String(existing[0].customer_email).toLowerCase() !== input.email.toLowerCase()) {
+    if (!existing[0]) {
         throw new SlotUnavailableError("Khung giờ này vừa được người khác đăng ký. Vui lòng chọn khung giờ khác.")
     }
 
@@ -129,28 +139,35 @@ export async function finishAdminNotification(id: string, sent: boolean) {
 }
 
 export async function claimConfirmation(id: string) {
-    const rows = await getSql()`
-        UPDATE bookings
-        SET confirmation_email_status = 'sending',
-            meeting_location = COALESCE(${process.env.BOOKING_MEETING_LOCATION || null}, meeting_location),
-            updated_at = now()
-        WHERE id = ${id}
-          AND status IN ('pending', 'confirmed')
-          AND (
-              confirmation_email_status IN ('pending', 'failed')
-              OR (confirmation_email_status = 'sending' AND updated_at < now() - interval '10 minutes')
-          )
-        RETURNING *
-    `
-    return rows[0] ? mapBooking(rows[0]) : null
+    try {
+        const rows = await getSql()`
+            UPDATE bookings
+            SET status = 'confirmed',
+                confirmed_at = COALESCE(confirmed_at, now()),
+                confirmation_email_status = 'sending',
+                meeting_location = COALESCE(${process.env.BOOKING_MEETING_LOCATION || null}, meeting_location),
+                updated_at = now()
+            WHERE id = ${id}
+              AND status IN ('pending', 'confirmed')
+              AND (
+                  confirmation_email_status IN ('pending', 'failed')
+                  OR (confirmation_email_status = 'sending' AND updated_at < now() - interval '10 minutes')
+              )
+            RETURNING *
+        `
+        return rows[0] ? mapBooking(rows[0]) : null
+    } catch (error) {
+        if (isUniqueViolation(error)) {
+            throw new BookingConfirmationConflictError("Khung giờ này đã có một lịch hẹn được xác nhận.")
+        }
+        throw error
+    }
 }
 
 export async function finishConfirmation(id: string, sent: boolean) {
     await getSql()`
         UPDATE bookings
         SET confirmation_email_status = ${sent ? "sent" : "failed"},
-            status = CASE WHEN ${sent} THEN 'confirmed' ELSE status END,
-            confirmed_at = CASE WHEN ${sent} THEN now() ELSE confirmed_at END,
             confirmation_email_sent_at = CASE WHEN ${sent} THEN now() ELSE confirmation_email_sent_at END,
             updated_at = now()
         WHERE id = ${id}

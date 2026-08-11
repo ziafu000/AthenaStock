@@ -19,8 +19,8 @@ Migration có thể chạy lại an toàn. Không chỉnh sửa migration đã �
 
 ## Trạng thái chính
 
-- `pending`: yêu cầu mới, chờ quản trị viên duyệt.
-- `confirmed`: email xác nhận và file `.ics` đã gửi thành công.
+- `pending`: yêu cầu mới, chờ quản trị viên duyệt; nhiều khách hàng có thể cùng yêu cầu một khung giờ.
+- `confirmed`: quản trị viên đã giữ slot cho yêu cầu này; mỗi slot chỉ có một booking `confirmed`.
 - `reschedule_requested`: khách đã gửi đề xuất đổi lịch.
 
-Các cột trạng thái email hỗ trợ retry có kiểm soát và tránh gửi trùng khi người dùng tải lại trang.
+Các cột trạng thái email cho biết email đã gửi thành công hay cần retry; trạng thái booking và trạng thái email được theo dõi độc lập để không xác nhận trùng slot khi provider email lỗi.

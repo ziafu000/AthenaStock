@@ -28,8 +28,12 @@ CREATE TABLE IF NOT EXISTS bookings (
     CHECK (end_at > start_at)
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS bookings_active_start_at_idx
+CREATE UNIQUE INDEX IF NOT EXISTS bookings_confirmed_start_at_idx
     ON bookings (start_at)
+    WHERE status = 'confirmed';
+
+CREATE UNIQUE INDEX IF NOT EXISTS bookings_customer_active_start_at_idx
+    ON bookings (lower(customer_email), start_at)
     WHERE status IN ('pending', 'confirmed');
 
 CREATE INDEX IF NOT EXISTS bookings_customer_email_idx ON bookings (lower(customer_email));
