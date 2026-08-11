@@ -4,6 +4,19 @@ import { Suspense, useState, useEffect } from "react"
 import { useSearchParams, useRouter, usePathname } from "next/navigation"
 import { X, Calendar, Clock, CheckCircle2, AlertCircle } from "lucide-react"
 
+const vietnamDateFormatter = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Ho_Chi_Minh",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+})
+
+function addDaysToDateOnly(date: string, days: number) {
+    const [year, month, day] = date.split("-").map(Number)
+    const result = new Date(Date.UTC(year, month - 1, day + days))
+    return result.toISOString().slice(0, 10)
+}
+
 function BookingModalContent() {
     const searchParams = useSearchParams()
     const router = useRouter()
@@ -18,10 +31,7 @@ function BookingModalContent() {
     const [message, setMessage] = useState("")
     const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle")
     const [errorMessage, setErrorMessage] = useState("")
-    const [minDate] = useState(() => {
-        const tomorrow = new Date(Date.now() + 86400000)
-        return tomorrow.toISOString().split("T")[0]
-    })
+    const [minDate] = useState(() => addDaysToDateOnly(vietnamDateFormatter.format(new Date()), 1))
 
     useEffect(() => {
         if (isOpen) {
@@ -108,7 +118,7 @@ function BookingModalContent() {
                         </div>
                         <h3 className="text-2xl font-serif font-bold text-white">Yêu cầu đã được nhận!</h3>
                         <p className="text-sm text-[#a0a5b5] leading-relaxed max-w-md mx-auto font-sans">
-                            Chào <strong className="text-white">{name}</strong>, chúng tôi đã tạo link họp Google Meet tạm thời và gửi email thông báo phê duyệt tới quản trị viên.
+                            Chào <strong className="text-white">{name}</strong>, chúng tôi đã tiếp nhận yêu cầu và gửi email thông báo phê duyệt tới quản trị viên.
                         </p>
                         <p className="text-xs text-[#e61c5c] font-semibold bg-[#e61c5c]/5 border border-[#e61c5c]/10 py-2.5 px-4 rounded-xl inline-block max-w-xs font-sans">
                             Athena Stock sẽ phản hồi xác nhận lịch hẹn vào hòm thư email của bạn sớm nhất trong vòng 24 giờ.
@@ -129,7 +139,7 @@ function BookingModalContent() {
                                 Đặt lịch <span className="text-[#e61c5c] italic font-medium">Hẹn trao đổi</span>
                             </h3>
                             <p className="text-xs text-[#a0a5b5] font-sans">
-                                Nhập khung giờ rảnh mong muốn. Chúng tôi sẽ tự động tạo link Google Meet và gửi mail xác nhận cho bạn.
+                                Nhập khung giờ rảnh mong muốn. Chúng tôi sẽ xử lý yêu cầu và gửi email xác nhận cho bạn.
                             </p>
                         </div>
 

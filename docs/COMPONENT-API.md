@@ -2,17 +2,15 @@
 
 ## Overview
 
-> Component decisions for the redesign must follow [PRODUCT-DIRECTION.md](./PRODUCT-DIRECTION.md). Existing APIs below describe the current implementation unless marked as target.
+> The APIs below document the approved current frontend. Preserve their rendered UI and behavior unless a future change is explicitly approved.
 
 This document provides detailed API documentation for all React components in the Athena Stock project.
 
 ---
 
-## Target Redesign Component System
+## Frontend Preservation Rule
 
-The redesign must provide reusable, typed, data-driven versions of: Header, Footer, Hero, SectionHeading, CTAGroup, PrincipleCard, FrameworkStep, CompanyCard, PsychologyTopicCard, InspirationCard, ArticleCard, QuoteBlock, DarkStatementSection, Breadcrumb, Search, Filter, Pagination or LoadMore, Disclaimer, and responsive navigation.
-
-All target components must support mobile layouts, keyboard navigation, visible focus states, semantic markup, restrained motion, and reduced-motion preferences.
+Keep the current component system, styling, layout, and interaction model. Necessary bug, accessibility, or security fixes should be minimal, backward-compatible, and checked for visual regressions.
 
 ---
 
@@ -77,7 +75,7 @@ import { Footer } from '@/components/layout/Footer'
 
 **Location:** \src/components/layout/BookingModal.tsx\
 
-**Description:** Modal dialog for booking advisory sessions with Google Meet integration.
+**Description:** Modal dialog for booking advisory sessions backed by PostgreSQL, email approval, and provider-independent `.ics` invitations.
 
 **Props:**
 
@@ -311,7 +309,7 @@ import { ModeToggle } from '@/components/ui/ModeToggle'
 
 **Description:** Animated carousel for showcasing featured content on homepage.
 
-**Status:** Legacy presentation component. It is not the default pattern for the redesigned homepage or hero; use only when the content genuinely benefits from horizontal browsing.
+**Status:** Current presentation component used for horizontal featured-content browsing.
 
 **Props:**
 

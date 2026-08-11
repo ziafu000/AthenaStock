@@ -1,225 +1,97 @@
-﻿# Deployment Guide
+# Deployment Guide
 
-## Overview
+Release phải giữ nguyên frontend hiện tại và cấu hình đầy đủ PostgreSQL, Resend cùng token booking trước khi public form.
 
-> Release acceptance for the redesign is governed by [PRODUCT-DIRECTION.md](./PRODUCT-DIRECTION.md), in addition to the technical checks in this guide.
+## Yêu cầu
 
-This guide covers deploying Athena Stock to Vercel and configuring production environment.
+- Node.js 20+
+- Một PostgreSQL chuẩn như Neon, Supabase, Vercel Postgres hoặc self-hosted
+- Tài khoản Resend và domain gửi email đã xác minh
+- Vercel hoặc nền tảng chạy Next.js tương đương
 
----
+## 1. Database
 
-## Prerequisites
+1. Tạo Supabase project và lấy URI **Transaction Pooler** (port `6543`) có `sslmode=require` cho app/Vercel.
+2. Chạy lần lượt [`001_create_bookings.sql`](../database/migrations/001_create_bookings.sql) rồi [`002_enable_bookings_rls.sql`](../database/migrations/002_enable_bookings_rls.sql) trong SQL Editor.
+3. Xác nhận bảng `bookings`, partial unique index và RLS đã bật.
 
-- GitHub/GitLab/Bitbucket repository
-- Vercel account (free tier works)
-- Domain name (optional)
-- Google Cloud Console project (for Calendar/Meet)
-- Resend account (for emails)
+Không cần Google Cloud Console hoặc thông tin thẻ tín dụng Google.
 
----
+## 2. Resend
 
-## Environment Variables
+1. Xác minh domain trong Resend.
+2. Tạo API key giới hạn cho môi trường tương ứng.
+3. Đặt `SENDER_EMAIL` trên domain đã xác minh.
 
-Create these in Vercel dashboard or \.env.local\:
+Sandbox của Resend chỉ gửi được tới địa chỉ được phép, vì vậy cần verify domain trước khi test production.
 
-\\\ash
-# Admin Contact
-ADMIN_EMAIL=your-admin@email.com
+## 3. Environment variables
 
-# Google Calendar/Meet Integration
-GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
-GOOGLE_CLIENT_SECRET=GOCSPX-your-secret
-GOOGLE_REFRESH_TOKEN=1//your-refresh-token
-
-# Email Service (Resend)
-RESEND_API_KEY=re_your-api-key
-SENDER_EMAIL=Your Name <noreply@yourdomain.com>
-
-# Booking Security
-BOOKING_SECRET=random-secure-string-here
-
-# Public URL
+```bash
+DATABASE_URL=postgresql://postgres.project-ref:password@region.pooler.supabase.com:6543/postgres?sslmode=require
+RESEND_API_KEY=re_xxxxx
+ADMIN_EMAIL=admin@example.com
+SENDER_EMAIL=Athena Stock <booking@example.com>
 NEXT_PUBLIC_APP_URL=https://yourdomain.com
-NEXT_PUBLIC_RECRUITMENT_FORM_URL=https://forms.google.com/your-form
-\\\
+BOOKING_SECRET=a-random-secret-at-least-32-characters
+BOOKING_ACTION_TTL_HOURS=72
+BOOKING_MEETING_LOCATION=
+```
 
----
+- Sinh `BOOKING_SECRET` ngẫu nhiên, tối thiểu 32 ký tự; không dùng giá trị mẫu.
+- `NEXT_PUBLIC_APP_URL` phải là origin production để link trong email đúng host.
+- `BOOKING_MEETING_LOCATION` là tùy chọn; có thể là địa chỉ hoặc link phòng họp tự quản lý.
+- Dùng database và API key riêng cho preview/production.
+- Không đưa database password hoặc Supabase service key vào biến `NEXT_PUBLIC_*`.
 
-## Google Calendar Setup
+## 4. Deploy Vercel
 
-### 1. Create Google Cloud Project
+1. Import repository vào Vercel.
+2. Chọn preset Next.js, Node.js 20+.
+3. Thêm toàn bộ environment variables cho đúng environment.
+4. Deploy và chạy smoke test booking.
 
-1. Go to [Google Cloud Console](https://console.cloud.google.com)
-2. Create new project
-3. Enable Google Calendar API
+Các lệnh kiểm tra trước deploy:
 
-### 2. Create OAuth Credentials
+```bash
+npm ci
+npx tsc --noEmit
+npm run lint
+npm run build
+```
 
-1. APIs & Services → Credentials
-2. Create OAuth 2.0 Client ID
-3. Application type: Web application
-4. Authorized redirect URIs: \https://developers.google.com/oauthplayground\
+## Checklist sau deploy
 
-### 3. Get Refresh Token
+- [ ] Migration đã chạy đúng database production
+- [ ] RLS của bảng `bookings` đã bật và không có public policy
+- [ ] Form booking tạo đúng một bản ghi
+- [ ] Email admin nhận link confirm và reschedule
+- [ ] Mở link confirm chưa làm thay đổi dữ liệu; submit confirm mới gửi email
+- [ ] Email khách có file `.ics` import được vào ứng dụng lịch
+- [ ] Reload/replay không gửi trùng email
+- [ ] Token sai và token hết hạn bị từ chối
+- [ ] Slot trùng trả lỗi rõ ràng
+- [ ] Domain gửi Resend đã verified
+- [ ] Sitemap, robots, analytics và toàn bộ route hiện tại hoạt động
+- [ ] Frontend không có thay đổi hình ảnh ngoài copy booking bắt buộc
 
-1. Go to [OAuth Playground](https://developers.google.com/oauthplayground)
-2. Settings → Use your own OAuth credentials
-3. Enter Client ID and Secret
-4. Select scope: \https://www.googleapis.com/auth/calendar\
-5. Authorize and get refresh token
+## Rollback và xoay secret
 
----
-
-## Resend Setup
-
-1. Sign up at [Resend](https://resend.com)
-2. Get API key from dashboard
-3. Add and verify your domain
-4. Update \SENDER_EMAIL\ with verified domain
-
-**Note:** Resend sandbox mode only sends to verified emails.
-
----
-
-## Vercel Deployment
-
-### Option 1: GitHub Integration (Recommended)
-
-1. Push code to GitHub
-2. Go to [Vercel Dashboard](https://vercel.com/new)
-3. Import your repository
-4. Configure:
-   - Framework Preset: **Next.js**
-   - Root Directory: \./\
-   - Build Command: \
-pm run build\
-   - Output Directory: \.next\
-5. Add environment variables
-6. Deploy!
-
-### Option 2: Vercel CLI
-
-\\\ash
-# Install Vercel CLI
-npm i -g vercel
-
-# Login
-vercel login
-
-# Deploy
-vercel
-
-# Production deployment
-vercel --prod
-\\\
-
----
-
-## Custom Domain
-
-1. Vercel Dashboard → Project → Settings → Domains
-2. Add your domain
-3. Update DNS records (Vercel provides instructions)
-4. Update \NEXT_PUBLIC_APP_URL\ environment variable
-
----
-
-## Build Configuration
-
-Vercel automatically detects Next.js settings. Manual config in \ercel.json\ (optional):
-
-\\\json
-{
-  "buildCommand": "npm run build",
-  "devCommand": "npm run dev",
-  "installCommand": "npm install",
-  "framework": "nextjs",
-  "regions": ["sin1"]
-}
-\\\
-
----
-
-## Post-Deployment Checklist
-
-- [ ] All environment variables set correctly
-- [ ] Google Calendar API working (test booking)
-- [ ] Resend domain verified (test email)
-- [ ] Custom domain configured
-- [ ] Analytics enabled
-- [ ] Sitemap accessible at \/sitemap.xml\
-- [ ] Robots.txt accessible at \/robots.txt\
-- [ ] Dark mode works correctly
-- [ ] All content renders properly
-- [ ] Target Vietnamese routes, navigation, and legacy redirects work
-- [ ] Company research pages expose all 12 sections and the update date
-- [ ] Privacy, terms, contact, and disclaimer surfaces are accessible
-- [ ] Metadata, keyboard navigation, focus states, contrast, and reduced motion pass QA
-- [ ] Mobile layout and Core Web Vitals are acceptable
-
----
-
-## Monitoring
-
-### Vercel Dashboard
-
-- Deployment logs
-- Function logs
-- Analytics
-- Speed Insights
-
-### Error Tracking
-
-Consider adding:
-- Sentry for error tracking
-- LogRocket for session replay
-- Google Analytics for detailed user behavior
-
----
-
-## CI/CD
-
-**Automatic Deployments:**
-- Push to \main\ → Production
-- Push to other branches → Preview
-
-**Manual Deployments:**
-\\\ash
-vercel --prod
-\\\
-
----
+- Nếu email lỗi, giữ database và tắt/ẩn điểm vào booking ở tầng vận hành; không xóa bản ghi để còn audit/retry.
+- Rollback code không được rollback/xóa migration đã áp dụng.
+- Đổi `BOOKING_SECRET` sẽ vô hiệu toàn bộ link cũ; gửi lại link mới nếu cần.
+- Thu hồi ngay Resend key hoặc database credential bị lộ và cập nhật environment variables.
 
 ## Troubleshooting
 
-### Build Fails
+### Booking trả `503`
 
-Check:
-- Node version (needs 18+)
-- Environment variables set
-- No TypeScript errors: \
-pm run build\
+Kiểm tra `DATABASE_URL`, migration, `RESEND_API_KEY`, `SENDER_EMAIL`, `ADMIN_EMAIL`, `BOOKING_SECRET` và function logs.
 
-### Calendar API Not Working
+### Email không gửi
 
-Check:
-- Client ID/Secret correct
-- Refresh token valid (tokens don't expire)
-- Calendar API enabled in Google Cloud Console
+Kiểm tra domain Resend, quyền API key, địa chỉ sender và giới hạn sandbox. Server chỉ log lỗi nội bộ; client không nhận provider error thô.
 
-### Emails Not Sending
+### File `.ics` sai giờ
 
-Check:
-- Resend API key valid
-- Domain verified in Resend
-- \SENDER_EMAIL\ uses verified domain
-
----
-
-## Further Documentation
-
-- [Architecture](./ARCHITECTURE.md)
-- [Component API](./COMPONENT-API.md)
-- [Content Guide](./CONTENT-GUIDE.md)
-- [API Routes](./API-ROUTES.md)
-- [Features](./FEATURES.md)
+Booking nhập theo `Asia/Ho_Chi_Minh` và `.ics` được xuất dưới UTC. Kiểm tra ngày/slot lưu trong bản ghi trước khi xác nhận.

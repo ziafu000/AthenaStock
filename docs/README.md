@@ -17,13 +17,12 @@ This directory documents AthenaStock, an **Investment Thinking House** that help
 - Parallel-agent boundaries and rollback plan
 
 ### 🧭 [PRODUCT-DIRECTION.md](./PRODUCT-DIRECTION.md)
-**Read first — canonical redesign direction**
+**Read first — canonical product direction and frontend-preservation decision**
 
 - North Star, audience, positioning, and voice
-- Target navigation, routes, and homepage narrative
-- Company-research standard and visual direction
-- Component requirements and implementation guardrails
-- Overrides older docs or current UI when they conflict
+- Company-research and content standards
+- Backend, security, and implementation guardrails
+- Keeps the current committed frontend as the UI/UX source of truth
 
 ### 📐 [ARCHITECTURE.md](./ARCHITECTURE.md)
 **248 lines** - Core architecture and tech stack
@@ -61,9 +60,9 @@ This directory documents AthenaStock, an **Investment Thinking House** that help
 ### 🔌 [API-ROUTES.md](./API-ROUTES.md)
 **265 lines** - API endpoint documentation
 
-- POST /api/booking - Create booking with Google Meet
-- GET /api/booking/confirm - Admin approval endpoint
-- POST /api/booking/reschedule - Admin reschedule
+- POST /api/booking - Persist a booking and notify admin
+- GET/POST /api/booking/confirm - Preview and approve a booking
+- GET/POST /api/booking/reschedule - Load and submit reschedule suggestions
 - POST /api/subscribe - Email subscriptions
 - GET /api/search - Content search
 - Environment variables required
@@ -89,7 +88,7 @@ This directory documents AthenaStock, an **Investment Thinking House** that help
 **153 lines** - Deployment and production setup
 
 - Environment variables setup
-- Google Calendar/Meet configuration
+- PostgreSQL migration and connection setup
 - Resend email setup
 - Vercel deployment (GitHub integration & CLI)
 - Custom domain configuration
@@ -110,7 +109,7 @@ This directory documents AthenaStock, an **Investment Thinking House** that help
 
 ## Key Principles
 
-- **No database** - All content is MDX files
+- **File-based content** - Published content remains in MDX; PostgreSQL is scoped to transactional booking data
 - **Static-first** - Pre-rendered at build time
 - **Type-safe** - Full TypeScript coverage
 - **Business-owner thinking** - Teach investors how to understand and own businesses

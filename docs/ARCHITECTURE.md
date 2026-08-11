@@ -4,11 +4,11 @@
 
 **AthenaStock** is an Investment Thinking House built with Next.js 16 App Router, React 19, and TypeScript 5.
 
-> Product, information architecture, and visual decisions must follow [PRODUCT-DIRECTION.md](./PRODUCT-DIRECTION.md). This file documents how that direction is implemented technically.
+> Product and content decisions follow [PRODUCT-DIRECTION.md](./PRODUCT-DIRECTION.md). The current committed frontend is the approved source of truth for information architecture and visual behavior.
 
 ### Design Philosophy
 
-- **No database**: Content stored as MDX files
+- **File-based content**: Published content stays in MDX; only transactional booking data uses PostgreSQL
 - **Static-first**: Pre-render at build time
 - **Typography-first**: Reading experience is priority
 - **Calm design**: No popups, countdowns, or aggressive CTAs
@@ -16,12 +16,11 @@
 
 ---
 
-## Target Product Architecture
+## Product Architecture Guardrails
 
 - Preserve the current Next.js, MDX, search, booking, SEO, and static-content foundations.
-- Migrate public routes to the Vietnamese information architecture defined in the product direction.
-- Treat current English routes as legacy migration surfaces; add redirects or compatibility mappings instead of letting them define the new navigation.
-- Build shared sections and cards from typed data so content order and presentation remain consistent across pages.
+- Preserve current public routes, navigation, shared components, and page composition.
+- Strengthen typed data, content validation, APIs, tests, and operations without altering presentation.
 - Keep business research and investment psychology as equal product pillars.
 
 ---
@@ -48,8 +47,8 @@
 - **tailwind-merge 3.4.0** - Class merging utility
 
 ### APIs & Services
-- **googleapis 173.0.0** - Google Calendar/Meet integration
-- **resend 6.12.4** - Email service (transactional)
+- **postgres 3.4.9** - PostgreSQL booking persistence and idempotency
+- **resend 6.12.4** - Transactional email delivery
 - **@vercel/analytics 2.0.1** - Web analytics
 - **@vercel/speed-insights 2.0.0** - Performance monitoring
 
@@ -146,9 +145,9 @@ Content here...
 
 ---
 
-## Current Routing Architecture (Legacy During Migration)
+## Current Routing Architecture
 
-The routes below describe the current implementation. The target public routes and navigation are defined in [PRODUCT-DIRECTION.md](./PRODUCT-DIRECTION.md).
+The routes below are the approved current implementation. No route migration is planned.
 
 ### Static Routes
 - \/\ - Homepage
@@ -164,9 +163,9 @@ The routes below describe the current implementation. The target public routes a
 - \/frameworks/[slug]\ - Framework pages
 
 ### API Routes
-- \POST /api/booking\ - Create booking with Google Meet
-- \GET /api/booking/confirm\ - Admin approval endpoint
-- \POST /api/booking/reschedule\ - Admin reschedule
+- \POST /api/booking\ - Persist a booking and notify admin
+- \GET/POST /api/booking/confirm\ - Preview/approve and send email with `.ics`
+- \GET/POST /api/booking/reschedule\ - Load/submit reschedule suggestions
 - \POST /api/subscribe\ - Email subscription
 - \GET /api/search\ - Content search
 
@@ -221,24 +220,15 @@ The routes below describe the current implementation. The target public routes a
 
 ### Server State
 - **Content**: File system reads at build time
-- **No runtime database**: All content is static
+- **Bookings**: PostgreSQL at runtime; isolated from the static MDX content system
 
 ---
 
 ## Styling System
 
-### Target Design Tokens
+### Current Tailwind Configuration
 
-- Deep navy: authority, focus, and primary surfaces
-- Ivory: warm reading background
-- Muted gold or champagne: restrained emphasis
-- Soft sage: reflection and calm
-- Red: warnings and errors only
-- Serif for editorial authority; sans-serif for navigation, controls, and data
-
-### Current Tailwind Configuration (Legacy Tokens)
-
-The wine/crimson configuration below documents the current code only; it must not constrain the redesign.
+The existing wine/crimson configuration is the approved frontend baseline and should be preserved.
 
 \\\	ypescript
 // tailwind.config.ts
@@ -298,14 +288,14 @@ ext/font\ with preloading
 
 \\\ash
 # .env.local
+DATABASE_URL=postgresql://user:password@host/database?sslmode=require
 ADMIN_EMAIL=ngocvcsc@gmail.com
-GOOGLE_CLIENT_ID=your-client-id
-GOOGLE_CLIENT_SECRET=your-client-secret
-GOOGLE_REFRESH_TOKEN=your-refresh-token
 RESEND_API_KEY=re_xxxxx
-BOOKING_SECRET=secret-token
+BOOKING_SECRET=a-random-secret-at-least-32-characters
 SENDER_EMAIL=Athena Stock <contact@athenastock.com>
 NEXT_PUBLIC_APP_URL=https://athenastock.com
+BOOKING_ACTION_TTL_HOURS=72
+BOOKING_MEETING_LOCATION=
 \\\
 
 ### Build Commands

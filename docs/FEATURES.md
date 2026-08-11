@@ -8,11 +8,11 @@ This document details the implementation of key features in Athena Stock.
 
 ---
 
-## Redesign Priorities
+## Product Priorities
 
 - Make business understanding, decision frameworks, and investment psychology the primary journeys.
 - Preserve useful reading, search, booking, SEO, and subscription capabilities.
-- Prefer clear editorial hierarchy and restrained motion over decorative interaction.
+- Preserve the current frontend design and interaction model.
 - Add visible research freshness, sources, disclaimers, and legal trust signals.
 - Meet mobile, keyboard, contrast, reduced-motion, performance, and metadata requirements.
 
@@ -189,9 +189,9 @@ darkMode: ['class']
 
 **Components:**
 1. BookingModal - User-facing form
-2. Google Calendar API - Event creation
-3. Google Meet - Video link generation
-4. Resend - Email notifications
+2. PostgreSQL - Booking state, slot uniqueness, and retry control
+3. Resend - Admin and customer email notifications
+4. ICS generator - Provider-independent calendar invitation/cancellation
 
 **Flow:**
 
@@ -200,23 +200,23 @@ User submits form
     ↓
 POST /api/booking
     ↓
-Create tentative Calendar event + Meet link
+Persist pending booking and reserve slot
     ↓
 Email admin with approve/reschedule buttons
     ↓
 Admin clicks approve
     ↓
-GET /api/booking/confirm
+GET preview → POST /api/booking/confirm
     ↓
-Update event to "confirmed"
+Atomically claim and confirm booking
     ↓
-Email customer with Meet link
+Email customer with .ics attachment
 \\\
 
 **Security:**
-- Token-based approval (BOOKING_SECRET)
-- Event ID validation
-- Email validation
+- Signed HMAC action tokens with purpose and expiry
+- State-changing actions use POST, never GET
+- Input validation, HTML escaping, idempotency, and replay protection
 
 ---
 
@@ -232,7 +232,7 @@ Email customer with Meet link
 **Template Styling:**
 - Serene, professional design
 - Responsive HTML
-- Brand colors aligned with the target navy, ivory, champagne, and sage system; wine/crimson is legacy styling
+- Existing AthenaStock brand colors preserved
 - Clear CTAs
 
 ---

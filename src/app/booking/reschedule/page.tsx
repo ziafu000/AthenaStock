@@ -1,9 +1,10 @@
 "use client"
 
-import { Suspense, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { Calendar, Clock, CheckCircle2, AlertCircle, Plus, Trash2, ArrowRight } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 
 interface Suggestion {
     id: string
@@ -11,66 +12,86 @@ interface Suggestion {
     timeBlock: string
 }
 
+interface BookingDetails {
+    name: string
+    email: string
+    date: string
+    timeBlock: string
+}
+
+function addDaysToDateOnly(date: string, days: number) {
+    const [year, month, day] = date.split("-").map(Number)
+    const result = new Date(Date.UTC(year, month - 1, day + days))
+    return result.toISOString().slice(0, 10)
+}
+
+function createInitialSuggestions(date: string, timeBlock: string): Suggestion[] {
+    return [1, 2].map((daysToAdd, index) => {
+        return {
+            id: `s${index + 1}`,
+            date: addDaysToDateOnly(date, daysToAdd),
+            timeBlock: timeBlock || "09:00 - 10:00 (Sáng)",
+        }
+    })
+}
+
 function RescheduleContent() {
     const searchParams = useSearchParams()
     const id = searchParams.get("id") || ""
-    const name = searchParams.get("name") || "Khách hàng"
-    const email = searchParams.get("email") || ""
-    const originalDate = searchParams.get("date") || ""
-    const originalTimeBlock = searchParams.get("timeBlock") || ""
     const token = searchParams.get("token") || ""
 
+    const [accessStatus, setAccessStatus] = useState<"loading" | "valid" | "invalid">("loading")
+    const [bookingDetails, setBookingDetails] = useState<BookingDetails | null>(null)
     const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle")
     const [errorMessage, setErrorMessage] = useState("")
-    const [resendErrorDetail, setResendErrorDetail] = useState("")
+    const [suggestions, setSuggestions] = useState<Suggestion[]>([])
 
-    const [suggestions, setSuggestions] = useState<Suggestion[]>(() => {
-        if (!originalDate) return []
-        try {
-            const dateObj = new Date(originalDate)
-            const suggestionsList: Suggestion[] = []
-            
-            // Suggestion 1: Original Date + 1 Day
-            const day1 = new Date(dateObj)
-            day1.setDate(day1.getDate() + 1)
-            suggestionsList.push({
-                id: "s1",
-                date: day1.toISOString().split("T")[0],
-                timeBlock: originalTimeBlock || "09:00 - 10:00 (Sáng)",
-            })
+    const name = bookingDetails?.name || "Khách hàng"
+    const email = bookingDetails?.email || ""
+    const originalDate = bookingDetails?.date || ""
+    const originalTimeBlock = bookingDetails?.timeBlock || ""
 
-            // Suggestion 2: Original Date + 2 Days
-            const day2 = new Date(dateObj)
-            day2.setDate(day2.getDate() + 2)
-            suggestionsList.push({
-                id: "s2",
-                date: day2.toISOString().split("T")[0],
-                timeBlock: originalTimeBlock || "09:00 - 10:00 (Sáng)",
-            })
+    useEffect(() => {
+        let cancelled = false
 
-            return suggestionsList
-        } catch {
-            return []
+        async function loadBooking() {
+            if (!id || !token) {
+                setAccessStatus("invalid")
+                return
+            }
+
+            try {
+                const response = await fetch(`/api/booking/reschedule?id=${encodeURIComponent(id)}&token=${encodeURIComponent(token)}`, {
+                    cache: "no-store",
+                })
+                if (!response.ok) throw new Error("Invalid booking access")
+                const details = await response.json() as BookingDetails
+                if (cancelled) return
+
+                setBookingDetails(details)
+                setSuggestions(createInitialSuggestions(details.date, details.timeBlock))
+                setAccessStatus("valid")
+            } catch {
+                if (!cancelled) setAccessStatus("invalid")
+            }
         }
-    })
 
-    // Security token check
-    const expectedToken = "athena_secret_2026" // Safe client-side check matching booking secret
-    const isTokenValid = token === expectedToken
+        void loadBooking()
+        return () => {
+            cancelled = true
+        }
+    }, [id, token])
 
     const handleAddSuggestion = () => {
         const lastDate = suggestions.length > 0 
             ? suggestions[suggestions.length - 1].date 
-            : new Date().toISOString().split("T")[0]
-            
-        const nextDateObj = new Date(lastDate)
-        nextDateObj.setDate(nextDateObj.getDate() + 1)
+            : new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Ho_Chi_Minh" }).format(new Date())
 
         setSuggestions([
             ...suggestions,
             {
                 id: `s-${Date.now()}`,
-                date: nextDateObj.toISOString().split("T")[0],
+                date: addDaysToDateOnly(lastDate, 1),
                 timeBlock: originalTimeBlock || "09:00 - 10:00 (Sáng)",
             }
         ])
@@ -109,10 +130,6 @@ function RescheduleContent() {
                 },
                 body: JSON.stringify({
                     id,
-                    name,
-                    email,
-                    originalDate,
-                    originalTimeBlock,
                     token,
                     suggestions: suggestions.map(s => ({ date: s.date, timeBlock: s.timeBlock })),
                 }),
@@ -122,9 +139,6 @@ function RescheduleContent() {
 
             if (res.ok) {
                 setStatus("success")
-                if (data.warning) {
-                    setResendErrorDetail(data.warning)
-                }
             } else {
                 setStatus("error")
                 setErrorMessage(data.error || "Có lỗi xảy ra khi gửi đề xuất đổi lịch.")
@@ -135,7 +149,15 @@ function RescheduleContent() {
         }
     }
 
-    if (!isTokenValid) {
+    if (accessStatus === "loading") {
+        return (
+            <div className="min-h-screen bg-[#090d16] flex items-center justify-center text-white font-sans">
+                <div className="w-10 h-10 rounded-full border-2 border-white border-t-transparent animate-spin" />
+            </div>
+        )
+    }
+
+    if (accessStatus === "invalid") {
         return (
             <div className="min-h-screen bg-[#090d16] flex items-center justify-center p-4 text-white font-sans">
                 <div className="w-full max-w-md p-8 rounded-3xl border border-red-500/20 bg-red-950/[0.04] text-center space-y-4">
@@ -176,7 +198,7 @@ function RescheduleContent() {
                         <h2 className="text-3xl font-serif font-bold">Gửi đề xuất thành công!</h2>
                         
                         <div className="text-left bg-white/[0.01] border border-white/[0.04] rounded-2xl p-5 space-y-3 max-w-lg mx-auto text-sm text-[#a0a5b5]">
-                            <p>✓ Cuộc hẹn cũ của <strong className="text-white">{name}</strong> đã được xóa bỏ khỏi Google Calendar.</p>
+                            <p>✓ Cuộc hẹn cũ của <strong className="text-white">{name}</strong> đã được cập nhật trong hệ thống.</p>
                             <p>✓ Email HTML đề nghị đổi lịch đã được gửi tự động tới địa chỉ <strong className="text-white">{email}</strong>.</p>
                             <div className="pt-2 border-t border-white/[0.06] mt-2">
                                 <p className="font-semibold text-white mb-1">Các khung giờ bạn đã đề xuất:</p>
@@ -190,26 +212,13 @@ function RescheduleContent() {
                             </div>
                         </div>
 
-                        {resendErrorDetail && (
-                            <div className="max-w-lg mx-auto bg-amber-500/10 border border-amber-500/20 rounded-2xl p-4 text-left text-xs text-amber-400 space-y-2">
-                                <h4 className="font-bold flex items-center gap-1.5"><AlertCircle className="w-3.5 h-3.5" /> Lưu ý Sandbox (Nhà phát triển)</h4>
-                                <p className="leading-relaxed">
-                                    Email phản hồi chưa được chuyển thực tế tới khách hàng do API Resend đang bị giới hạn Sandbox.
-                                </p>
-                                <p className="font-mono bg-black/30 p-2 rounded border border-white/5 break-all">
-                                    Chi tiết: {resendErrorDetail}
-                                </p>
-                            </div>
-                        )}
-
                         <div className="pt-4 flex justify-center gap-4">
-                            <a 
-                                href="https://calendar.google.com" 
-                                target="_blank"
+                            <Link
+                                href="/"
                                 className="h-11 px-6 rounded-full border border-white/10 text-white font-semibold hover:bg-white/5 transition-all text-sm flex items-center justify-center"
                             >
-                                Mở Google Calendar
-                            </a>
+                                Về trang chủ
+                            </Link>
                             <button
                                 onClick={() => window.close()}
                                 className="h-11 px-8 rounded-full bg-[#9c1850] hover:bg-[#861244] text-white font-semibold active:scale-[0.98] transition-all text-sm"
@@ -367,11 +376,11 @@ function RescheduleContent() {
 
 function ReschedulePageWrapper() {
     const searchParams = useSearchParams()
-    const date = searchParams.get("date") || ""
-    const timeBlock = searchParams.get("timeBlock") || ""
+    const id = searchParams.get("id") || ""
+    const token = searchParams.get("token") || ""
 
     return (
-        <RescheduleContent key={`${date}-${timeBlock}`} />
+        <RescheduleContent key={`${id}-${token}`} />
     )
 }
 

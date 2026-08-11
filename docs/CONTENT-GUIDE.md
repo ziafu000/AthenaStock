@@ -2,7 +2,7 @@
 
 ## Overview
 
-> [PRODUCT-DIRECTION.md](./PRODUCT-DIRECTION.md) is the canonical source for positioning, audience, voice, information architecture, and visual intent.
+> [PRODUCT-DIRECTION.md](./PRODUCT-DIRECTION.md) is the canonical source for positioning, audience, voice, and content standards. The current committed frontend remains the UI/UX source of truth.
 
 AthenaStock is an Investment Thinking House. Write in a calm, deep, kind, systematic, and philosophical voice. Be direct, concise, and clear. Teach readers to understand businesses, make decisions with a framework, and manage their own psychology. Never publish tips, signals, FOMO hooks, performance promises, or guaranteed-return language.
 
