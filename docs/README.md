@@ -65,8 +65,8 @@ This directory documents AthenaStock, an **Investment Thinking House** that help
 - GET/POST /api/booking/confirm - Preview and approve a booking
 - GET/POST /api/booking/reschedule - Load and submit reschedule suggestions
 - Availability, customer respond/cancel, admin and cron-worker contracts
-- POST /api/subscribe - Email subscriptions
-- GET /api/search - Content search
+- POST + unsubscribe flow for persistent email subscriptions
+- Bounded, cached and rate-limited content search
 - Environment variables required
 - Error handling and security
 

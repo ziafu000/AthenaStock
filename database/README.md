@@ -28,7 +28,7 @@ Các cột trạng thái email cho biết email đã gửi thành công hay cầ
 
 ## Schema booking hiện tại
 
-Không sửa migration đã áp dụng. Workflow hoàn chỉnh dùng bốn migration additive sau `001`-`003`:
+Không sửa migration đã áp dụng. Workflow hoàn chỉnh dùng năm migration additive sau `001`-`003`:
 
 | Migration | Nội dung |
 |---|---|
@@ -36,6 +36,7 @@ Không sửa migration đã áp dụng. Workflow hoàn chỉnh dùng bốn migra
 | `005_booking_email_jobs.sql` | Thêm `booking_email_jobs`, unique idempotency key, retry/dead-letter fields và claim indexes |
 | `006_booking_rate_limits.sql` | Thêm counter theo time window với identifier đã HMAC/hash; không lưu raw IP |
 | `007_reserve_reschedule_slots.sql` | Giữ unique slot cho cả `confirmed` và `reschedule_requested` để không mất lịch cũ trong lúc đổi lịch |
+| `008_newsletter_subscriptions.sql` | Lưu consent/trạng thái subscription, token unsubscribe dạng hash và dùng chung email outbox |
 
 Data rules:
 
@@ -45,4 +46,4 @@ Data rules:
 - Action row lưu purpose, booking, expiry và `consumed_at`; consume phải atomic với mutation.
 - Email job được insert cùng transaction với business state. Worker claim bằng `FOR UPDATE SKIP LOCKED`; `idempotency_key` unique theo event/recipient.
 - Meeting URL được persist một lần khi confirmed và không regenerate khi email retry.
-- RLS tiếp tục bật, không có policy cho `anon`/`authenticated`; chỉ server `DATABASE_URL` truy cập booking tables.
+- RLS tiếp tục bật, không có policy cho `anon`/`authenticated`; chỉ server `DATABASE_URL` truy cập booking và subscription tables.

@@ -119,11 +119,12 @@ Thực hiện checklist này cùng deployment chứa code booking completion.
 
 ### 1. Migrations và email worker
 
-1. Chạy `004_booking_actions_and_audit.sql`, `005_booking_email_jobs.sql`, `006_booking_rate_limits.sql`, rồi `007_reserve_reschedule_slots.sql` đúng thứ tự.
+1. Chạy `004_booking_actions_and_audit.sql`, `005_booking_email_jobs.sql`, `006_booking_rate_limits.sql`, `007_reserve_reschedule_slots.sql`, rồi `008_newsletter_subscriptions.sql` đúng thứ tự.
 2. Tạo `CRON_SECRET` ngẫu nhiên tối thiểu 32 ký tự trên Vercel Production/Preview.
 3. Deploy `vercel.json` cùng route `/api/internal/booking-email-worker`; lịch `0 2 * * *` tương thích Hobby và chỉ là fallback hằng ngày vì worker đã chạy ngay sau mỗi action.
 4. Submit một booking, xác nhận job chuyển `pending -> sending -> sent`.
 5. Test Resend lỗi có kiểm soát ở preview và xác nhận `attempts`, `run_after`, `last_error` được cập nhật, không tạo job trùng.
+6. Submit một email subscription hai lần: xác nhận chỉ có một subscriber active và không có welcome email trùng; sau đó test link unsubscribe theo flow GET preview → POST.
 
 ### 2. Admin dashboard
 

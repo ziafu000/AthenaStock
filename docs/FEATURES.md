@@ -174,6 +174,8 @@ darkMode: ['class']
 - Searches title, description, tags, content
 - Case-insensitive
 - Results sorted by relevance
+- Query tối đa 80 ký tự, tối đa 20 kết quả với metadata tối thiểu
+- Shared rate limit và CDN cache
 
 **Search Algorithm:**
 1. Title match (highest priority)
@@ -242,7 +244,8 @@ See [IMPLEMENTATION-MAP.md](./IMPLEMENTATION-MAP.md) for the shipped file map an
 **Features:**
 - Welcome email with HTML template
 - Admin notification on new subscriber
-- No database (managed via Resend dashboard)
+- PostgreSQL lưu consent và trạng thái subscriber; email được gửi qua durable outbox
+- Email được deduplicate và link unsubscribe là one-time token lưu dạng hash
 
 **Template Styling:**
 - Serene, professional design

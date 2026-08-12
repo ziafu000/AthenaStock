@@ -1,6 +1,6 @@
 # AthenaStock Implementation Map
 
-Status: WS0 và WS1 hoàn tất, đã kiểm tra ngày 2026-08-12. Booking completion code đã triển khai; production còn cần chạy migration, cấu hình môi trường và smoke test.
+Status: WS0-WS2 hoàn tất trong code ngày 2026-08-12. Production còn cần chạy migration mới nhất, deploy và smoke test.
 Canonical direction: [PRODUCT-DIRECTION.md](./PRODUCT-DIRECTION.md)
 
 ## 1. Scope and release gates
@@ -80,7 +80,7 @@ Verification on 2026-08-12:
 - `npm run lint`: passed with 0 errors and 3 pre-existing warnings outside this workstream.
 - `npm run build`: production build passed; all current static content routes generated.
 
-### WS2 - Booking and API safety
+### WS2 - Booking and API safety — complete
 
 | Files | Change |
 |---|---|
@@ -88,8 +88,8 @@ Verification on 2026-08-12:
 | src/app/api/booking/confirm/route.ts | Replace state-changing GET; use signed, expiring, single-purpose, replay-safe actions |
 | src/app/api/booking/reschedule/route.ts | Validate authorization/input and make replacement atomic or recoverable |
 | src/lib/booking/* | Database access, validation, signed action tokens, safe HTML, email, and ICS generation |
-| database/migrations/* | Booking schema, slot uniqueness, delivery state, and audit timestamps |
-| src/app/api/subscribe/route.ts | Validate/deduplicate email; record consent; define persistence, unsubscribe, and rate limits |
+| database/migrations/* | Booking/subscription schema, slot uniqueness, delivery state, consent, and audit timestamps |
+| src/app/api/subscribe/*, src/lib/subscriptions.ts | Validate/deduplicate email; persist consent; add one-time unsubscribe and rate limits |
 | src/app/api/search/route.ts | Bound queries/results, avoid returning excessive content, add cache/rate controls |
 | docs/DEPLOYMENT.md | Document required secrets and fail-closed behavior without real values |
 | docs/API-ROUTES.md | Maintain API contracts, threat model, status codes, and setup |
@@ -97,10 +97,12 @@ Verification on 2026-08-12:
 
 Acceptance:
 
-- Privileged flows fail closed when configuration is missing.
-- Admin actions expire, cannot be replayed, and do not mutate state via GET.
-- No raw user or provider error is interpolated into HTML.
-- Booking can use an approved provider-independent design without changing the existing modal UI.
+- [x] Privileged flows fail closed when configuration is missing.
+- [x] Admin actions expire, cannot be replayed, and do not mutate state via public GET routes.
+- [x] No raw user or provider error is interpolated into HTML.
+- [x] Booking uses a provider-independent database/email/ICS design without changing the existing modal UI.
+- [x] Subscription consent, deduplication, one-time unsubscribe and email delivery use PostgreSQL/outbox.
+- [x] Search query/result bounds, minimal response fields, shared rate limits and cache headers are enforced.
 
 ### WS3 - Tests, SEO correctness, and release safety
 
@@ -160,7 +162,7 @@ Phần này là source of truth cho booking hiện tại. Phần triển khai ch
 - Slot của `confirmed` và `reschedule_requested` không xuất hiện là khả dụng. Request `pending` không giữ slot; nhiều khách vẫn có thể cùng yêu cầu cho tới khi một request được xác nhận.
 - `POST /api/booking` và mọi action xác nhận phải kiểm tra lại slot trong transaction; availability phía client chỉ là UX, không phải khóa dữ liệu.
 - Ngày sớm nhất là ngày mai theo `Asia/Ho_Chi_Minh` ở cả client và server.
-- GET chỉ đọc/preview. Confirm, reschedule, cancel, login và retry đều thay đổi state bằng POST.
+- Public GET chỉ đọc/preview. Confirm, reschedule, cancel và login đều thay đổi state bằng POST. Route worker nội bộ vẫn nhận GET có `CRON_SECRET` vì đó là contract bắt buộc của Vercel Cron; POST dùng cho kích hoạt thủ công.
 - Token cho action nhạy cảm có purpose, expiry và bản ghi one-time-use trong database.
 - Email nghiệp vụ được enqueue cùng transaction với thay đổi booking, rồi worker gửi và retry; request người dùng không chờ Resend.
 - Không xóa booking khi cancel; giữ audit trail và phát hành `.ics` cancellation nếu booking từng được xác nhận.
@@ -172,7 +174,7 @@ Phần này là source of truth cho booking hiện tại. Phần triển khai ch
 | Workstream | Shipped files | Result |
 |---|---|---|
 | B0 - policy | `policy.ts`, `types.ts`, `validation.ts`, `BookingModal.tsx` | Một timezone, sáu slot và ngày tối thiểu là ngày mai ở client/server |
-| B1 - workflow | migrations `004`-`007`, `db.ts`, `database.ts`, `actions.ts`, `outbox.ts`, `email-worker.ts`, `vercel.json` | Action token hash-at-rest, transaction, email outbox, retry/dead-letter và giữ slot cũ khi reschedule |
+| B1 - workflow | migrations `004`-`008`, `db.ts`, `database.ts`, `actions.ts`, `outbox.ts`, `email-worker.ts`, `vercel.json` | Action token hash-at-rest, transaction, email outbox, retry/dead-letter và giữ slot cũ khi reschedule |
 | B2 - availability | `/api/booking/availability`, `BookingModal.tsx` | Disable slot đã giữ; transaction vẫn chặn race bằng `409` |
 | B3 - admin | `admin-auth.ts`, `/api/admin/auth/*`, `/api/admin/session`, `/api/admin/bookings*`, `/admin/bookings` | Magic-link session và danh sách/filter/cancel booking |
 | B4 - self-service | `/api/booking/reschedule`, `/api/booking/respond`, `/booking/respond`, `/api/booking/cancel`, `/booking/cancel` | Khách chọn slot mới hoặc hủy qua explicit POST; email dùng `.ics` REQUEST/CANCEL |

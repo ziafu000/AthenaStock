@@ -166,8 +166,8 @@ The routes below are the approved current implementation. No route migration is 
 - \POST /api/booking\ - Persist a booking and notify admin
 - \GET/POST /api/booking/confirm\ - Preview/approve and send email with `.ics`
 - `GET/POST /api/booking/reschedule` - Load/submit reschedule suggestions
-- \POST /api/subscribe\ - Email subscription
-- \GET /api/search\ - Content search
+- `POST /api/subscribe` và `GET/POST /api/subscribe/unsubscribe` - Persistent consent, deduplication và one-time unsubscribe
+- `GET /api/search` - Bounded, cached và rate-limited content search
 
 ---
 

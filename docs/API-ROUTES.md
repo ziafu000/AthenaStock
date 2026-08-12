@@ -72,10 +72,12 @@ Production bắt buộc Turnstile. Route rate-limit theo IP và email, recheck s
 
 `GET|POST /api/internal/booking-email-worker` yêu cầu `Authorization: Bearer <CRON_SECRET>` ở production. Worker claim tối đa 25 job bằng `FOR UPDATE SKIP LOCKED`, retry exponential backoff và chuyển `dead` khi hết attempts. Mỗi thao tác booking đều kích hoạt worker ngay sau response; `vercel.json` chạy thêm một lần/ngày (`02:00 UTC`, thời gian thực tế có thể lệch trong một giờ trên Vercel Hobby) làm fallback cho job lỗi.
 
-## Các route khác
+## Subscription và search
 
-- `POST /api/subscribe`: email subscription qua Resend.
-- `GET /api/search?q=keyword`: tìm kiếm content MDX.
+- `POST /api/subscribe`: validate email, rate-limit theo IP/email, persist consent trong PostgreSQL và enqueue email chào mừng/admin notification. Subscriber đang active trả `200` và không tạo email trùng; subscriber mới hoặc được kích hoạt lại trả `201`.
+- `GET /api/subscribe/unsubscribe?token=...`: preview form, không đổi state.
+- `POST /api/subscribe/unsubscribe`: consume token một lần và chuyển subscription sang `unsubscribed`.
+- `GET /api/search?q=keyword`: query tối đa 80 ký tự, trả tối đa 20 kết quả với metadata tối thiểu; có shared rate limit và CDN cache.
 
 ## Mã trạng thái chính
 
@@ -88,7 +90,7 @@ Production bắt buộc Turnstile. Route rate-limit theo IP và email, recheck s
 | `429` | Vượt rate limit |
 | `503` | Database/cấu hình tạm thời không sẵn sàng |
 
-Action token là opaque random secret; database chỉ lưu hash, purpose, expiry và `consumed_at`. GET chỉ preview; mutation dùng POST. Raw provider error không được trả cho client.
+Action token là opaque random secret; database chỉ lưu hash, purpose, expiry và `consumed_at`. Public GET chỉ preview; mutation dùng POST. Worker nội bộ là ngoại lệ có xác thực vì Vercel Cron gọi bằng GET. Raw provider error không được trả cho client.
 
 ## Biến môi trường
 

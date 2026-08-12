@@ -15,7 +15,6 @@ interface AdminSessionPayload {
 
 function secret() {
     const value = process.env.ADMIN_SESSION_SECRET
-        || (process.env.NODE_ENV !== "production" ? process.env.BOOKING_SECRET : undefined)
     if (!value) throw new Error("Thiếu ADMIN_SESSION_SECRET.")
     return value
 }

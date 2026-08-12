@@ -70,6 +70,24 @@ async function buildEmail(job: EmailJobRecord): Promise<CreateEmailOptions> {
         }
     }
 
+    if (job.kind === "newsletter_welcome") {
+        return {
+            from: senderEmail,
+            to: job.recipient,
+            subject: "Chào mừng bạn đến với bản tin Athena Stock",
+            html: layout(`<h2>Chào bạn,</h2><p>Cảm ơn bạn đã đăng ký nhận bài viết mới từ Athena Stock.</p><p>Chúng tôi chỉ gửi nội dung liên quan đến đầu tư giá trị, phân tích doanh nghiệp và tâm lý tài chính.</p><p style="text-align:center">${linkButton(job.payload.homeUrl, "Ghé thăm Athena Stock")}</p><p style="font-size:12px;color:#666">Bạn có thể hủy đăng ký bất cứ lúc nào: ${linkButton(job.payload.unsubscribeUrl, "Hủy đăng ký")}</p>`),
+        }
+    }
+
+    if (job.kind === "newsletter_admin") {
+        return {
+            from: senderEmail,
+            to: job.recipient,
+            subject: "[Athena Stock] Có độc giả mới đăng ký nhận bài viết",
+            html: layout(`<h2>Đăng ký bản tin mới</h2><p>Email: <strong>${escapeHtml(typeof job.payload.subscriberEmail === "string" ? job.payload.subscriberEmail : "Không xác định")}</strong></p>`),
+        }
+    }
+
     if (!job.bookingId) throw new Error(`Email job ${job.kind} thiếu booking_id.`)
     const booking = await getBooking(job.bookingId)
     if (!booking) throw new Error(`Không tìm thấy booking ${job.bookingId}.`)
