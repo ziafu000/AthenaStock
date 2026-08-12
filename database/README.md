@@ -20,7 +20,29 @@ Migration có thể chạy lại an toàn. Không chỉnh sửa migration đã �
 ## Trạng thái chính
 
 - `pending`: yêu cầu mới, chờ quản trị viên duyệt; nhiều khách hàng có thể cùng yêu cầu một khung giờ.
-- `confirmed`: quản trị viên đã giữ slot cho yêu cầu này; mỗi slot chỉ có một booking `confirmed`.
-- `reschedule_requested`: khách đã gửi đề xuất đổi lịch.
+- `confirmed`: lịch đã được xác nhận và giữ slot.
+- `reschedule_requested`: admin đã gửi đề xuất đổi lịch; slot cũ vẫn được giữ tới khi khách chọn lịch mới hoặc booking bị hủy.
+- `cancelled`: booking đã hủy nhưng record/audit vẫn được giữ.
 
 Các cột trạng thái email cho biết email đã gửi thành công hay cần retry; trạng thái booking và trạng thái email được theo dõi độc lập để không xác nhận trùng slot khi provider email lỗi.
+
+## Schema booking hiện tại
+
+Không sửa migration đã áp dụng. Workflow hoàn chỉnh dùng bốn migration additive sau `001`-`003`:
+
+| Migration | Nội dung |
+|---|---|
+| `004_booking_actions_and_audit.sql` | Thêm cancellation/audit/meeting fields và bảng `booking_actions` cho token expiring, single-purpose, one-time-use |
+| `005_booking_email_jobs.sql` | Thêm `booking_email_jobs`, unique idempotency key, retry/dead-letter fields và claim indexes |
+| `006_booking_rate_limits.sql` | Thêm counter theo time window với identifier đã HMAC/hash; không lưu raw IP |
+| `007_reserve_reschedule_slots.sql` | Giữ unique slot cho cả `confirmed` và `reschedule_requested` để không mất lịch cũ trong lúc đổi lịch |
+
+Data rules:
+
+- `confirmed` và `reschedule_requested` giữ slot; `pending` không giữ slot.
+- Availability đọc cả hai trạng thái giữ slot; mọi mutation vẫn kiểm tra lại dưới transaction/unique index.
+- Cancel là state transition có audit, không phải delete.
+- Action row lưu purpose, booking, expiry và `consumed_at`; consume phải atomic với mutation.
+- Email job được insert cùng transaction với business state. Worker claim bằng `FOR UPDATE SKIP LOCKED`; `idempotency_key` unique theo event/recipient.
+- Meeting URL được persist một lần khi confirmed và không regenerate khi email retry.
+- RLS tiếp tục bật, không có policy cho `anon`/`authenticated`; chỉ server `DATABASE_URL` truy cập booking tables.

@@ -165,9 +165,51 @@ The routes below are the approved current implementation. No route migration is 
 ### API Routes
 - \POST /api/booking\ - Persist a booking and notify admin
 - \GET/POST /api/booking/confirm\ - Preview/approve and send email with `.ics`
-- \GET/POST /api/booking/reschedule\ - Load/submit reschedule suggestions
+- `GET/POST /api/booking/reschedule` - Load/submit reschedule suggestions
 - \POST /api/subscribe\ - Email subscription
 - \GET /api/search\ - Content search
+
+---
+
+## Booking Workflow Architecture
+
+Status: implemented; production activation requires migrations and environment configuration in [DEPLOYMENT.md](./DEPLOYMENT.md).
+
+```text
+Public modal / customer action / admin dashboard
+                    |
+          authenticated API contracts
+                    |
+       PostgreSQL transaction boundary
+       | booking state | one-time action |
+       | slot lock     | email outbox    |
+                    |
+        cron worker claims email jobs
+                    |
+                  Resend
+```
+
+Architectural rules:
+
+- PostgreSQL owns availability, booking state, idempotency, action consumption and delivery jobs.
+- `pending` requests do not reserve a slot; `confirmed` and `reschedule_requested` keep the current slot unavailable.
+- Availability is read-only UX assistance. Every state transition rechecks the slot atomically.
+- Business state and email jobs are written in the same transaction. Resend is called by a retryable worker, not on the critical request path.
+- Admin access uses a one-time magic link and signed HttpOnly session; booking data is never exposed through a public Supabase policy.
+- Customer reschedule/cancel links are expiring, single-purpose and one-time-use.
+- Meeting URLs are generated through a provider adapter only when a booking becomes confirmed, then persisted for deterministic retries and `.ics` output.
+- Cloudflare Turnstile and PostgreSQL-backed hashed rate counters protect public mutations without storing raw IP addresses.
+
+Implemented routes:
+
+- `GET /api/booking/availability` - public safe slot flags for one date.
+- `GET/POST /api/booking/respond` - customer preview and atomic selection of an offered slot.
+- `GET/POST /api/booking/cancel` - safe preview and explicit cancellation.
+- `POST /api/admin/auth/request` and `GET/POST /api/admin/auth/verify` - single-admin passwordless session; GET only previews.
+- `GET /api/admin/bookings` and `/admin/bookings` - protected operational listing.
+- `GET/POST /api/internal/booking-email-worker` - cron-protected outbox worker.
+
+No public navigation, page layout or visual-system migration is part of this target.
 
 ---
 

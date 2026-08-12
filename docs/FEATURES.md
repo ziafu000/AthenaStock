@@ -214,9 +214,24 @@ Email customer with .ics attachment
 \\\
 
 **Security:**
-- Signed HMAC action tokens with purpose and expiry
+- Opaque one-time action tokens; chỉ hash của secret được lưu trong PostgreSQL
 - State-changing actions use POST, never GET
 - Input validation, HTML escaping, idempotency, and replay protection
+
+### Approved booking completion milestone
+
+Status: implemented in code; production activation requires migrations and environment configuration. The existing public frontend remains the visual baseline.
+
+- Availability API disables slots held by `confirmed` and `reschedule_requested`; the server still rechecks races.
+- Client and server both require at least tomorrow in `Asia/Ho_Chi_Minh`.
+- Admin receives a protected bookings dashboard with filters and operational actions.
+- Reschedule email lets the customer select and confirm one proposed slot directly.
+- Customer/admin can cancel through an explicit POST flow; confirmed events receive `.ics` cancellation.
+- A PostgreSQL email outbox decouples requests from Resend and retries failed deliveries safely.
+- Cloudflare Turnstile plus database-backed rate limits protect public mutation endpoints.
+- A meeting-provider adapter creates and persists a unique room only after confirmation.
+
+See [IMPLEMENTATION-MAP.md](./IMPLEMENTATION-MAP.md) for the shipped file map and release gaps, [API-ROUTES.md](./API-ROUTES.md) for current contracts, and [DEPLOYMENT.md](./DEPLOYMENT.md) for manual activation.
 
 ---
 

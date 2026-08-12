@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation"
 import { Calendar, Clock, CheckCircle2, AlertCircle, Plus, Trash2, ArrowRight } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
+import { minimumBookingDate, TIME_BLOCKS } from "@/lib/booking/policy"
 
 interface Suggestion {
     id: string
@@ -37,7 +38,6 @@ function createInitialSuggestions(date: string, timeBlock: string): Suggestion[]
 
 function RescheduleContent() {
     const searchParams = useSearchParams()
-    const id = searchParams.get("id") || ""
     const token = searchParams.get("token") || ""
 
     const [accessStatus, setAccessStatus] = useState<"loading" | "valid" | "invalid">("loading")
@@ -55,13 +55,13 @@ function RescheduleContent() {
         let cancelled = false
 
         async function loadBooking() {
-            if (!id || !token) {
+            if (!token) {
                 setAccessStatus("invalid")
                 return
             }
 
             try {
-                const response = await fetch(`/api/booking/reschedule?id=${encodeURIComponent(id)}&token=${encodeURIComponent(token)}`, {
+                const response = await fetch(`/api/booking/reschedule?token=${encodeURIComponent(token)}`, {
                     cache: "no-store",
                 })
                 if (!response.ok) throw new Error("Invalid booking access")
@@ -80,7 +80,7 @@ function RescheduleContent() {
         return () => {
             cancelled = true
         }
-    }, [id, token])
+    }, [token])
 
     const handleAddSuggestion = () => {
         const lastDate = suggestions.length > 0 
@@ -129,7 +129,6 @@ function RescheduleContent() {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    id,
                     token,
                     suggestions: suggestions.map(s => ({ date: s.date, timeBlock: s.timeBlock })),
                 }),
@@ -198,8 +197,8 @@ function RescheduleContent() {
                         <h2 className="text-3xl font-serif font-bold">Gửi đề xuất thành công!</h2>
                         
                         <div className="text-left bg-white/[0.01] border border-white/[0.04] rounded-2xl p-5 space-y-3 max-w-lg mx-auto text-sm text-[#a0a5b5]">
-                            <p>✓ Cuộc hẹn cũ của <strong className="text-white">{name}</strong> đã được cập nhật trong hệ thống.</p>
-                            <p>✓ Email HTML đề nghị đổi lịch đã được gửi tự động tới địa chỉ <strong className="text-white">{email}</strong>.</p>
+                            <p>✓ Đề xuất đổi lịch cho <strong className="text-white">{name}</strong> đã được lưu.</p>
+                            <p>✓ Khách hàng sẽ nhận email tại <strong className="text-white">{email}</strong> để trực tiếp chọn và xác nhận lịch mới.</p>
                             <div className="pt-2 border-t border-white/[0.06] mt-2">
                                 <p className="font-semibold text-white mb-1">Các khung giờ bạn đã đề xuất:</p>
                                 <ul className="list-disc pl-5 space-y-1">
@@ -312,6 +311,7 @@ function RescheduleContent() {
                                                         <input
                                                             type="date"
                                                             required
+                                                            min={minimumBookingDate()}
                                                             value={s.date}
                                                             onChange={(e) => handleUpdateSuggestion(s.id, "date", e.target.value)}
                                                             className="w-full rounded-lg border border-white/[0.08] bg-white/[0.02] px-2.5 py-1.5 text-xs text-white focus:border-[#e61c5c]/50 focus:outline-none transition-all dark:scheme-dark"
@@ -324,12 +324,9 @@ function RescheduleContent() {
                                                             onChange={(e) => handleUpdateSuggestion(s.id, "timeBlock", e.target.value)}
                                                             className="w-full rounded-lg border border-white/[0.08] bg-white/[0.02] px-2.5 py-1.5 text-xs text-white focus:border-[#e61c5c]/50 focus:outline-none transition-all select-dark"
                                                         >
-                                                            <option className="text-black" value="09:00 - 10:00 (Sáng)">09:00 - 10:00 (Sáng)</option>
-                                                            <option className="text-black" value="10:00 - 11:00 (Sáng)">10:00 - 11:00 (Sáng)</option>
-                                                            <option className="text-black" value="14:00 - 15:00 (Chiều)">14:00 - 15:00 (Chiều)</option>
-                                                            <option className="text-black" value="15:00 - 16:00 (Chiều)">15:00 - 16:00 (Chiều)</option>
-                                                            <option className="text-black" value="16:00 - 17:00 (Chiều)">16:00 - 17:00 (Chiều)</option>
-                                                            <option className="text-black" value="19:30 - 20:30 (Tối)">19:30 - 20:30 (Tối)</option>
+                                                            {Object.keys(TIME_BLOCKS).map((timeBlock) => (
+                                                                <option className="text-black" key={timeBlock} value={timeBlock}>{timeBlock}</option>
+                                                            ))}
                                                         </select>
                                                     </div>
                                                 </div>
@@ -376,11 +373,10 @@ function RescheduleContent() {
 
 function ReschedulePageWrapper() {
     const searchParams = useSearchParams()
-    const id = searchParams.get("id") || ""
     const token = searchParams.get("token") || ""
 
     return (
-        <RescheduleContent key={`${id}-${token}`} />
+        <RescheduleContent key={token} />
     )
 }
 

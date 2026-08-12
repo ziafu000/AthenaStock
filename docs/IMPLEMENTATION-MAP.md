@@ -1,6 +1,6 @@
 # AthenaStock Implementation Map
 
-Status: WS2 database + email + ICS implementation landed; remaining gates still apply
+Status: Booking completion code đã triển khai; production còn cần chạy migration, cấu hình môi trường và smoke test.
 Canonical direction: [PRODUCT-DIRECTION.md](./PRODUCT-DIRECTION.md)
 
 ## 1. Scope and release gates
@@ -141,3 +141,39 @@ Do not combine content migration, security work, and any frontend-touching fix i
 - Existing routes and links work; no route migration is introduced.
 - Lint, typecheck, build, content validation, route tests, and API failure-path tests pass.
 - Documentation describes the shipped system and records approved deviations.
+
+## 6. Booking completion target
+
+Phần này là source of truth cho booking hiện tại. Phần triển khai chỉ bổ sung UI cần thiết cho booking và không redesign frontend công khai.
+
+### Invariants
+
+- PostgreSQL là nguồn sự thật duy nhất cho slot, trạng thái booking, action một lần và email job.
+- Slot của `confirmed` và `reschedule_requested` không xuất hiện là khả dụng. Request `pending` không giữ slot; nhiều khách vẫn có thể cùng yêu cầu cho tới khi một request được xác nhận.
+- `POST /api/booking` và mọi action xác nhận phải kiểm tra lại slot trong transaction; availability phía client chỉ là UX, không phải khóa dữ liệu.
+- Ngày sớm nhất là ngày mai theo `Asia/Ho_Chi_Minh` ở cả client và server.
+- GET chỉ đọc/preview. Confirm, reschedule, cancel, login và retry đều thay đổi state bằng POST.
+- Token cho action nhạy cảm có purpose, expiry và bản ghi one-time-use trong database.
+- Email nghiệp vụ được enqueue cùng transaction với thay đổi booking, rồi worker gửi và retry; request người dùng không chờ Resend.
+- Không xóa booking khi cancel; giữ audit trail và phát hành `.ics` cancellation nếu booking từng được xác nhận.
+- Link phòng họp chỉ được tạo khi slot được xác nhận, lưu một lần trong database và tái sử dụng khi retry.
+- Public UI chỉ nhận thay đổi tối thiểu trong modal booking: trạng thái tải slot, disable slot hết chỗ, CAPTCHA và thông báo conflict.
+
+## 7. Booking workstreams and file map
+
+| Workstream | Shipped files | Result |
+|---|---|---|
+| B0 - policy | `policy.ts`, `types.ts`, `validation.ts`, `BookingModal.tsx` | Một timezone, sáu slot và ngày tối thiểu là ngày mai ở client/server |
+| B1 - workflow | migrations `004`-`007`, `db.ts`, `database.ts`, `actions.ts`, `outbox.ts`, `email-worker.ts`, `vercel.json` | Action token hash-at-rest, transaction, email outbox, retry/dead-letter và giữ slot cũ khi reschedule |
+| B2 - availability | `/api/booking/availability`, `BookingModal.tsx` | Disable slot đã giữ; transaction vẫn chặn race bằng `409` |
+| B3 - admin | `admin-auth.ts`, `/api/admin/auth/*`, `/api/admin/session`, `/api/admin/bookings*`, `/admin/bookings` | Magic-link session và danh sách/filter/cancel booking |
+| B4 - self-service | `/api/booking/reschedule`, `/api/booking/respond`, `/booking/respond`, `/api/booking/cancel`, `/booking/cancel` | Khách chọn slot mới hoặc hủy qua explicit POST; email dùng `.ics` REQUEST/CANCEL |
+| B5 - abuse controls | migration `006`, `rate-limit.ts`, `captcha.ts`, `TurnstileWidget.tsx` | Rate limit không lưu IP thô và Turnstile fail-closed ở production |
+| B6 - meeting | `meeting.ts`, confirm/respond transitions | Tạo một room URL khi confirmed, persist và tái sử dụng khi retry |
+| B7 - operations | `API-ROUTES.md`, `DEPLOYMENT.md`, `database/README.md` | Hướng dẫn migration, env, cron, rollback và smoke test |
+
+### Release status
+
+- Typecheck, lint và production build là gate bắt buộc trước khi commit/deploy.
+- Automated database-concurrency và browser E2E suite chưa được bổ sung; phải chạy production smoke test trong `DEPLOYMENT.md` sau khi cấu hình Supabase/Vercel/Turnstile.
+- Migrations là additive/forward-only. Khi rollback code, không xóa migration đã áp dụng hoặc lịch sử booking.

@@ -1,8 +1,13 @@
 "use client"
 
-import { Suspense, useState, useEffect } from "react"
+import { Suspense, useCallback, useState, useEffect } from "react"
 import { useSearchParams, useRouter, usePathname } from "next/navigation"
 import { X, Calendar, Clock, CheckCircle2, AlertCircle } from "lucide-react"
+import { TurnstileWidget } from "@/components/booking/TurnstileWidget"
+import { TIME_BLOCKS } from "@/lib/booking/policy"
+
+const timeBlocks = Object.keys(TIME_BLOCKS)
+const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
 
 const vietnamDateFormatter = new Intl.DateTimeFormat("en-CA", {
     timeZone: "Asia/Ho_Chi_Minh",
@@ -27,11 +32,16 @@ function BookingModalContent() {
     const [email, setEmail] = useState("")
     const [phone, setPhone] = useState("")
     const [date, setDate] = useState("")
-    const [timeBlock, setTimeBlock] = useState("09:00 - 10:00 (Sáng)")
+    const [timeBlock, setTimeBlock] = useState(timeBlocks[0])
+    const [unavailable, setUnavailable] = useState<string[]>([])
+    const [availabilityStatus, setAvailabilityStatus] = useState<"idle" | "loading" | "error">("idle")
+    const [captchaToken, setCaptchaToken] = useState("")
+    const [captchaResetKey, setCaptchaResetKey] = useState(0)
     const [message, setMessage] = useState("")
     const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle")
     const [errorMessage, setErrorMessage] = useState("")
     const [minDate] = useState(() => addDaysToDateOnly(vietnamDateFormatter.format(new Date()), 1))
+    const handleCaptchaToken = useCallback((token: string) => setCaptchaToken(token), [])
 
     useEffect(() => {
         if (isOpen) {
@@ -44,6 +54,33 @@ function BookingModalContent() {
         }
     }, [isOpen])
 
+    useEffect(() => {
+        if (!date) return
+
+        const controller = new AbortController()
+        fetch(`/api/booking/availability?date=${encodeURIComponent(date)}`, {
+            cache: "no-store",
+            signal: controller.signal,
+        })
+            .then(async (response) => {
+                const data = await response.json() as { unavailable?: string[]; error?: string }
+                if (!response.ok) throw new Error(data.error || "Không thể tải lịch trống.")
+                const blocked = data.unavailable || []
+                setUnavailable(blocked)
+                setTimeBlock((current) => blocked.includes(current)
+                    ? timeBlocks.find((item) => !blocked.includes(item)) || current
+                    : current)
+                setAvailabilityStatus("idle")
+            })
+            .catch((error: unknown) => {
+                if (error instanceof DOMException && error.name === "AbortError") return
+                setUnavailable([])
+                setAvailabilityStatus("error")
+            })
+
+        return () => controller.abort()
+    }, [date])
+
     const handleClose = () => {
         const params = new URLSearchParams(searchParams.toString())
         params.delete("booking")
@@ -54,7 +91,11 @@ function BookingModalContent() {
         setEmail("")
         setPhone("")
         setDate("")
-        setTimeBlock("09:00 - 10:00 (Sáng)")
+        setTimeBlock(timeBlocks[0])
+        setUnavailable([])
+        setAvailabilityStatus("idle")
+        setCaptchaToken("")
+        setCaptchaResetKey((value) => value + 1)
         setMessage("")
         setStatus("idle")
     }
@@ -76,6 +117,7 @@ function BookingModalContent() {
                     date,
                     timeBlock,
                     message,
+                    captchaToken,
                 }),
             })
 
@@ -86,10 +128,14 @@ function BookingModalContent() {
             } else {
                 setStatus("error")
                 setErrorMessage(data.error || "Có lỗi xảy ra khi đặt lịch.")
+                setCaptchaToken("")
+                setCaptchaResetKey((value) => value + 1)
             }
         } catch {
             setStatus("error")
             setErrorMessage("Không thể kết nối đến máy chủ. Vui lòng thử lại sau.")
+            setCaptchaToken("")
+            setCaptchaResetKey((value) => value + 1)
         }
     }
 
@@ -197,7 +243,12 @@ function BookingModalContent() {
                                         required
                                         min={minDate}
                                         value={date}
-                                        onChange={(e) => setDate(e.target.value)}
+                                        onChange={(e) => {
+                                            const nextDate = e.target.value
+                                            setDate(nextDate)
+                                            setUnavailable([])
+                                            setAvailabilityStatus(nextDate ? "loading" : "idle")
+                                        }}
                                         className="w-full rounded-xl border border-white/[0.08] bg-white/[0.02] px-4 py-2.5 text-white placeholder-muted-foreground/60 focus:border-[#e61c5c]/50 focus:outline-none transition-all dark:scheme-dark"
                                     />
                                 </div>
@@ -208,15 +259,18 @@ function BookingModalContent() {
                                     <select
                                         value={timeBlock}
                                         onChange={(e) => setTimeBlock(e.target.value)}
+                                        disabled={!date || availabilityStatus === "loading"}
                                         className="w-full rounded-xl border border-white/[0.08] bg-white/[0.02] px-4 py-2.5 text-white focus:border-[#e61c5c]/50 focus:outline-none transition-all select-dark"
                                     >
-                                        <option className="text-black" value="09:00 - 10:00 (Sáng)">09:00 - 10:00 (Sáng)</option>
-                                        <option className="text-black" value="10:00 - 11:00 (Sáng)">10:00 - 11:00 (Sáng)</option>
-                                        <option className="text-black" value="14:00 - 15:00 (Chiều)">14:00 - 15:00 (Chiều)</option>
-                                        <option className="text-black" value="15:00 - 16:00 (Chiều)">15:00 - 16:00 (Chiều)</option>
-                                        <option className="text-black" value="16:00 - 17:00 (Chiều)">16:00 - 17:00 (Chiều)</option>
-                                        <option className="text-black" value="19:30 - 20:30 (Tối)">19:30 - 20:30 (Tối)</option>
+                                        {timeBlocks.map((block) => (
+                                            <option key={block} className="text-black" value={block} disabled={unavailable.includes(block)}>
+                                                {block}{unavailable.includes(block) ? " — Đã có người đặt" : ""}
+                                            </option>
+                                        ))}
                                     </select>
+                                    {availabilityStatus === "loading" && <p className="text-[10px] text-muted-foreground">Đang kiểm tra lịch trống...</p>}
+                                    {availabilityStatus === "error" && <p className="text-[10px] text-red-400">Không tải được lịch trống. Vui lòng thử lại.</p>}
+                                    {date && unavailable.length === timeBlocks.length && <p className="text-[10px] text-red-400">Ngày này đã hết khung giờ.</p>}
                                 </div>
                             </div>
 
@@ -231,10 +285,21 @@ function BookingModalContent() {
                                 />
                             </div>
 
+                            <TurnstileWidget
+                                siteKey={turnstileSiteKey}
+                                onToken={handleCaptchaToken}
+                                resetKey={captchaResetKey}
+                            />
+
                             <div className="pt-4">
                                 <button
                                     type="submit"
-                                    disabled={status === "submitting"}
+                                    disabled={status === "submitting"
+                                        || availabilityStatus === "loading"
+                                        || unavailable.includes(timeBlock)
+                                        || unavailable.length === timeBlocks.length
+                                        || (process.env.NODE_ENV === "production" && !turnstileSiteKey)
+                                        || Boolean(turnstileSiteKey && !captchaToken)}
                                     className="w-full h-12 rounded-full bg-[#9c1850] hover:bg-[#861244] text-white font-semibold shadow-md active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                                 >
                                     {status === "submitting" ? (

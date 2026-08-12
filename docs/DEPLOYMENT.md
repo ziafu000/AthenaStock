@@ -13,7 +13,7 @@ Release phải giữ nguyên frontend hiện tại và cấu hình đầy đủ 
 
 1. Tạo Supabase project và lấy URI **Transaction Pooler** (port `6543`) có `sslmode=require` cho app/Vercel.
 2. Chạy lần lượt mọi file trong [`database/migrations/`](../database/migrations/) theo thứ tự tên (`001`, `002`, `003`, ...).
-3. Xác nhận bảng `bookings`, RLS và hai partial unique index `bookings_customer_active_start_at_idx`, `bookings_confirmed_start_at_idx` đã có.
+3. Xác nhận các bảng `bookings`, `booking_actions`, `booking_email_jobs`, `booking_rate_limits`, RLS và partial unique index `bookings_reserved_start_at_idx` đã có.
 
 Với production đã chạy migration `001` cũ: deploy code tương thích trước, sau đó chạy `003_allow_competing_booking_requests.sql`. Migration này cho phép nhiều request `pending` cùng slot nhưng chỉ một request được `confirmed`.
 
@@ -36,13 +36,23 @@ ADMIN_EMAIL=admin@example.com
 SENDER_EMAIL=Athena Stock <booking@example.com>
 NEXT_PUBLIC_APP_URL=https://yourdomain.com
 BOOKING_SECRET=a-random-secret-at-least-32-characters
+ADMIN_SESSION_SECRET=a-separate-random-secret-at-least-32-characters
+CRON_SECRET=a-random-cron-secret-at-least-32-characters
 BOOKING_ACTION_TTL_HOURS=72
+NEXT_PUBLIC_TURNSTILE_SITE_KEY=...
+TURNSTILE_SECRET_KEY=...
+BOOKING_CAPTCHA_DISABLED=false
+BOOKING_MEETING_PROVIDER=jitsi
+BOOKING_MEETING_URL_BASE=https://meet.jit.si
 BOOKING_MEETING_LOCATION=
 ```
 
 - Sinh `BOOKING_SECRET` ngẫu nhiên, tối thiểu 32 ký tự; không dùng giá trị mẫu.
 - `NEXT_PUBLIC_APP_URL` phải là origin production để link trong email đúng host.
-- `BOOKING_MEETING_LOCATION` là tùy chọn; có thể là địa chỉ hoặc link phòng họp tự quản lý.
+- `ADMIN_SESSION_SECRET` phải tách khỏi `BOOKING_SECRET`; rotate secret này chỉ đăng xuất session admin.
+- `CRON_SECRET` bảo vệ email worker; Vercel Cron tự gửi secret này qua Bearer header.
+- Hai Turnstile key bắt buộc ở production. `BOOKING_CAPTCHA_DISABLED=true` chỉ dùng local.
+- `BOOKING_MEETING_LOCATION` là override tùy chọn; để trống để tạo Jitsi room riêng.
 - Dùng database và API key riêng cho preview/production.
 - Không đưa database password hoặc Supabase service key vào biến `NEXT_PUBLIC_*`.
 
@@ -73,6 +83,11 @@ npm run build
 - [ ] Reload/replay không gửi trùng email
 - [ ] Token sai và token hết hạn bị từ chối
 - [ ] Slot trùng trả lỗi rõ ràng
+- [ ] Slot đã giữ bị disable trước submit; server vẫn trả `409` khi có race
+- [ ] `/admin/bookings` chỉ mở sau magic-link POST confirmation
+- [ ] Customer reschedule/cancel dùng được và token không replay được
+- [ ] Cron chuyển email job `pending/retry -> sent` hoặc `dead`
+- [ ] Production từ chối booking thiếu/sai Turnstile token
 - [ ] Domain gửi Resend đã verified
 - [ ] Sitemap, robots, analytics và toàn bộ route hiện tại hoạt động
 - [ ] Frontend không có thay đổi hình ảnh ngoài copy booking bắt buộc
@@ -92,8 +107,58 @@ Kiểm tra `DATABASE_URL`, migration, `RESEND_API_KEY`, `SENDER_EMAIL`, `ADMIN_E
 
 ### Email không gửi
 
-Kiểm tra domain Resend, quyền API key, địa chỉ sender và giới hạn sandbox. Server chỉ log lỗi nội bộ; client không nhận provider error thô.
+Kiểm tra domain Resend, quyền API key, địa chỉ sender, `booking_email_jobs` và lần chạy cron. Booking vẫn được commit; worker retry email độc lập. Server chỉ log lỗi nội bộ.
 
 ### File `.ics` sai giờ
 
 Booking nhập theo `Asia/Ho_Chi_Minh` và `.ics` được xuất dưới UTC. Kiểm tra ngày/slot lưu trong bản ghi trước khi xác nhận.
+
+## Kích hoạt booking completion
+
+Thực hiện checklist này cùng deployment chứa code booking completion.
+
+### 1. Migrations và email worker
+
+1. Chạy `004_booking_actions_and_audit.sql`, `005_booking_email_jobs.sql`, `006_booking_rate_limits.sql`, rồi `007_reserve_reschedule_slots.sql` đúng thứ tự.
+2. Tạo `CRON_SECRET` ngẫu nhiên tối thiểu 32 ký tự trên Vercel Production/Preview.
+3. Deploy `vercel.json` cùng route `/api/internal/booking-email-worker`; xác nhận Vercel Cron gọi route với secret hợp lệ.
+4. Submit một booking, xác nhận job chuyển `pending -> sending -> sent`.
+5. Test Resend lỗi có kiểm soát ở preview và xác nhận `attempts`, `run_after`, `last_error` được cập nhật, không tạo job trùng.
+
+### 2. Admin dashboard
+
+- Secret này tách khỏi `BOOKING_SECRET`; rotate sẽ đăng xuất session admin nhưng không vô hiệu action booking.
+- `ADMIN_EMAIL` là tài khoản duy nhất nhận magic link ở MVP.
+- Sau deploy, thử email không phải admin, token sai/hết hạn, replay token và cookie production `HttpOnly; Secure; SameSite=Lax`.
+
+### 3. Cloudflare Turnstile
+
+1. Tạo Turnstile widget cho domain production và domain preview cần test.
+2. Thêm site key/secret vào đúng Vercel environment:
+
+```bash
+NEXT_PUBLIC_TURNSTILE_SITE_KEY=...
+TURNSTILE_SECRET_KEY=...
+BOOKING_CAPTCHA_DISABLED=false
+```
+
+3. Production luôn fail closed nếu thiếu key. Local chỉ được bypass bằng `BOOKING_CAPTCHA_DISABLED=true` khi `NODE_ENV` không phải `production`.
+4. Test token thiếu, token sai, token replay/expired và rate limit; client không được nhận raw Turnstile error.
+
+### 4. Meeting provider MVP
+
+```bash
+BOOKING_MEETING_PROVIDER=jitsi
+BOOKING_MEETING_URL_BASE=https://meet.jit.si
+```
+
+- Hệ thống tạo slug phòng ngẫu nhiên khi booking chuyển sang `confirmed`; không tạo ở trạng thái `pending`.
+- `BOOKING_MEETING_LOCATION` chỉ là fallback rollout. Sau khi kiểm tra link trong email và `.ics`, bỏ fallback để tránh hai nguồn cấu hình.
+- Jitsi URL generated locally giúp đạt MVP nhanh nhưng không đảm bảo host-control như Google Meet/Zoom; có thể thay adapter sau mà không đổi booking schema/flow.
+
+### 5. Release order và rollback
+
+1. Deploy additive migrations và code tương thích ngược.
+2. Bật worker và quan sát queue.
+3. Smoke test availability/date policy, admin, self-service, abuse control và meeting adapter.
+4. Nếu một slice lỗi, rollback code slice đó; không xóa migration, action, job hoặc lịch sử booking đã ghi.

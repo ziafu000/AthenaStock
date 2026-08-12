@@ -14,6 +14,7 @@ This directory documents AthenaStock, an **Investment Thinking House** that help
 - File-by-file implementation scope
 - Workstream ownership and dependency order
 - Security, migration, QA, and release gates
+- Approved booking-completion roadmap: availability, admin, self-service, outbox, abuse controls, and meeting adapter
 - Parallel-agent boundaries and rollback plan
 
 ### 🧭 [PRODUCT-DIRECTION.md](./PRODUCT-DIRECTION.md)
@@ -63,6 +64,7 @@ This directory documents AthenaStock, an **Investment Thinking House** that help
 - POST /api/booking - Persist a booking and notify admin
 - GET/POST /api/booking/confirm - Preview and approve a booking
 - GET/POST /api/booking/reschedule - Load and submit reschedule suggestions
+- Availability, customer respond/cancel, admin and cron-worker contracts
 - POST /api/subscribe - Email subscriptions
 - GET /api/search - Content search
 - Environment variables required

@@ -1,16 +1,9 @@
-export const BOOKING_TIME_ZONE = "Asia/Ho_Chi_Minh"
+import type { TimeBlock } from "./policy"
 
-export const TIME_BLOCKS = {
-    "09:00 - 10:00 (Sáng)": { start: "09:00:00", end: "10:00:00" },
-    "10:00 - 11:00 (Sáng)": { start: "10:00:00", end: "11:00:00" },
-    "14:00 - 15:00 (Chiều)": { start: "14:00:00", end: "15:00:00" },
-    "15:00 - 16:00 (Chiều)": { start: "15:00:00", end: "16:00:00" },
-    "16:00 - 17:00 (Chiều)": { start: "16:00:00", end: "17:00:00" },
-    "19:30 - 20:30 (Tối)": { start: "19:30:00", end: "20:30:00" },
-} as const
+export { BOOKING_TIME_ZONE, TIME_BLOCKS } from "./policy"
+export type { TimeBlock } from "./policy"
 
-export type TimeBlock = keyof typeof TIME_BLOCKS
-export type BookingAction = "confirm" | "reschedule"
+export type BookingAction = "confirm" | "admin_reschedule" | "customer_reschedule" | "cancel" | "admin_login"
 export type BookingStatus = "pending" | "confirmed" | "reschedule_requested" | "cancelled"
 export type DeliveryStatus = "pending" | "sending" | "sent" | "failed"
 
@@ -43,9 +36,14 @@ export interface BookingRecord {
     timezone: string
     status: BookingStatus
     meetingLocation: string | null
+    meetingProvider: string | null
     rescheduleSuggestions: BookingSuggestion[]
     adminNotificationStatus: DeliveryStatus
     confirmationEmailStatus: DeliveryStatus
     rescheduleEmailStatus: DeliveryStatus
+    confirmedAt: Date | null
     confirmationEmailSentAt: Date | null
+    cancelledAt: Date | null
+    cancelledBy: string | null
+    cancellationReason: string | null
 }
