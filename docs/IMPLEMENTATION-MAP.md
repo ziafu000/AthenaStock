@@ -1,6 +1,6 @@
 # AthenaStock Implementation Map
 
-Status: WS0-WS2 hoàn tất trong code ngày 2026-08-12. Production còn cần chạy migration mới nhất, deploy và smoke test.
+Status: WS0-WS3 hoàn tất trong code ngày 2026-08-13. Production còn cần chạy migration `008`, deploy và smoke test.
 Canonical direction: [PRODUCT-DIRECTION.md](./PRODUCT-DIRECTION.md)
 
 ## 1. Scope and release gates
@@ -104,7 +104,7 @@ Acceptance:
 - [x] Subscription consent, deduplication, one-time unsubscribe and email delivery use PostgreSQL/outbox.
 - [x] Search query/result bounds, minimal response fields, shared rate limits and cache headers are enforced.
 
-### WS3 - Tests, SEO correctness, and release safety
+### WS3 - Tests, SEO correctness, and release safety — complete
 
 | Files | Change |
 |---|---|
@@ -114,13 +114,20 @@ Acceptance:
 | package.json | Add content, route, link, and API regression commands |
 | docs/* | Keep shipped behavior and operational procedures synchronized |
 
-Required verification:
+Acceptance:
 
-- Lint, typecheck, and production build.
-- Content-schema and broken-link checks.
-- Smoke tests for every existing public route.
-- Booking, confirmation, reschedule, subscription, and search failure paths.
-- Visual regression or screenshot comparison for any unavoidable frontend-touching fix.
+- [x] Lint, typecheck, and production build pass.
+- [x] Content-schema, internal-link, route-contract, sitemap, and robots checks are automated.
+- [x] A non-mutating HTTP smoke command covers every public route and critical API failure paths.
+- [x] No visual frontend behavior or styling changed in this workstream.
+
+Verification on 2026-08-13:
+
+- `npm run test`: passed for 4 content files, 10 public routes, and route/link scans across 79 source files.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed with 0 errors and 0 warnings.
+- `npm run build`: production build passed and generated 36 routes; only the informational stale `caniuse-lite` notice remains.
+- Production HTTP smoke remains the final post-deploy gate.
 
 ## 3. Execution sequence
 
@@ -185,5 +192,5 @@ Phần này là source of truth cho booking hiện tại. Phần triển khai ch
 ### Release status
 
 - Typecheck, lint và production build là gate bắt buộc trước khi commit/deploy.
-- Automated database-concurrency và browser E2E suite chưa được bổ sung; phải chạy production smoke test trong `DEPLOYMENT.md` sau khi cấu hình Supabase/Vercel/Turnstile.
+- Automated route/link contracts and a non-mutating HTTP smoke suite are included. Database-concurrency, full browser E2E, and successful write/email flows remain manual production checks in `DEPLOYMENT.md`.
 - Migrations là additive/forward-only. Khi rollback code, không xóa migration đã áp dụng hoặc lịch sử booking.

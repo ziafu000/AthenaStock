@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
-import { Calendar, Clock, ArrowRight } from "lucide-react"
+import { Calendar, ArrowRight } from "lucide-react"
 import { getPostUrl, getTypeLabel, Post } from "@/lib/content-types"
 
 const suggestions = ["FPT", "biên an toàn", "tâm lý", "checklist", "định giá"]

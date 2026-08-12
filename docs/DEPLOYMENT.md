@@ -67,10 +67,16 @@ Các lệnh kiểm tra trước deploy:
 
 ```bash
 npm ci
-npx tsc --noEmit
-npm run lint
-npm run build
+npm run verify
 ```
+
+Sau khi deployment mới đã Ready, chạy smoke test không ghi dữ liệu:
+
+```bash
+npm run smoke:http -- https://athenastock.com
+```
+
+Lệnh này kiểm tra public routes, `robots.txt`, sitemap, search contract, validation, admin auth và token lỗi của booking/subscription. Nếu migration `008_newsletter_subscriptions.sql` chưa có trên production, bước unsubscribe sẽ trả `503` thay vì `403` và smoke test sẽ fail. Các flow thành công có ghi database/gửi email vẫn phải test thủ công theo checklist dưới đây.
 
 ## Checklist sau deploy
 

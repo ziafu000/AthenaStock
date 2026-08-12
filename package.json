@@ -8,7 +8,11 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "validate:content": "node --experimental-strip-types test-mdx.ts"
+    "validate:content": "node --experimental-strip-types test-mdx.ts",
+    "validate:routes": "node scripts/validate-routes.mjs",
+    "smoke:http": "node scripts/smoke-http.mjs",
+    "test": "npm run validate:content && npm run validate:routes",
+    "verify": "npm run test && npm run typecheck && npm run lint && npm run build"
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.19",
