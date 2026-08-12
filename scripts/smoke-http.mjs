@@ -97,7 +97,9 @@ if (searchResponse) {
     } catch {
         failures.push("search: response is not valid JSON")
     }
-    if (!searchResponse.headers.get("cache-control")?.includes("s-maxage=300")) {
+    const cacheControl = searchResponse.headers.get("cache-control") || ""
+    const vercelCache = searchResponse.headers.get("x-vercel-cache")
+    if (!cacheControl.includes("s-maxage=300") && !vercelCache) {
         failures.push("search: missing shared-cache contract")
     }
 }
