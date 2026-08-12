@@ -50,7 +50,7 @@ BOOKING_MEETING_LOCATION=
 - Sinh `BOOKING_SECRET` ngẫu nhiên, tối thiểu 32 ký tự; không dùng giá trị mẫu.
 - `NEXT_PUBLIC_APP_URL` phải là origin production để link trong email đúng host.
 - `ADMIN_SESSION_SECRET` phải tách khỏi `BOOKING_SECRET`; rotate secret này chỉ đăng xuất session admin.
-- `CRON_SECRET` bảo vệ email worker; Vercel Cron tự gửi secret này qua Bearer header.
+- `CRON_SECRET` bảo vệ email worker; Vercel Cron tự gửi secret này qua Bearer header. Lịch fallback hiện là một lần/ngày để tương thích Vercel Hobby.
 - Hai Turnstile key bắt buộc ở production. `BOOKING_CAPTCHA_DISABLED=true` chỉ dùng local.
 - `BOOKING_MEETING_LOCATION` là override tùy chọn; để trống để tạo Jitsi room riêng.
 - Dùng database và API key riêng cho preview/production.
@@ -86,7 +86,7 @@ npm run build
 - [ ] Slot đã giữ bị disable trước submit; server vẫn trả `409` khi có race
 - [ ] `/admin/bookings` chỉ mở sau magic-link POST confirmation
 - [ ] Customer reschedule/cancel dùng được và token không replay được
-- [ ] Cron chuyển email job `pending/retry -> sent` hoặc `dead`
+- [ ] Email được xử lý ngay sau action; Cron hằng ngày xử lý tiếp job `pending/retry -> sent` hoặc `dead`
 - [ ] Production từ chối booking thiếu/sai Turnstile token
 - [ ] Domain gửi Resend đã verified
 - [ ] Sitemap, robots, analytics và toàn bộ route hiện tại hoạt động
@@ -107,7 +107,7 @@ Kiểm tra `DATABASE_URL`, migration, `RESEND_API_KEY`, `SENDER_EMAIL`, `ADMIN_E
 
 ### Email không gửi
 
-Kiểm tra domain Resend, quyền API key, địa chỉ sender, `booking_email_jobs` và lần chạy cron. Booking vẫn được commit; worker retry email độc lập. Server chỉ log lỗi nội bộ.
+Kiểm tra domain Resend, quyền API key, địa chỉ sender, `booking_email_jobs` và lần chạy worker. Booking vẫn được commit; worker chạy ngay sau action và Cron hằng ngày retry độc lập. Server chỉ log lỗi nội bộ.
 
 ### File `.ics` sai giờ
 
@@ -121,7 +121,7 @@ Thực hiện checklist này cùng deployment chứa code booking completion.
 
 1. Chạy `004_booking_actions_and_audit.sql`, `005_booking_email_jobs.sql`, `006_booking_rate_limits.sql`, rồi `007_reserve_reschedule_slots.sql` đúng thứ tự.
 2. Tạo `CRON_SECRET` ngẫu nhiên tối thiểu 32 ký tự trên Vercel Production/Preview.
-3. Deploy `vercel.json` cùng route `/api/internal/booking-email-worker`; xác nhận Vercel Cron gọi route với secret hợp lệ.
+3. Deploy `vercel.json` cùng route `/api/internal/booking-email-worker`; lịch `0 2 * * *` tương thích Hobby và chỉ là fallback hằng ngày vì worker đã chạy ngay sau mỗi action.
 4. Submit một booking, xác nhận job chuyển `pending -> sending -> sent`.
 5. Test Resend lỗi có kiểm soát ở preview và xác nhận `attempts`, `run_after`, `last_error` được cập nhật, không tạo job trùng.
 

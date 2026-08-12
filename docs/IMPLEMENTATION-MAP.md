@@ -170,7 +170,7 @@ Phần này là source of truth cho booking hiện tại. Phần triển khai ch
 | B4 - self-service | `/api/booking/reschedule`, `/api/booking/respond`, `/booking/respond`, `/api/booking/cancel`, `/booking/cancel` | Khách chọn slot mới hoặc hủy qua explicit POST; email dùng `.ics` REQUEST/CANCEL |
 | B5 - abuse controls | migration `006`, `rate-limit.ts`, `captcha.ts`, `TurnstileWidget.tsx` | Rate limit không lưu IP thô và Turnstile fail-closed ở production |
 | B6 - meeting | `meeting.ts`, confirm/respond transitions | Tạo một room URL khi confirmed, persist và tái sử dụng khi retry |
-| B7 - operations | `API-ROUTES.md`, `DEPLOYMENT.md`, `database/README.md` | Hướng dẫn migration, env, cron, rollback và smoke test |
+| B7 - operations | `API-ROUTES.md`, `DEPLOYMENT.md`, `database/README.md` | Hướng dẫn migration, env, worker chạy sau action, Cron Hobby hằng ngày, rollback và smoke test |
 
 ### Release status
 

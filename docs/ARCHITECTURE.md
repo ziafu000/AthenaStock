@@ -184,7 +184,7 @@ Public modal / customer action / admin dashboard
        | booking state | one-time action |
        | slot lock     | email outbox    |
                     |
-        cron worker claims email jobs
+     post-response/daily worker claims jobs
                     |
                   Resend
 ```
@@ -194,7 +194,7 @@ Architectural rules:
 - PostgreSQL owns availability, booking state, idempotency, action consumption and delivery jobs.
 - `pending` requests do not reserve a slot; `confirmed` and `reschedule_requested` keep the current slot unavailable.
 - Availability is read-only UX assistance. Every state transition rechecks the slot atomically.
-- Business state and email jobs are written in the same transaction. Resend is called by a retryable worker, not on the critical request path.
+- Business state and email jobs are written in the same transaction. Resend is called by a retryable post-response worker, with a Vercel Hobby-compatible daily Cron as fallback, not on the critical request path.
 - Admin access uses a one-time magic link and signed HttpOnly session; booking data is never exposed through a public Supabase policy.
 - Customer reschedule/cancel links are expiring, single-purpose and one-time-use.
 - Meeting URLs are generated through a provider adapter only when a booking becomes confirmed, then persisted for deterministic retries and `.ics` output.
@@ -207,7 +207,7 @@ Implemented routes:
 - `GET/POST /api/booking/cancel` - safe preview and explicit cancellation.
 - `POST /api/admin/auth/request` and `GET/POST /api/admin/auth/verify` - single-admin passwordless session; GET only previews.
 - `GET /api/admin/bookings` and `/admin/bookings` - protected operational listing.
-- `GET/POST /api/internal/booking-email-worker` - cron-protected outbox worker.
+- `GET/POST /api/internal/booking-email-worker` - secret-protected outbox worker; daily Cron fallback.
 
 No public navigation, page layout or visual-system migration is part of this target.
 

@@ -70,7 +70,7 @@ Production bắt buộc Turnstile. Route rate-limit theo IP và email, recheck s
 
 ## Email worker
 
-`GET|POST /api/internal/booking-email-worker` yêu cầu `Authorization: Bearer <CRON_SECRET>` ở production. Worker claim tối đa 25 job bằng `FOR UPDATE SKIP LOCKED`, retry exponential backoff và chuyển `dead` khi hết attempts. `vercel.json` gọi route mỗi 5 phút.
+`GET|POST /api/internal/booking-email-worker` yêu cầu `Authorization: Bearer <CRON_SECRET>` ở production. Worker claim tối đa 25 job bằng `FOR UPDATE SKIP LOCKED`, retry exponential backoff và chuyển `dead` khi hết attempts. Mỗi thao tác booking đều kích hoạt worker ngay sau response; `vercel.json` chạy thêm một lần/ngày (`02:00 UTC`, thời gian thực tế có thể lệch trong một giờ trên Vercel Hobby) làm fallback cho job lỗi.
 
 ## Các route khác
 
