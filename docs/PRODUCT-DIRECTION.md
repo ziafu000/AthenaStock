@@ -40,20 +40,20 @@ These pillars guide content and business decisions only. They do not imply a new
 
 ## Company Research Standard
 
-Every company analysis should contain these 12 sections in this order:
+Every company analysis should contain these 12 sections in this order. The Vietnamese labels below are the exact level-two MDX headings enforced by the runtime contract:
 
-1. Overview
-2. Business model
-3. Competitive advantage
-4. Management
-5. Financial quality
-6. Growth drivers
-7. Risks
-8. Valuation
-9. Margin of safety
-10. Investment thesis
-11. What could invalidate the thesis
-12. Research update date
+1. Overview / `Tổng quan`
+2. Business model / `Mô hình kinh doanh`
+3. Competitive advantage / `Lợi thế cạnh tranh`
+4. Management / `Ban lãnh đạo`
+5. Financial quality / `Chất lượng tài chính`
+6. Growth drivers / `Động lực tăng trưởng`
+7. Risks / `Rủi ro`
+8. Valuation / `Định giá`
+9. Margin of safety / `Biên an toàn`
+10. Investment thesis / `Luận điểm đầu tư`
+11. What could invalidate the thesis / `Điều gì khiến luận điểm sai`
+12. Research update date / `Ngày cập nhật nghiên cứu`
 
 Research must separate facts, assumptions, and judgment; show risks and disconfirming evidence; cite sources; and state when it was last reviewed. It must never be framed as a buy/sell signal.
 

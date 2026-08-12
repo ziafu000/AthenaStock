@@ -14,12 +14,15 @@ export async function GET(request: NextRequest) {
         }
         
         const results = posts.filter((post) => {
+            const tickers = post.metadata.type === "business"
+                ? post.metadata.tickers
+                : []
             const searchableText = [
                 post.metadata.title,
                 post.metadata.description,
                 post.metadata.type,
-                ...(post.metadata.tags ?? []),
-                ...(post.metadata.tickers ?? []),
+                ...post.metadata.tags,
+                ...tickers,
             ]
                 .join(" ")
                 .toLocaleLowerCase("vi-VN")

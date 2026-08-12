@@ -1,14 +1,13 @@
-import { getAllPosts } from "./src/lib/mdx"
+import { validateContentRepository } from "./src/lib/mdx.ts"
 
 async function main() {
-    console.log("Testing getAllPosts('article')...");
-    try {
-        const posts = await getAllPosts("article");
-        console.log("Found posts:", posts.length);
-        posts.forEach(p => console.log("-", p.slug));
-    } catch (e) {
-        console.error("Error:", e);
-    }
+    const result = await validateContentRepository()
+    console.log(
+        `Content validation passed: ${result.files} files, ${result.internalLinks} internal links checked.`,
+    )
 }
 
-main();
+main().catch((error: unknown) => {
+    console.error(error instanceof Error ? error.message : error)
+    process.exitCode = 1
+})

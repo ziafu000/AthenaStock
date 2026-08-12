@@ -1,6 +1,6 @@
 # AthenaStock Implementation Map
 
-Status: Booking completion code đã triển khai; production còn cần chạy migration, cấu hình môi trường và smoke test.
+Status: WS0 và WS1 hoàn tất, đã kiểm tra ngày 2026-08-12. Booking completion code đã triển khai; production còn cần chạy migration, cấu hình môi trường và smoke test.
 Canonical direction: [PRODUCT-DIRECTION.md](./PRODUCT-DIRECTION.md)
 
 ## 1. Scope and release gates
@@ -37,7 +37,7 @@ Do not promote booking publicly until its P0 gate passes.
 
 ## 2. Workstreams and file ownership
 
-### WS0 - Baseline and contracts
+### WS0 - Baseline and contracts — complete
 
 Owner: lead integrator. Lands first.
 
@@ -51,26 +51,34 @@ Owner: lead integrator. Lands first.
 
 Acceptance:
 
-- The committed frontend is captured as the regression baseline.
-- Invalid content fails with file path and field name.
-- Shared config and dependency changes remain owned by the lead integrator.
+- [x] The committed frontend is captured as the regression baseline.
+- [x] Invalid content fails with file path and field name.
+- [x] Shared config and dependency changes remain owned by the lead integrator.
 
-### WS1 - Content integrity and link correctness
+### WS1 - Content integrity and link correctness — complete
 
 | Files | Change |
 |---|---|
 | content/business/*.mdx | Validate and incrementally fill the required 12 sections |
-| content/frameworks/*.mdx | Validate frontmatter and internal links |
+| content/framework/*.mdx | Validate frontmatter and internal links |
 | content/psychology/*.mdx | Validate frontmatter and internal links |
-| content/articles/*.mdx | Validate taxonomy and related-content metadata |
+| content/article/*.mdx | Validate taxonomy and related-content metadata |
 | src/lib/related.ts | Make fallback behavior deterministic without changing presentation |
 | test-mdx.ts | Convert or replace with a repeatable validation command |
 
 Acceptance:
 
-- Every business analysis satisfies the 12-section contract or fails validation clearly.
-- Dead or malformed internal links are detected.
-- No page layout, component API, or styling changes.
+- [x] Every business analysis satisfies the 12-section contract or fails validation clearly.
+- [x] Dead or malformed internal links are detected.
+- [x] No page layout, component API, or styling changes.
+
+Verification on 2026-08-12:
+
+- `npm run validate:content`: passed for 4 content files; 0 internal links currently present.
+- Negative validation test: passed; the error identifies both `content/article/broken.mdx` and invalid field names.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed with 0 errors and 3 pre-existing warnings outside this workstream.
+- `npm run build`: production build passed; all current static content routes generated.
 
 ### WS2 - Booking and API safety
 
