@@ -29,7 +29,7 @@ const disclaimerClauses = [
         icon: RefreshCw,
         content: (
             <>
-                Mặc dù chúng tôi nỗ lực đảm bảo tính chính xác của thông tin, chúng tôi <strong className="text-white">không cam kết</strong> rằng mọi nội dung đều hoàn toàn chính xác, đầy đủ hay cập nhật. Các dự báo phản ánh đánh giá cá nhân tại thời điểm viết và có thể thay đổi không báo trước.
+                Mặc dù chúng tôi nỗ lực đảm bảo tính chính xác của thông tin, chúng tôi <strong className="text-white">không cam kết</strong> rằng mọi nội dung đều hoàn toàn chính xác, đầy đủ hay cập nhật. Các nhận định phản ánh đánh giá nghiên cứu tại thời điểm viết và có thể thay đổi không báo trước.
             </>
         ),
     },
@@ -136,7 +136,7 @@ export default function DisclaimerPage() {
                                 <strong className="text-white">Ngày có hiệu lực:</strong> 01/01/2024
                             </p>
                             <p>
-                                <strong className="text-white">Cập nhật lần cuối:</strong> 01/01/2024
+                                <strong className="text-white">Cập nhật lần cuối:</strong> 01/08/2025
                             </p>
                             <p className="mt-4 pt-4 border-t border-white/[0.06] text-xs">
                                 Nếu có bất kỳ câu hỏi nào về các điều khoản này, vui lòng liên hệ qua trang{" "}

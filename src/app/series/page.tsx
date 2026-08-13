@@ -3,13 +3,13 @@ import { BookOpen, ArrowRight, ShieldAlert } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export const metadata = {
-    title: "Series – Đầu tư tỉnh thức",
-    description: "Lộ trình đọc có hệ thống để xây dựng nền tảng đầu tư vững chắc.",
+    title: "Series – Athena Stock",
+    description: "Lộ trình đọc có hệ thống để xây dựng năng lực tư duy đầu tư từ nền tảng đến chuyên sâu.",
 }
 
 const seriesData = [
     {
-        title: "Nền tảng Đầu tư Tỉnh thức",
+        title: "Nền tảng Tư duy Đầu tư",
         description: "Bắt đầu từ đây: hiểu sâu sắc triết lý cốt lõi, nhận diện các sai lầm hành vi kinh điển, và nắm vững checklist phân tích mô hình doanh nghiệp.",
         articles: [
             { slug: "/articles/triet-ly-dai-han", title: "Triết lý Đầu tư Dài hạn & Margin of Safety" },
@@ -65,7 +65,7 @@ export default function SeriesPage() {
                         Lộ trình & <span className="text-[#e61c5c] italic font-medium">Series học tập</span>
                     </h1>
                     <p className="mx-auto max-w-xl text-base text-gray-650 dark:text-[#a0a5b5] leading-relaxed font-sans">
-                        Hệ thống bài đọc được sắp xếp bài bản từ dễ đến khó, giúp bạn tự xây dựng nền móng tư duy vững vàng.
+                        Hệ thống bài đọc được sắp xếp từ nền tảng đến chuyên sâu — xây dựng năng lực tư duy phân tích doanh nghiệp và kiểm soát hành vi đầu tư.
                     </p>
                 </div>
             </section>

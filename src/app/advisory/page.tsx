@@ -57,7 +57,7 @@ export default function AdvisoryPage() {
                     <div className="relative border border-red-500/20 bg-red-950/[0.04] rounded-3xl p-6 md:p-8 backdrop-blur-md">
                         <p className="text-lg font-serif font-bold text-[#e61c5c] mb-2">Tuyên bố rõ ràng</p>
                         <p className="text-[#a0a5b5] text-sm md:text-base leading-relaxed font-sans">
-                            Đây <strong className="text-white font-medium">không phải</strong> dịch vụ phím hàng hay khuyến nghị mua bán ngắn hạn. Chúng tôi chỉ cung cấp hệ thống tư duy phân tích định tính và đồng hành cùng sự an yên của bạn.
+                            Đây <strong className="text-white font-medium">không phải</strong> dịch vụ phím hàng hay khuyến nghị mua bán chứng khoán. Chúng tôi chỉ cung cấp hệ thống tư duy phân tích định tính và đồng hành phát triển năng lực đầu tư.
                         </p>
                     </div>
 
@@ -227,7 +227,7 @@ export default function AdvisoryPage() {
                             <ShieldAlert className="w-5 h-5 text-accent" /> Miễn trừ trách nhiệm quan trọng
                         </h3>
                         <div className="text-xs text-[#a0a5b5] space-y-2 leading-relaxed font-sans">
-                            <p><strong>• Không tư vấn pháp lý tài chính:</strong> Toàn bộ nội dung trao đổi chỉ là góc nhìn, kinh nghiệm và chia sẻ cá nhân, không cấu thành lời khuyên đầu tư chuyên nghiệp được pháp luật bảo trợ.</p>
+                            <p><strong>• Không tư vấn pháp lý tài chính:</strong> Toàn bộ nội dung trao đổi chỉ là góc nhìn nghiên cứu và phân tích định tính, không cấu thành lời khuyên đầu tư chuyên nghiệp được pháp luật bảo trợ.</p>
                             <p><strong>• Rủi ro vốn có:</strong> Thị trường chứng khoán luôn có những biến số bất ngờ. Chúng tôi không cam kết, hứa hẹn hay bảo lãnh bất kỳ tỷ suất sinh lời nào.</p>
                             <p><strong>• Quyết định tự chủ:</strong> Bạn chịu trách nhiệm hoàn toàn 100% đối với tài sản của mình và mọi quyết định giải ngân trên tài khoản cá nhân.</p>
                         </div>

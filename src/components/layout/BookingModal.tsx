@@ -278,7 +278,7 @@ function BookingModalContent() {
                                 <label className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">Lời nhắn hoặc câu hỏi</label>
                                 <textarea
                                     rows={3}
-                                    placeholder="Tôi muốn tìm hiểu thêm về định giá cổ phiếu hoặc cách review danh mục..."
+                                    placeholder="Tôi muốn tìm hiểu thêm về cách tiếp cận đầu tư giá trị hoặc xây dựng tư duy phân tích doanh nghiệp..."
                                     value={message}
                                     onChange={(e) => setMessage(e.target.value)}
                                     className="w-full rounded-xl border border-white/[0.08] bg-white/[0.02] px-4 py-2.5 text-white placeholder-muted-foreground/60 focus:border-[#e61c5c]/50 focus:outline-none transition-all resize-none"

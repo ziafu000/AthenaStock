@@ -18,12 +18,11 @@ export function Footer() {
                             />
                             <div>
                                 <h3 className="font-serif font-bold text-lg text-primary">Athena Stock</h3>
-                                <p className="text-xs text-muted-foreground font-sans">Đầu tư tỉnh thức</p>
+                                <p className="text-xs text-muted-foreground font-sans">Đầu tư như một người chủ doanh nghiệp</p>
                             </div>
                         </div>
                         <p className="text-sm text-muted-foreground leading-relaxed max-w-xs font-sans">
-                            Đọc chậm. Suy ngẫm kỹ. Giao dịch ít. Ngủ ngon. <br />
-                            Ngủ ngon với tiền của bạn.
+                            Đọc chậm. Suy ngẫm kỹ. Giao dịch ít. Ngủ ngon.
                         </p>
                     </div>
 
@@ -59,7 +58,7 @@ export function Footer() {
                             <Link href="/disclaimer" className="hover:text-foreground transition-colors duration-300">
                                 Miễn trừ trách nhiệm
                             </Link>
-                            <a href="mailto:contact@athenastock.vn" className="hover:text-foreground transition-colors duration-300">
+                            <a href="mailto:contact@athenastock.com" className="hover:text-foreground transition-colors duration-300">
                                 Liên hệ
                             </a>
                         </nav>

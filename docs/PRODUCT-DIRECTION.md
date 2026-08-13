@@ -57,6 +57,49 @@ Every company analysis should contain these 12 sections in this order. The Vietn
 
 Research must separate facts, assumptions, and judgment; show risks and disconfirming evidence; cite sources; and state when it was last reviewed. It must never be framed as a buy/sell signal.
 
+## Editorial Methodology
+
+All published content must follow these standards. They apply to every content type: article, business research, framework, and psychology.
+
+### Fact / Inference / Assumption separation
+
+Every claim must be explicitly typed:
+
+- **Dữ kiện (Fact):** A verifiable statement sourced from a named document, report, or dataset. Must have a citation with a specific URL — not a homepage.
+- **Nhận định (Inference/Judgment):** An interpretation or conclusion drawn from facts. Must be labeled "Nhận định:" so readers know it is not raw data.
+- **Giả định (Assumption):** A condition the analysis depends on that is not yet confirmed. Must be labeled "Giả định:" and stated explicitly before any conclusion that depends on it.
+
+Never mix types within the same paragraph without labeling.
+
+### Citation standards
+
+- Every numerical claim requires a `[^n]` footnote with a direct URL (a specific page, PDF, or press release — not a domain root).
+- No financial data older than 12 months may be used without an explicit staleness disclosure in the same section.
+- For company research: cite the annual report, earnings release, or investor presentation by quarter and year.
+
+### Absolute claim policy
+
+Do not use: "luôn luôn", "chắc chắn", "tốt nhất", "sẽ tăng", "sẽ xảy ra" without direct evidential support. Replace with conditional language: "có xu hướng", "nếu X thì Y", "trong kịch bản cơ sở".
+
+### Research freshness and review schedule
+
+Every business research article must state:
+- The exact date of last review (`Lần rà soát gần nhất: DD/MM/YYYY`).
+- A suggested next-review trigger — either a calendar date (e.g., after the next quarterly earnings) or an event (e.g., leadership change, major M&A).
+
+Research older than 12 months without a freshness update must display a staleness warning at the top of the article.
+
+### Privacy and data handling
+
+- The booking form collects name, email, phone, date, and message. This data is used only to schedule and confirm the session. It is not shared with third parties or used for marketing without explicit consent.
+- Reader highlights and notes are stored in browser `localStorage` only. No note data is sent to the server.
+- Any future change to data handling requires updating the disclaimer page and this document simultaneously.
+
+### Editorial independence
+
+- No content may be sponsored, affiliated with, or commissioned by the companies it analyzes.
+- Authors must disclose any personal holding in a company at the time of publication, or state explicitly that they hold no position.
+
 ## Implementation Guardrails
 
 - Preserve the current Next.js, React, TypeScript, Tailwind, MDX, search, booking, email, SEO, static-content, and frontend foundations unless a concrete technical limitation requires change.

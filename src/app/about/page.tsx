@@ -4,7 +4,7 @@ import { Check, X, ShieldAlert } from "lucide-react"
 
 export const metadata = {
     title: "Về chúng tôi & Triết lý – Athena Stock",
-    description: "Người dẫn đường đầu tư tỉnh thức. Không hứa lợi nhuận, không bán kèo, không cổ vũ giao dịch.",
+    description: "Athena Stock là hệ thống nghiên cứu và phát triển năng lực đầu tư giá trị. Không bán kèo, không hứa lợi nhuận — chỉ tư duy và bằng chứng.",
 }
 
 export default function AboutPage() {
@@ -42,8 +42,8 @@ export default function AboutPage() {
                         Về chúng tôi & <span className="text-[#e61c5c] italic font-medium">Triết lý</span>
                     </h1>
                     <p className="mx-auto max-w-xl text-base text-gray-650 dark:text-[#a0a5b5] leading-relaxed font-sans">
-                        Những nhà đầu tư cá nhân, không phải guru.<br />
-                        Chia sẻ kinh nghiệm thực chiến, không bán hy vọng làm giàu nhanh.
+                        Một hệ thống nghiên cứu đầu tư — không phải blog cá nhân.<br />
+                        Phân tích có bằng chứng. Tư duy có kỷ luật. Không bán kèo.
                     </p>
                 </div>
             </section>
@@ -56,15 +56,14 @@ export default function AboutPage() {
                     {/* Mission / Context */}
                     <div className="text-center space-y-6">
                         <h2 className="text-2xl md:text-3xl font-sans font-bold text-white">
-                            Tại sao chúng tôi <span className="font-serif italic font-light text-[#e61c5c]">làm website này?</span>
+                            Athena Stock <span className="font-serif italic font-light text-[#e61c5c]">là gì?</span>
                         </h2>
                         <div className="max-w-3xl mx-auto space-y-6 text-[#a0a5b5] text-sm md:text-base leading-relaxed font-sans text-justify md:text-center">
                             <p>
-                                Chúng tôi từng là những người giao dịch nhiều. Mỗi ngày mở ứng dụng chứng khoán hàng chục lần, theo dõi từng biến động giá, lo lắng khi thị trường đỏ lửa và hưng phấn khi bảng điện xanh rì. 
-                                Cuối cùng, chúng tôi nhận ra: <strong className="text-white font-medium">kẻ thù lớn nhất của nhà đầu tư không phải là thị trường, mà là chính mình</strong>.
+                                Athena Stock là <strong className="text-white font-medium">hệ thống nghiên cứu và phát triển năng lực đầu tư giá trị</strong> — nơi phân tích doanh nghiệp dựa trên bằng chứng, không phải tín hiệu. Chúng tôi tin rằng nhà đầu tư dài hạn cần tư duy như một người chủ doanh nghiệp: hiểu mô hình kinh doanh, đòi hỏi biên an toàn và kiểm soát được cảm xúc trước biến động thị trường.
                             </p>
                             <p>
-                                Website này ra đời như một cuốn nhật ký hành trình ghi lại sự chuyển hóa của bản thân — từ những người cố gắng "lướt sóng" ngắn hạn sang việc rèn luyện tư duy thực thụ của một người đồng sở hữu doanh nghiệp dài hạn.
+                                Không có kèo. Không có cam kết lợi nhuận. Không có "góc nhìn cá nhân" thiếu nền tảng. Chỉ có phương pháp nghiên cứu rõ ràng, tư duy có kỷ luật và nội dung được kiểm chứng — để bạn tự đưa ra quyết định độc lập.
                             </p>
                         </div>
                     </div>

@@ -297,7 +297,7 @@ export function SearchBubble() {
                                     Tìm kiếm nhanh
                                 </h5>
                                 <p className="text-[9px] text-muted-foreground leading-normal font-sans">
-                                    Nhập mã cổ phiếu hoặc từ khóa bất kỳ để quét dữ liệu tự động bên dưới.
+                                    Nhập từ khóa để tìm bài viết, framework và nghiên cứu nội bộ.
                                 </p>
                             </div>
                         </div>

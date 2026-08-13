@@ -442,30 +442,52 @@ npm run dev
 # Navigate to http://localhost:3000/articles/new-article-slug
 \\\
 
-### Step 5: QA Checklist
+### Step 5: Pre-publish Checklist
 
-Before publishing:
+Chạy qua checklist này trước mỗi lần publish. Không được bỏ qua bất kỳ mục nào.
 
-- [ ] All frontmatter fields filled correctly
-- [ ] No forbidden language (buy/sell recommendations)
-- [ ] Company research has all 12 canonical sections
-- [ ] Facts, assumptions, and judgment are visibly separated
-- [ ] The research update date is present
-- [ ] Risk section is present and detailed
-- [ ] All data has source citations
-- [ ] Images optimized and have alt text
-- [ ] Build succeeds: \
-pm run build\
-- [ ] No TypeScript errors
-- [ ] Content renders correctly in both light/dark mode
+**A. Frontmatter & Schema**
+- [ ] `title`, `description`, `date`, `type`, `tags`, `readingTime` đã điền đầy đủ
+- [ ] `updatedAt` được cập nhật nếu đây là bản sửa (không phải bản gốc)
+- [ ] Business: có `tickers`, `market`, `riskLevel`, `citations` — ít nhất 2 nguồn có URL trỏ trang cụ thể
+- [ ] Framework: có `difficulty`; Psychology: có `relatedBiases` nếu áp dụng
+
+**B. Phân tách Fact / Inference / Assumption**
+- [ ] Mỗi con số hoặc dữ kiện có citation rõ ràng (`[^n]` footnote hoặc inline link)
+- [ ] Nhận định/suy luận được gắn nhãn ("Nhận định:", "Giả định:") — không trộn với dữ kiện
+- [ ] Không có khẳng định tuyệt đối thiếu bằng chứng ("luôn luôn", "chắc chắn", "tốt nhất")
+- [ ] Dự báo tương lai đặt trong điều kiện ("nếu X thì Y", không phải "X sẽ xảy ra")
+
+**C. Citations & Freshness**
+- [ ] Mọi citation có URL trỏ nguồn cụ thể (báo cáo, trang IR, tài liệu) — không chỉ domain gốc
+- [ ] Không dùng dữ liệu tài chính quá 12 tháng mà không ghi rõ giới hạn thời gian
+- [ ] Business research: ghi rõ ngày rà soát và đề xuất lịch review tiếp theo
+
+**D. Internal Links**
+- [ ] Bài có ít nhất 1 internal link sang bài loại khác (article ↔ framework ↔ business ↔ psychology)
+- [ ] Anchor text mô tả nội dung đích — không dùng "xem tại đây" hoặc "click here"
+
+**E. Tuân thủ Editorial**
+- [ ] Không có forbidden language (xem danh sách FORBIDDEN bên dưới)
+- [ ] Không có lời hứa hiệu suất hoặc cam kết lợi nhuận dù gián tiếp
+- [ ] Business: 12 section đầy đủ và đúng thứ tự
+- [ ] Risk section có Callout `type="danger"` với nội dung cụ thể
+- [ ] Có section "Điều gì khiến luận điểm sai" (business) hoặc tương đương
+- [ ] Disclaimer rõ ràng: nội dung là giáo dục, không phải khuyến nghị đầu tư
+
+**F. Kỹ thuật**
+- [ ] Build thành công: `npm run build`
+- [ ] Không có TypeScript errors
+- [ ] Render đúng cả light/dark mode
+- [ ] Ảnh có alt text mô tả nội dung (không phải "image1.png")
 
 ### Step 6: Commit & Deploy
 
-\\\ash
+```bash
 git add content/
 git commit -m "Add: [content title]"
 git push origin main
-\\\
+```
 
 Vercel will automatically deploy your changes.
 
@@ -514,6 +536,35 @@ Store images in \public/images/\:
 \\\
 
 Always include descriptive alt text for accessibility.
+
+### Research Review Schedule
+
+Business research articles require an active review lifecycle:
+
+| Trigger | Action |
+|---|---|
+| Quarterly earnings published | Update section 5 (Chất lượng tài chính) and section 12 (Ngày cập nhật nghiên cứu) |
+| Major leadership change | Review section 4 (Ban lãnh đạo) and re-assess investment thesis |
+| Significant M&A or strategy shift | Full re-review of all 12 sections |
+| 12 months since last review | Add staleness warning callout at top of article |
+
+**Staleness warning template** — add this Callout at the top of any article not reviewed in 12+ months:
+
+```jsx
+<Callout type="warning" title="Nội dung cần cập nhật">
+  Bài phân tích này chưa được rà soát kể từ [DD/MM/YYYY]. Các số liệu tài chính và nhận định có thể đã lỗi thời. Vui lòng đọc báo cáo mới nhất của doanh nghiệp trước khi tham khảo.
+</Callout>
+```
+
+### Privacy and Data Disclosure
+
+When writing about the advisory/booking service or any data-collection feature, include accurate disclosures:
+
+- **Booking form data** (name, email, phone, date, message): used only to schedule and confirm the session. Not shared with third parties or used for marketing.
+- **Reader notes/highlights**: stored in browser `localStorage` only. No data sent to server.
+- **No portfolio or transaction data** is ever collected by the platform.
+
+Any content that describes product features must accurately reflect actual capability — do not describe features as working if they are not yet implemented.
 
 ---
 

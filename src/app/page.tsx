@@ -99,18 +99,18 @@ export default async function Home() {
                     {/* Logo Badge */}
                     <div className="inline-flex items-center rounded-full border border-[#e61c5c]/20 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-[#e61c5c] backdrop-blur-sm bg-[#e61c5c]/5 shadow-sm animate-fade-in-up-delay-1">
                         <span className="flex h-1.5 w-1.5 rounded-full bg-[#e61c5c] mr-2 animate-pulse"></span>
-                        ATHENA STOCK • ĐẦU TƯ TỈNH THỨC
+                        ATHENA STOCK • INVESTMENT THINKING HOUSE
                     </div>
 
                     {/* Headline combining Playfair Serif Bold & Playfair Serif Italic */}
                     <h1 className="text-4xl font-serif font-bold tracking-tight text-[#9c1850] dark:text-[#faf8f6] sm:text-5xl md:text-6xl lg:text-7xl leading-[1.15] animate-fade-in-up-delay-2">
-                        <span className="block mb-1">Ngủ ngon với</span>
-                        <span className="text-[#e61c5c] italic font-medium block mt-3">tiền của bạn</span>
+                        <span className="block mb-1">Đầu tư như một</span>
+                        <span className="text-[#e61c5c] italic font-medium block mt-3">người chủ doanh nghiệp</span>
                     </h1>
 
                     <p className="mx-auto max-w-2xl text-sm md:text-base text-gray-650 dark:text-[#a0a5b5] leading-relaxed font-sans animate-fade-in-up-delay-3">
-                        Chúng tôi không giúp bạn kiếm tiền nhanh hơn.<br className="hidden sm:block" />
-                        Chúng tôi giúp bạn mắc ít sai lầm hơn — và bình an hơn với quyết định đầu tư.
+                        Không mua "mã chứng khoán", mà mua phần sở hữu doanh nghiệp.<br className="hidden sm:block" />
+                        Nghiên cứu có chiều sâu. Tư duy có kỷ luật. Quyết định tự chủ.
                     </p>
 
                     {/* Content Carousel container */}
@@ -145,10 +145,10 @@ export default async function Home() {
                     <div className="text-center mb-20">
                         <ScrollReveal>
                             <h2 className="text-3xl md:text-5xl font-sans font-bold text-white mb-4">
-                                Ba trụ cột của <span className="font-serif italic font-light text-[#e61c5c]">Đầu tư tỉnh thức</span>
+                                Ba trụ cột của <span className="font-serif italic font-light text-[#e61c5c]">tư duy đầu tư</span>
                             </h2>
                             <p className="text-[#a0a5b5] max-w-2xl mx-auto text-sm md:text-base font-sans">
-                                Hệ thống tư duy giúp bạn đứng vững trước mọi biến động của thị trường.
+                                Hệ thống tư duy giúp bạn phân tích doanh nghiệp, kiểm soát hành vi và ra quyết định độc lập.
                             </p>
                         </ScrollReveal>
                     </div>
@@ -262,7 +262,7 @@ export default async function Home() {
                             <h2 className="text-3xl md:text-5xl font-sans font-bold text-white">
                                 Phân tích <span className="font-serif italic font-light text-[#e61c5c]">& Bài viết</span>
                             </h2>
-                            <p className="text-[#a0a5b5] font-sans text-sm md:text-base">Góc nhìn cá nhân về đầu tư giá trị và tâm lý thị trường.</p>
+                            <p className="text-[#a0a5b5] font-sans text-sm md:text-base">Góc nhìn nghiên cứu về đầu tư giá trị và tâm lý thị trường.</p>
                         </ScrollReveal>
                         <ScrollReveal direction="right" className="self-start md:self-auto">
                             <Link
@@ -336,7 +336,7 @@ export default async function Home() {
                     <ScrollReveal className="space-y-8">
                         {/* Heading combining Outfit Sans & Playfair Serif Italic */}
                         <h2 className="text-3xl md:text-5xl font-sans font-extrabold text-[#1c1d21] dark:text-[#faf8f6] leading-tight">
-                            Sẵn sàng <span className="font-serif italic font-light text-[#9c1850] dark:text-[#e61c5c] block mt-1">đầu tư tỉnh thức?</span>
+                            Sẵn sàng <span className="font-serif italic font-light text-[#9c1850] dark:text-[#e61c5c] block mt-1">xây dựng tư duy đầu tư?</span>
                         </h2>
 
                         <p className="max-w-xl mx-auto font-sans leading-relaxed text-sm md:text-base text-gray-650 dark:text-[#a0a5b5]">

@@ -3,7 +3,7 @@ import { BookOpen, Quote, ListChecks, BookMarked, Library } from "lucide-react"
 
 export const metadata = {
     title: "Library – Athena Stock",
-    description: "Tài nguyên học tập: sách, trích dẫn, thuật ngữ, và checklist.",
+    description: "Tài nguyên chọn lọc: sách kinh điển, thuật ngữ, checklist và trích dẫn để nâng cao năng lực phân tích đầu tư.",
 }
 
 const resources = [
