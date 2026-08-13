@@ -1,5 +1,7 @@
 import { createHash, randomBytes, randomUUID, timingSafeEqual } from "node:crypto"
+import type postgres from "postgres"
 import type { BookingTransaction } from "./db"
+import { parseJsonObject } from "./json"
 import type { BookingAction } from "./types"
 
 export class InvalidActionTokenError extends Error {}
@@ -39,7 +41,7 @@ export async function createBookingAction(
     const hours = ttlHours ?? (Number.isFinite(configured) && configured > 0 ? Math.min(configured, 168) : 72)
     await sql`
         INSERT INTO booking_actions (id, booking_id, purpose, token_hash, payload, expires_at)
-        VALUES (${id}, ${bookingId}, ${purpose}, ${tokenHash(secret)}, ${JSON.stringify(payload)}::jsonb, now() + (${hours} * interval '1 hour'))
+        VALUES (${id}, ${bookingId}, ${purpose}, ${tokenHash(secret)}, ${sql.json(payload as postgres.JSONValue)}, now() + (${hours} * interval '1 hour'))
     `
     return `${id}.${secret}`
 }
@@ -72,7 +74,7 @@ export async function lockBookingAction(
         id: String(row.id),
         bookingId: row.booking_id ? String(row.booking_id) : null,
         purpose: String(row.purpose) as BookingAction,
-        payload: (row.payload || {}) as Record<string, unknown>,
+        payload: parseJsonObject(row.payload),
         expiresAt: new Date(String(row.expires_at)),
         consumedAt: row.consumed_at ? new Date(String(row.consumed_at)) : null,
     } satisfies BookingActionRecord

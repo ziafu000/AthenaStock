@@ -1,6 +1,8 @@
 import { randomUUID } from "node:crypto"
+import type postgres from "postgres"
 import { getDatabase } from "./db"
 import type { BookingTransaction } from "./db"
+import { parseJsonObject } from "./json"
 
 export interface EmailJobInput {
     bookingId?: string | null
@@ -16,7 +18,7 @@ export async function enqueueEmailJob(sql: BookingTransaction, input: EmailJobIn
             id, booking_id, kind, recipient, payload, idempotency_key
         ) VALUES (
             ${randomUUID()}, ${input.bookingId || null}, ${input.kind}, ${input.recipient},
-            ${JSON.stringify(input.payload || {})}::jsonb, ${input.idempotencyKey}
+            ${sql.json((input.payload || {}) as postgres.JSONValue)}, ${input.idempotencyKey}
         )
         ON CONFLICT (idempotency_key) DO NOTHING
     `
@@ -64,7 +66,7 @@ export async function claimNextEmailJob() {
             bookingId: row.booking_id ? String(row.booking_id) : null,
             kind: String(row.kind),
             recipient: String(row.recipient),
-            payload: (row.payload || {}) as Record<string, unknown>,
+            payload: parseJsonObject(row.payload),
             idempotencyKey: String(row.idempotency_key),
             attempts: Number(row.attempts),
             maxAttempts: Number(row.max_attempts),

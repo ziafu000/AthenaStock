@@ -1,9 +1,11 @@
 import { randomUUID } from "node:crypto"
+import type postgres from "postgres"
 import type { BookingTransaction } from "./db"
 import { getDatabase } from "./db"
 import { createBookingAction, consumeBookingAction, lockBookingAction } from "./actions"
 import { createMeetingDetails } from "./meeting"
 import { enqueueEmailJob } from "./outbox"
+import { parseJsonArray } from "./json"
 import { BOOKING_TIME_ZONE, bookingDateRange } from "./policy"
 import type { BookingAction, BookingInput, BookingRecord, BookingStatus, BookingSuggestion, TimeBlock } from "./types"
 
@@ -38,9 +40,7 @@ export function mapBooking(row: DatabaseRow): BookingRecord {
         status: String(row.status) as BookingStatus,
         meetingLocation: row.meeting_location ? String(row.meeting_location) : null,
         meetingProvider: row.meeting_provider ? String(row.meeting_provider) : null,
-        rescheduleSuggestions: Array.isArray(row.reschedule_suggestions)
-            ? row.reschedule_suggestions as BookingSuggestion[]
-            : [],
+        rescheduleSuggestions: parseJsonArray<BookingSuggestion>(row.reschedule_suggestions),
         adminNotificationStatus: String(row.admin_notification_status) as BookingRecord["adminNotificationStatus"],
         confirmationEmailStatus: String(row.confirmation_email_status) as BookingRecord["confirmationEmailStatus"],
         rescheduleEmailStatus: String(row.reschedule_email_status) as BookingRecord["rescheduleEmailStatus"],
@@ -242,7 +242,7 @@ export async function createRescheduleOffer(token: string, suggestions: BookingS
         const customerToken = await createBookingAction(tx, "customer_reschedule", booking.id, { suggestions, previous })
         await tx`
             UPDATE bookings
-            SET status = 'reschedule_requested', reschedule_suggestions = ${JSON.stringify(suggestions)}::jsonb,
+            SET status = 'reschedule_requested', reschedule_suggestions = ${tx.json(suggestions as unknown as postgres.JSONValue)},
                 reschedule_email_status = 'pending', updated_at = now()
             WHERE id = ${booking.id}
         `
