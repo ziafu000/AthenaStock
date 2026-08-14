@@ -47,7 +47,7 @@ export function Header() {
                                 Athena Stock
                             </span>
                             <span className="text-[8px] text-muted-foreground tracking-wider uppercase font-sans">
-                                Đầu tư tỉnh thức
+                                Investment Thinking House
                             </span>
                         </div>
                     </Link>

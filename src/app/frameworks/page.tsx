@@ -3,8 +3,8 @@ import { PostCard } from "@/components/post-card"
 import { ListChecks, ShieldAlert } from "lucide-react"
 
 export const metadata = {
-    title: "Frameworks – Đầu tư tỉnh thức",
-    description: "Các framework phân tích doanh nghiệp và ra quyết định đầu tư.",
+    title: "Frameworks – Athena Stock",
+    description: "Các framework và checklist có thể lặp lại để hỗ trợ nghiên cứu và ra quyết định đầu tư.",
 }
 
 export default async function FrameworksPage() {
@@ -40,7 +40,7 @@ export default async function FrameworksPage() {
                         Checklists & <span className="text-[#e61c5c] italic font-medium">Frameworks</span>
                     </h1>
                     <p className="mx-auto max-w-xl text-base text-gray-650 dark:text-[#a0a5b5] leading-relaxed font-sans">
-                        Bộ khung tư duy và danh sách kiểm tra có hệ thống giúp bạn rà soát doanh nghiệp và loại bỏ các quyết định bốc đồng.
+                        Các bộ khung có thể lặp lại giúp cấu trúc câu hỏi, kiểm tra giả định và ghi lại quyết định.
                     </p>
                 </div>
             </section>
@@ -72,7 +72,7 @@ export default async function FrameworksPage() {
                             <ShieldAlert className="w-5 h-5 text-accent" /> Lưu ý quan trọng khi dùng Framework
                         </h2>
                         <p className="text-sm text-[#a0a5b5] leading-relaxed font-sans">
-                            Các bộ checklist và framework là công cụ hỗ trợ rèn luyện tư duy có kỷ luật, chúng không phải là công thức toán học đảm bảo thành công tự động. Mọi quyết định đầu tư thực tế đều đòi hỏi sự linh hoạt và hiểu biết sâu sắc dựa trên hoàn cảnh riêng biệt của từng doanh nghiệp.
+                            Framework là công cụ hỗ trợ quá trình suy nghĩ, không phải công thức bảo đảm kết quả. Mỗi bộ khung cần được điều chỉnh theo bối cảnh, chất lượng dữ liệu và giới hạn hiểu biết về từng doanh nghiệp.
                         </p>
                     </div>
                 </div>

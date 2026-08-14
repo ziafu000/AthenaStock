@@ -3,8 +3,8 @@ import { getAllPosts } from "@/lib/mdx"
 import { FileText } from "lucide-react"
 
 export const metadata = {
-    title: "Articles – Đầu tư tỉnh thức",
-    description: "Các bài viết về tư duy đầu tư dài hạn và tâm lý hành vi.",
+    title: "Bài viết dài – Athena Stock",
+    description: "Các bài viết dài về tư duy đầu tư, doanh nghiệp, framework và tâm lý nhà đầu tư.",
 }
 
 export default async function ArticlesPage() {
@@ -37,10 +37,10 @@ export default async function ArticlesPage() {
                     </div>
                     
                     <h1 className="text-4xl md:text-5xl font-serif font-bold tracking-tight text-[#9c1850] dark:text-[#faf8f6] leading-tight">
-                        Bài viết & <span className="text-[#e61c5c] italic font-medium">Chiêm nghiệm</span>
+                        Bài viết & <span className="text-[#e61c5c] italic font-medium">Tư duy đầu tư</span>
                     </h1>
                     <p className="mx-auto max-w-xl text-base text-gray-650 dark:text-[#a0a5b5] leading-relaxed font-sans">
-                        Suy ngẫm về thị trường tài chính và cuộc sống. Đọc chậm, ghi chép kỹ lưỡng và hành động kiên nhẫn.
+                        Các bài viết dài kết nối nghiên cứu doanh nghiệp, quy trình ra quyết định và tâm lý nhà đầu tư.
                     </p>
                 </div>
             </section>

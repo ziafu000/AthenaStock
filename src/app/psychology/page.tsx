@@ -3,8 +3,8 @@ import { PostCard } from "@/components/post-card"
 import { Brain, Quote, ShieldAlert } from "lucide-react"
 
 export const metadata = {
-    title: "Tâm lý & Hành vi – Đầu tư tỉnh thức",
-    description: "Hiểu về tâm lý học đầu tư và các thiên kiến nhận thức.",
+    title: "Tâm lý nhà đầu tư – Athena Stock",
+    description: "Các bài viết về tài chính hành vi, thiên kiến nhận thức và kỷ luật ra quyết định.",
 }
 
 export default async function PsychologyPage() {
@@ -40,7 +40,7 @@ export default async function PsychologyPage() {
                         Tâm lý & <span className="text-[#e61c5c] italic font-medium">Hành vi</span>
                     </h1>
                     <p className="mx-auto max-w-xl text-base text-gray-650 dark:text-[#a0a5b5] leading-relaxed font-sans">
-                        Nhận diện các thiên kiến nhận thức ngáng đường bạn. Hiểu cách bộ não phản ứng trước lòng tham và nỗi sợ để tránh tự hủy hoại tài sản.
+                        Tìm hiểu cách thiên kiến, cảm xúc và bối cảnh ảnh hưởng đến quá trình ra quyết định đầu tư.
                     </p>
                 </div>
             </section>
@@ -83,10 +83,10 @@ export default async function PsychologyPage() {
                     {/* Why Temperament Matters Info Box */}
                     <div className="max-w-4xl mx-auto border border-white/[0.06] bg-white/[0.01] rounded-2xl p-6 md:p-8 space-y-3">
                         <h2 className="text-lg font-serif font-bold text-[#faf8f6] flex items-center gap-2">
-                            <ShieldAlert className="w-5 h-5 text-accent" /> Tại sao tâm lý là chìa khóa?
+                            <ShieldAlert className="w-5 h-5 text-accent" /> Tâm lý ảnh hưởng đến quyết định thế nào?
                         </h2>
                         <p className="text-sm text-[#a0a5b5] leading-relaxed font-sans">
-                            Hầu hết mọi khoản thua lỗ trên thị trường chứng khoán không bắt đầu từ việc phân tích sai báo cáo tài chính, mà bắt đầu từ lỗi tâm lý. FOMO đua lệnh ở đỉnh, hoảng loạn cắt lỗ ở đáy, ham muốn gỡ gạc và chứng nghiện giao dịch luôn là những tác nhân tàn phá lợi nhuận nhanh nhất.
+                            Tài chính hành vi giúp nhận diện cách con người xử lý thông tin không hoàn hảo, phản ứng với biến động và duy trì niềm tin sẵn có. Hiểu các xu hướng này giúp nhà đầu tư thiết kế quy trình có điểm kiểm tra và khoảng dừng phù hợp.
                         </p>
                     </div>
 

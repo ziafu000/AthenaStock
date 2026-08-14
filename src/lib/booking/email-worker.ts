@@ -8,7 +8,7 @@ import type { BookingRecord, BookingSuggestion } from "./types"
 import { formatBookingDate } from "./validation"
 
 function layout(content: string) {
-    return `<div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:30px;border:1px solid #eee;border-radius:12px;background:#fff"><h1 style="color:#9c1850;font-family:serif;text-align:center">Athena Stock</h1>${content}</div>`
+    return `<div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:30px;border:1px solid #eee;border-radius:12px;background:#fff"><h1 style="color:#9c1850;font-family:serif;text-align:center;margin-bottom:4px">Athena Stock</h1><p style="text-align:center;color:#666;font-size:12px;margin-top:0">Investment Thinking House</p>${content}</div>`
 }
 
 function linkButton(url: unknown, label: string) {
@@ -75,7 +75,7 @@ async function buildEmail(job: EmailJobRecord): Promise<CreateEmailOptions> {
             from: senderEmail,
             to: job.recipient,
             subject: "Chào mừng bạn đến với bản tin Athena Stock",
-            html: layout(`<h2>Chào bạn,</h2><p>Cảm ơn bạn đã đăng ký nhận bài viết mới từ Athena Stock.</p><p>Chúng tôi chỉ gửi nội dung liên quan đến đầu tư giá trị, phân tích doanh nghiệp và tâm lý tài chính.</p><p style="text-align:center">${linkButton(job.payload.homeUrl, "Ghé thăm Athena Stock")}</p><p style="font-size:12px;color:#666">Bạn có thể hủy đăng ký bất cứ lúc nào: ${linkButton(job.payload.unsubscribeUrl, "Hủy đăng ký")}</p>`),
+            html: layout(`<h2>Chào bạn,</h2><p>Cảm ơn bạn đã đăng ký nhận bài viết mới từ Athena Stock — Investment Thinking House.</p><p><strong>Đầu tư như một người chủ doanh nghiệp.</strong></p><p>Hiểu doanh nghiệp. Hiểu chính mình. Xây dựng tài sản bền vững.</p><p>Bản tin tập trung vào nghiên cứu doanh nghiệp, framework ra quyết định và tâm lý nhà đầu tư.</p><p style="text-align:center">${linkButton(job.payload.homeUrl, "Ghé thăm Athena Stock")}</p><p style="font-size:12px;color:#666">Bạn có thể hủy đăng ký bất cứ lúc nào: ${linkButton(job.payload.unsubscribeUrl, "Hủy đăng ký")}</p>`),
         }
     }
 

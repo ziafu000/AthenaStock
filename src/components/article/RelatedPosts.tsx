@@ -46,14 +46,14 @@ export function RelatedPosts({ posts }: RelatedPostsProps) {
                     <div>
                         <h2 className="font-serif text-2xl font-bold text-[#9c1850] dark:text-[#faf8f6]">Đọc tiếp có chọn lọc</h2>
                         <p className="mt-2 text-sm leading-relaxed text-muted-foreground font-sans">
-                            Một vài bài liên quan để nối tiếp mạch đọc, hoặc để lại email nếu bạn muốn nhận bài viết mới.
+                            Nhận các bài viết dài về doanh nghiệp, framework và tâm lý nhà đầu tư, hoặc tiếp tục với các bài liên quan.
                         </p>
                     </div>
 
                     <div className="w-full border-t border-border/20 pt-4">
                         {status === "success" ? (
                             <div className="flex items-center gap-2 text-green-600 dark:text-green-400 font-medium text-sm border border-green-500/20 bg-green-500/5 px-4 py-2.5 rounded-full animate-in fade-in duration-300 w-fit">
-                                <span>✓ Đăng ký thành công! Hãy check email.</span>
+                                <span>✓ Đăng ký thành công! Hãy kiểm tra email chào mừng.</span>
                             </div>
                         ) : (
                             <div className="flex flex-col gap-1.5 w-full font-sans items-center">

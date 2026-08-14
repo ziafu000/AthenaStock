@@ -4,7 +4,7 @@ import Link from "next/link"
 
 export const metadata = {
     title: "Tư vấn & Đồng hành – Athena Stock",
-    description: "Đồng hành trong hành trình đầu tư dài hạn. Không bán kèo, không hứa lợi nhuận, không áp lực.",
+    description: "Đồng hành giáo dục để xây dựng quy trình ra quyết định đầu tư độc lập, có nguyên tắc và dựa trên bằng chứng.",
 }
 
 export default function AdvisoryPage() {
@@ -42,7 +42,7 @@ export default function AdvisoryPage() {
                         Tư vấn & <span className="text-[#e61c5c] italic font-medium">Đồng hành</span>
                     </h1>
                     <p className="mx-auto max-w-xl text-base text-gray-650 dark:text-[#a0a5b5] leading-relaxed font-sans">
-                        Chúng tôi ở đây để đồng hành cùng tư duy dài hạn của bạn — không phải cung cấp mã độc lập, mà giúp bạn làm chủ quyết định.
+                        Đồng hành giáo dục để bạn xây dựng quy trình ra quyết định độc lập, có nguyên tắc và dựa trên bằng chứng.
                     </p>
                 </div>
             </section>
@@ -57,7 +57,7 @@ export default function AdvisoryPage() {
                     <div className="relative border border-red-500/20 bg-red-950/[0.04] rounded-3xl p-6 md:p-8 backdrop-blur-md">
                         <p className="text-lg font-serif font-bold text-[#e61c5c] mb-2">Tuyên bố rõ ràng</p>
                         <p className="text-[#a0a5b5] text-sm md:text-base leading-relaxed font-sans">
-                            Đây <strong className="text-white font-medium">không phải</strong> dịch vụ phím hàng hay khuyến nghị mua bán chứng khoán. Chúng tôi chỉ cung cấp hệ thống tư duy phân tích định tính và đồng hành phát triển năng lực đầu tư.
+                            Đây là hoạt động giáo dục và đồng hành tư duy, không phải quản lý tài sản, quyết định thay bạn, tư vấn mua bán cá nhân hay cam kết kết quả đầu tư.
                         </p>
                     </div>
 
@@ -72,19 +72,19 @@ export default function AdvisoryPage() {
                             <ul className="space-y-4 text-[#a0a5b5] text-sm font-sans">
                                 <li className="flex items-start gap-3">
                                     <span className="text-red-500 font-bold shrink-0">✕</span>
-                                    <span>Lựa chọn cổ phiếu ăn bằng lần ngắn hạn.</span>
+                                    <span>Quyết định mã chứng khoán hoặc thời điểm giao dịch thay bạn.</span>
                                 </li>
                                 <li className="flex items-start gap-3">
                                     <span className="text-red-500 font-bold shrink-0">✕</span>
-                                    <span>Cam kết mức sinh lời X% một cách cơ học.</span>
+                                    <span>Cam kết mức sinh lời hoặc bảo đảm kết quả đầu tư.</span>
                                 </li>
                                 <li className="flex items-start gap-3">
                                     <span className="text-red-500 font-bold shrink-0">✕</span>
-                                    <span>Đoán trước đỉnh đáy hay xu hướng thị trường hàng ngày.</span>
+                                    <span>Dự báo chắc chắn diễn biến thị trường ngắn hạn.</span>
                                 </li>
                                 <li className="flex items-start gap-3">
                                     <span className="text-red-500 font-bold shrink-0">✕</span>
-                                    <span>Giao dịch liên tục hoặc tạo áp lực doanh số.</span>
+                                    <span>Quản lý tài sản hoặc thực hiện giao dịch trên tài khoản của bạn.</span>
                                 </li>
                             </ul>
                         </div>
@@ -102,15 +102,15 @@ export default function AdvisoryPage() {
                                 </li>
                                 <li className="flex items-start gap-3">
                                     <span className="text-green-500 font-bold shrink-0">✓</span>
-                                    <span>Review và sàng lọc danh mục theo khía cạnh kinh doanh.</span>
+                                    <span>Thực hành quy trình ra quyết định qua các tình huống nghiên cứu.</span>
                                 </li>
                                 <li className="flex items-start gap-3">
                                     <span className="text-green-500 font-bold shrink-0">✓</span>
-                                    <span>Khắc chế các bẫy tâm lý tham lam & sợ hãi.</span>
+                                    <span>Nhận diện thiên kiến và phản ứng cảm xúc trong đầu tư.</span>
                                 </li>
                                 <li className="flex items-start gap-3">
                                     <span className="text-green-500 font-bold shrink-0">✓</span>
-                                    <span>Làm chỗ dựa tâm lý trước các cú sập thị trường.</span>
+                                    <span>Xây dựng checklist để tự đánh giá chất lượng quyết định.</span>
                                 </li>
                             </ul>
                         </div>
@@ -128,9 +128,9 @@ export default function AdvisoryPage() {
                                     <Check className="w-5 h-5 text-green-400" /> Phù hợp
                                 </h3>
                                 <ul className="space-y-3 text-sm text-[#a0a5b5] font-sans">
-                                    <li>• Muốn thoát ly khỏi vòng xoáy trading liên tục để hướng đến sự bền vững dài hạn.</li>
-                                    <li>• Muốn tìm kiếm sự an tâm sâu thẳm, ngủ ngon giấc kể cả khi thị trường giảm điểm.</li>
-                                    <li>• Muốn học cách tự tư duy độc lập thay vì chạy theo các room VIP hóng tin đồn.</li>
+                                    <li>• Muốn xây dựng phương pháp đầu tư dài hạn có nguyên tắc.</li>
+                                    <li>• Sẵn sàng kiểm chứng giả định bằng dữ liệu và bằng chứng.</li>
+                                    <li>• Muốn phát triển năng lực tự tư duy và tự chịu trách nhiệm.</li>
                                 </ul>
                             </div>
 
@@ -139,9 +139,9 @@ export default function AdvisoryPage() {
                                     <X className="w-5 h-5 text-red-400" /> Không phù hợp
                                 </h3>
                                 <ul className="space-y-3 text-sm text-[#a0a5b5] font-sans">
-                                    <li>• Tìm kiếm bí kíp nhân đôi tài sản cấp tốc hoặc các kèo phím nhanh chóng.</li>
-                                    <li>• Muốn người khác cầm tay chỉ việc hoặc đưa sẵn đáp án mà không cần suy nghĩ.</li>
-                                    <li>• Mong đợi một cam kết lợi nhuận cứng nhắc từ dịch vụ tư vấn.</li>
+                                    <li>• Tìm kiếm đáp án mua bán cụ thể hoặc kết quả nhanh.</li>
+                                    <li>• Muốn người khác ra quyết định thay mà không cần tự phân tích.</li>
+                                    <li>• Mong đợi cam kết lợi nhuận hoặc bảo đảm không thua lỗ.</li>
                                 </ul>
                             </div>
                         </div>
@@ -158,9 +158,9 @@ export default function AdvisoryPage() {
 
                         <div className="grid md:grid-cols-3 gap-6">
                             {[
-                                { icon: MessageCircle, title: "Trao đổi ban đầu", desc: "60 phút trao đổi thoải mái để thấu hiểu tư duy và định hướng đầu tư của nhau.", fee: "Miễn phí (Không cam kết)" },
-                                { icon: Users, title: "Đồng hành định kỳ", desc: "Trao đổi hàng tháng để review doanh nghiệp, cập nhật mindset và giải quyết các bài toán tâm lý.", fee: "Liên hệ thỏa thuận" },
-                                { icon: FileSearch, title: "Định giá & Phân tích", desc: "Deep-dive vào danh mục hiện tại và kiểm tra kỹ lưỡng mô hình kinh doanh của các doanh nghiệp đang nắm giữ.", fee: "Liên hệ thỏa thuận" }
+                                { icon: MessageCircle, title: "Trao đổi ban đầu", desc: "60 phút để hiểu bối cảnh, mục tiêu học tập và mức độ phù hợp của hai bên.", fee: "Miễn phí (Không cam kết)" },
+                                { icon: Users, title: "Đồng hành định kỳ", desc: "Trao đổi hàng tháng để rà lại quy trình, giả định và chất lượng tư duy ra quyết định.", fee: "Liên hệ thỏa thuận" },
+                                { icon: FileSearch, title: "Phân tích tình huống", desc: "Thực hành trên case study doanh nghiệp và framework; không đưa khuyến nghị mua bán cá nhân.", fee: "Liên hệ thỏa thuận" }
                             ].map((item, idx) => {
                                 const Icon = item.icon
                                 return (
@@ -187,10 +187,10 @@ export default function AdvisoryPage() {
 
                         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
                             {[
-                                { step: "01", title: "Kết nối & Lắng nghe", desc: "Buổi gặp mặt trực tuyến đầu tiên để thấu hiểu bối cảnh và mục tiêu tài chính của bạn." },
-                                { step: "02", title: "Đánh giá mức độ fit", desc: "Cả hai bên cùng đưa ra lựa chọn có tiếp tục đồng hành hay không. Tuyệt đối không chèo kéo." },
-                                { step: "03", title: "Ký kết & Thực hiện", desc: "Bắt đầu quy trình định kỳ hàng tuần/hàng tháng để mài sắc mindset đầu tư có kỷ luật." },
-                                { step: "04", title: "Tự chủ hành trình", desc: "Mục đích tối thượng là giúp bạn tự đứng vững và tự tin ra quyết định không phụ thuộc bất kỳ ai." }
+                                { step: "01", title: "Kết nối & Lắng nghe", desc: "Buổi gặp trực tuyến đầu tiên để hiểu bối cảnh và mục tiêu học tập của bạn." },
+                                { step: "02", title: "Đánh giá mức độ phù hợp", desc: "Hai bên cùng xác định liệu cách đồng hành này có phù hợp để tiếp tục hay không." },
+                                { step: "03", title: "Thống nhất & Thực hiện", desc: "Bắt đầu nhịp trao đổi hàng tháng với mục tiêu và phạm vi rõ ràng." },
+                                { step: "04", title: "Tự chủ hành trình", desc: "Hướng đến khả năng tự nghiên cứu, tự ra quyết định và tự chịu trách nhiệm." }
                             ].map((item, idx) => (
                                 <div key={idx} className="border border-white/[0.04] bg-white/[0.01] rounded-2xl p-6 relative">
                                     <span className="absolute top-4 right-6 text-4xl font-serif font-black text-white/[0.03]">{item.step}</span>
@@ -227,9 +227,9 @@ export default function AdvisoryPage() {
                             <ShieldAlert className="w-5 h-5 text-accent" /> Miễn trừ trách nhiệm quan trọng
                         </h3>
                         <div className="text-xs text-[#a0a5b5] space-y-2 leading-relaxed font-sans">
-                            <p><strong>• Không tư vấn pháp lý tài chính:</strong> Toàn bộ nội dung trao đổi chỉ là góc nhìn nghiên cứu và phân tích định tính, không cấu thành lời khuyên đầu tư chuyên nghiệp được pháp luật bảo trợ.</p>
-                            <p><strong>• Rủi ro vốn có:</strong> Thị trường chứng khoán luôn có những biến số bất ngờ. Chúng tôi không cam kết, hứa hẹn hay bảo lãnh bất kỳ tỷ suất sinh lời nào.</p>
-                            <p><strong>• Quyết định tự chủ:</strong> Bạn chịu trách nhiệm hoàn toàn 100% đối với tài sản của mình và mọi quyết định giải ngân trên tài khoản cá nhân.</p>
+                            <p><strong>• Phạm vi giáo dục:</strong> Mọi trao đổi nhằm phát triển tư duy và năng lực nghiên cứu, không phải tư vấn tài chính, pháp lý hay khuyến nghị mua bán dành cho cá nhân.</p>
+                            <p><strong>• Rủi ro vốn có:</strong> Đầu tư luôn có rủi ro. Athena Stock không cam kết, hứa hẹn hay bảo lãnh bất kỳ kết quả hoặc tỷ suất sinh lời nào.</p>
+                            <p><strong>• Quyết định tự chủ:</strong> Bạn tự chịu trách nhiệm về tài sản và mọi quyết định trên tài khoản cá nhân; Athena Stock không quản lý hoặc giao dịch thay bạn.</p>
                         </div>
                         <div className="pt-4 border-t border-white/[0.04]">
                             <Link href="/disclaimer" className="text-xs text-accent hover:underline flex items-center gap-1">

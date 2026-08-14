@@ -194,3 +194,12 @@ Phần này là source of truth cho booking hiện tại. Phần triển khai ch
 - Typecheck, lint và production build là gate bắt buộc trước khi commit/deploy.
 - Automated route/link contracts and a non-mutating HTTP smoke suite are included. Database-concurrency, full browser E2E, and successful write/email flows remain manual production checks in `DEPLOYMENT.md`.
 - Migrations là additive/forward-only. Khi rollback code, không xóa migration đã áp dụng hoặc lịch sử booking.
+
+## 8. Investment Thinking House content rollout
+
+Cập nhật ngày 2026-08-14. Đây là rollout nội dung/metadata, tách biệt với các release gate kỹ thuật ở Mục 1.
+
+- [x] P0 — đồng bộ copy ở Advisory, search, booking, footer, cộng tác và disclaimer; không đổi UI hay logic.
+- [x] P1 — đồng bộ site metadata, header, trang chủ, About, các content hub và newsletter/email theo định vị Investment Thinking House.
+- [ ] P2 — rà soát và biên tập corpus MDX/blog theo chuẩn nội dung; không nằm trong tranche này.
+- [ ] P3 — các hạng mục mở rộng sau P2 sẽ được lập phạm vi và acceptance criteria riêng; chưa triển khai trong tranche này.

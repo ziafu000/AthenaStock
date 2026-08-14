@@ -4,30 +4,30 @@ import { cn } from "@/lib/utils"
 
 export const metadata = {
     title: "Series – Athena Stock",
-    description: "Lộ trình đọc có hệ thống để xây dựng năng lực tư duy đầu tư từ nền tảng đến chuyên sâu.",
+    description: "Các lộ trình học tập được cấu trúc để kết nối tư duy đầu tư, nghiên cứu doanh nghiệp và tài chính hành vi.",
 }
 
 const seriesData = [
     {
         title: "Nền tảng Tư duy Đầu tư",
-        description: "Bắt đầu từ đây: hiểu sâu sắc triết lý cốt lõi, nhận diện các sai lầm hành vi kinh điển, và nắm vững checklist phân tích mô hình doanh nghiệp.",
+        description: "Các bài nền tảng giúp kết nối triết lý đầu tư, thiên kiến hành vi và checklist nghiên cứu doanh nghiệp.",
         articles: [
             { slug: "/articles/triet-ly-dai-han", title: "Triết lý Đầu tư Dài hạn & Margin of Safety" },
-            { slug: "/psychology/sai-lam-hanh-vi", title: "Sai lầm Hành vi: FOMO, Tham-Sợ & Nghiện Giao dịch" },
+            { slug: "/psychology/sai-lam-hanh-vi", title: "Thiên kiến và Kỷ luật trong Ra quyết định" },
             { slug: "/frameworks/checklist-phan-tich", title: "Checklist Phân tích Doanh nghiệp" },
         ],
         color: "accent",
     },
     {
         title: "Đọc hiểu Báo cáo Tài chính",
-        description: "Loạt bài giúp bạn đọc vị và thấu hiểu những con số khô khan trong báo cáo tài chính một cách đơn giản, thực dụng nhất.",
+        description: "Loạt bài dự kiến về cách đọc báo cáo tài chính, nhận diện giả định và đặt số liệu vào bối cảnh kinh doanh.",
         articles: [],
         comingSoon: true,
         color: "blue",
     },
     {
         title: "Tâm lý học Đầu tư chuyên sâu",
-        description: "Giải mã chuyên sâu các thiên kiến nhận thức phức tạp và xây dựng bộ giáp tâm lý kiên cố trước mọi chu kỳ điên cuồng của đám đông.",
+        description: "Loạt bài dự kiến về thiên kiến nhận thức, cảm xúc và cách thiết kế quy trình ra quyết định có điểm kiểm tra.",
         articles: [],
         comingSoon: true,
         color: "orange",
@@ -65,7 +65,7 @@ export default function SeriesPage() {
                         Lộ trình & <span className="text-[#e61c5c] italic font-medium">Series học tập</span>
                     </h1>
                     <p className="mx-auto max-w-xl text-base text-gray-650 dark:text-[#a0a5b5] leading-relaxed font-sans">
-                        Hệ thống bài đọc được sắp xếp từ nền tảng đến chuyên sâu — xây dựng năng lực tư duy phân tích doanh nghiệp và kiểm soát hành vi đầu tư.
+                        Các lộ trình học tập được cấu trúc để kết nối khái niệm, bài nghiên cứu và framework theo từng chủ đề.
                     </p>
                 </div>
             </section>
@@ -141,7 +141,7 @@ export default function SeriesPage() {
                             <ShieldAlert className="w-5 h-5 text-accent" /> Đề xuất lộ trình đọc
                         </h2>
                         <p className="text-sm text-[#a0a5b5] leading-relaxed font-sans">
-                            Nếu bạn là người mới ghé thăm website, chúng tôi khuyến khích đọc một cách có hệ thống theo đúng thứ tự từ trên xuống của Series 1. Mỗi bài viết đã được xây dựng làm tiền đề kiến thức hỗ trợ cho bài tiếp theo.
+                            Bạn có thể bắt đầu từ Series 1 và điều chỉnh thứ tự theo nền tảng hiện tại. Mỗi lộ trình gợi ý một mạch đọc để kết nối các khái niệm, không phải chương trình bắt buộc.
                         </p>
                     </div>
 

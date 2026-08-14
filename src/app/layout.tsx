@@ -19,11 +19,11 @@ const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif"
 export const metadata: Metadata = {
     metadataBase: new URL(siteConfig.url),
     title: {
-        template: "%s | Athena Stock",
+        template: "%s | Athena Stock — Investment Thinking House",
         default: siteConfig.title,
     },
     description: siteConfig.description,
-    keywords: ["đầu tư giá trị", "phân tích doanh nghiệp", "tư duy đầu tư", "warren buffett", "tâm lý đầu tư", "chứng khoán", "dài hạn", "investment thinking"],
+    keywords: ["Investment Thinking House", "đầu tư như một người chủ doanh nghiệp", "phân tích doanh nghiệp", "tư duy đầu tư", "tâm lý nhà đầu tư", "framework đầu tư", "đầu tư dài hạn", "ra quyết định đầu tư"],
     alternates: {
         canonical: "/",
     },

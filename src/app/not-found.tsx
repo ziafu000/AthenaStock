@@ -3,7 +3,7 @@ import { ArrowLeft, Compass, Home } from "lucide-react"
 import { ScrollReveal } from "@/components/ui/ScrollReveal"
 
 export const metadata = {
-    title: "404 – Lạc lối? | Đầu tư tỉnh thức",
+    title: "404 – Không tìm thấy trang | Athena Stock",
     description: "Trang không tìm thấy. Hãy quay về vùng biên an toàn.",
 }
 

@@ -3,8 +3,8 @@ import { getAllPosts } from "@/lib/mdx"
 import { TrendingUp, ShieldAlert } from "lucide-react"
 
 export const metadata = {
-    title: "Business Analysis – Đầu tư tỉnh thức",
-    description: "Phân tích doanh nghiệp chuyên sâu theo triết lý Warren Buffett.",
+    title: "Phân tích doanh nghiệp – Athena Stock",
+    description: "Nghiên cứu doanh nghiệp có cấu trúc, dựa trên bằng chứng và nêu rõ giả định.",
 }
 
 export default async function BusinessListingPage() {
@@ -40,7 +40,7 @@ export default async function BusinessListingPage() {
                         Business <span className="text-[#e61c5c] italic font-medium">Analysis</span>
                     </h1>
                     <p className="mx-auto max-w-xl text-base text-gray-650 dark:text-[#a0a5b5] leading-relaxed font-sans">
-                        Mổ xẻ sâu sắc hoạt động và mô hình kinh doanh của doanh nghiệp. Đi tìm lợi thế cạnh tranh cốt lõi.
+                        Nghiên cứu có cấu trúc về mô hình kinh doanh, quản trị, tài chính, lợi thế cạnh tranh và rủi ro.
                     </p>
                 </div>
             </section>
@@ -69,10 +69,10 @@ export default async function BusinessListingPage() {
                     {/* Context Guide Box */}
                     <div className="max-w-4xl mx-auto border border-white/[0.06] bg-white/[0.01] rounded-2xl p-6 md:p-8 space-y-3">
                         <h2 className="text-lg font-serif font-bold text-[#faf8f6] flex items-center gap-2">
-                            <ShieldAlert className="w-5 h-5 text-accent" /> Triết lý phân tích của chúng tôi
+                            <ShieldAlert className="w-5 h-5 text-accent" /> Cách chúng tôi nghiên cứu doanh nghiệp
                         </h2>
                         <p className="text-sm text-[#a0a5b5] leading-relaxed font-sans">
-                            Mỗi bài viết ở đây tập trung hoàn toàn vào việc nghiên cứu mô hình kiếm tiền, rào cản phòng thủ (Moat), năng lực ban lãnh đạo và giá trị nội tại ước tính của doanh nghiệp. Chúng tôi tuyệt đối nói không với khuyến nghị đầu cơ ăn chênh lệch giá ngắn hạn hay phím lệnh giao dịch.
+                            Mỗi bài phân tích là một nghiên cứu tình huống dựa trên thông tin công khai, với giả định và giới hạn được nêu rõ. Nội dung phục vụ giáo dục và nghiên cứu, không phải khuyến nghị mua hoặc bán dành cho từng cá nhân.
                         </p>
                     </div>
                 </div>

@@ -26,28 +26,28 @@ async function getFeaturedContent() {
 const exploreLinks = [
     {
         title: "Business Analysis",
-        description: "Phân tích mô hình kinh doanh",
+        description: "Nghiên cứu doanh nghiệp dựa trên bằng chứng",
         href: "/business",
         icon: TrendingUp,
         color: "blue",
     },
     {
         title: "Tâm lý & Hành vi",
-        description: "Nhận diện thiên kiến tâm lý",
+        description: "Hiểu thiên kiến và hành vi tài chính",
         href: "/psychology",
         icon: Brain,
         color: "wine",
     },
     {
         title: "Frameworks",
-        description: "Checklist & bộ khung tư duy",
+        description: "Quy trình ra quyết định có thể lặp lại",
         href: "/frameworks",
         icon: ListChecks,
         color: "crimson",
     },
     {
         title: "Series",
-        description: "Lộ trình học có hệ thống",
+        description: "Lộ trình học tập được cấu trúc",
         href: "/series",
         icon: Compass,
         color: "slate",
@@ -105,12 +105,12 @@ export default async function Home() {
                     {/* Headline combining Playfair Serif Bold & Playfair Serif Italic */}
                     <h1 className="text-4xl font-serif font-bold tracking-tight text-[#9c1850] dark:text-[#faf8f6] sm:text-5xl md:text-6xl lg:text-7xl leading-[1.15] animate-fade-in-up-delay-2">
                         <span className="block mb-1">Đầu tư như một</span>
-                        <span className="text-[#e61c5c] italic font-medium block mt-3">người chủ doanh nghiệp</span>
+                        <span className="text-[#e61c5c] italic font-medium block mt-3">người chủ doanh nghiệp.</span>
                     </h1>
 
                     <p className="mx-auto max-w-2xl text-sm md:text-base text-gray-650 dark:text-[#a0a5b5] leading-relaxed font-sans animate-fade-in-up-delay-3">
-                        Không mua "mã chứng khoán", mà mua phần sở hữu doanh nghiệp.<br className="hidden sm:block" />
-                        Nghiên cứu có chiều sâu. Tư duy có kỷ luật. Quyết định tự chủ.
+                        Hiểu doanh nghiệp. Hiểu chính mình.{" "}<br className="hidden sm:block" />
+                        Xây dựng tài sản bền vững.
                     </p>
 
                     {/* Content Carousel container */}
@@ -145,10 +145,10 @@ export default async function Home() {
                     <div className="text-center mb-20">
                         <ScrollReveal>
                             <h2 className="text-3xl md:text-5xl font-sans font-bold text-white mb-4">
-                                Ba trụ cột của <span className="font-serif italic font-light text-[#e61c5c]">tư duy đầu tư</span>
+                                Ba năng lực của <span className="font-serif italic font-light text-[#e61c5c]">nhà đầu tư như người chủ</span>
                             </h2>
                             <p className="text-[#a0a5b5] max-w-2xl mx-auto text-sm md:text-base font-sans">
-                                Hệ thống tư duy giúp bạn phân tích doanh nghiệp, kiểm soát hành vi và ra quyết định độc lập.
+                                Một hệ thống bình tĩnh, có nguyên tắc và dựa trên bằng chứng để ra quyết định độc lập.
                             </p>
                         </ScrollReveal>
                     </div>
@@ -162,9 +162,9 @@ export default async function Home() {
                                     <div className="mb-6 inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-white/[0.04] text-[#4271b3] border border-white/[0.08]">
                                         <TrendingUp className="h-6 w-6" />
                                     </div>
-                                    <h3 className="mb-4 text-xl font-bold font-serif text-white">Business Mindset</h3>
+                                    <h3 className="mb-4 text-xl font-bold font-serif text-white">Hiểu doanh nghiệp</h3>
                                     <p className="text-[#a0a5b5] leading-relaxed text-sm font-sans">
-                                        Không mua &quot;mã chứng khoán&quot;, mà mua &quot;phần sở hữu doanh nghiệp&quot;. Hiểu rõ mô hình kinh doanh, lợi thế cạnh tranh và định giá.
+                                        Nghiên cứu cách doanh nghiệp tạo giá trị, phân bổ vốn và duy trì lợi thế cạnh tranh trong bối cảnh cụ thể.
                                     </p>
                                 </div>
                             </div>
@@ -178,9 +178,9 @@ export default async function Home() {
                                     <div className="mb-6 inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-white/[0.04] text-[#e61c5c] border border-white/[0.08]">
                                         <ShieldCheck className="h-6 w-6" />
                                     </div>
-                                    <h3 className="mb-4 text-xl font-bold font-serif text-white">Margin of Safety</h3>
+                                    <h3 className="mb-4 text-xl font-bold font-serif text-white">Ra quyết định có hệ thống</h3>
                                     <p className="text-[#a0a5b5] leading-relaxed text-sm font-sans">
-                                        Luôn đòi hỏi biên an toàn trong mọi quyết định. Bảo vệ vốn là ưu tiên số 1, kiếm lợi nhuận là ưu tiên số 2.
+                                        Dùng checklist, giả định và biên an toàn để xem xét rủi ro, sai số và bất định trước mỗi quyết định.
                                     </p>
                                 </div>
                             </div>
@@ -194,9 +194,9 @@ export default async function Home() {
                                     <div className="mb-6 inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-white/[0.04] text-[#9c1850] dark:text-[#e24a8d] border border-white/[0.08]">
                                         <Brain className="h-6 w-6" />
                                     </div>
-                                    <h3 className="mb-4 text-xl font-bold font-serif text-white">Behavioral Control</h3>
+                                    <h3 className="mb-4 text-xl font-bold font-serif text-white">Hiểu chính mình</h3>
                                     <p className="text-[#a0a5b5] leading-relaxed text-sm font-sans">
-                                        Nhận diện các thiên kiến tâm lý (FOMO, Loss Aversion). Chiến thắng chính mình khó hơn chiến thắng thị trường.
+                                        Nhận diện thiên kiến, cảm xúc và giới hạn năng lực để duy trì kỷ luật khi thông tin và thị trường thay đổi.
                                     </p>
                                 </div>
                             </div>
@@ -260,9 +260,9 @@ export default async function Home() {
                     <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-16 gap-4">
                         <ScrollReveal direction="left" className="space-y-2">
                             <h2 className="text-3xl md:text-5xl font-sans font-bold text-white">
-                                Phân tích <span className="font-serif italic font-light text-[#e61c5c]">& Bài viết</span>
+                                Nghiên cứu <span className="font-serif italic font-light text-[#e61c5c]">& Tư duy</span>
                             </h2>
-                            <p className="text-[#a0a5b5] font-sans text-sm md:text-base">Góc nhìn nghiên cứu về đầu tư giá trị và tâm lý thị trường.</p>
+                            <p className="text-[#a0a5b5] font-sans text-sm md:text-base">Bài viết dài và phân tích có cấu trúc về doanh nghiệp, framework và tâm lý nhà đầu tư.</p>
                         </ScrollReveal>
                         <ScrollReveal direction="right" className="self-start md:self-auto">
                             <Link
@@ -336,11 +336,11 @@ export default async function Home() {
                     <ScrollReveal className="space-y-8">
                         {/* Heading combining Outfit Sans & Playfair Serif Italic */}
                         <h2 className="text-3xl md:text-5xl font-sans font-extrabold text-[#1c1d21] dark:text-[#faf8f6] leading-tight">
-                            Sẵn sàng <span className="font-serif italic font-light text-[#9c1850] dark:text-[#e61c5c] block mt-1">xây dựng tư duy đầu tư?</span>
+                            Sẵn sàng <span className="font-serif italic font-light text-[#9c1850] dark:text-[#e61c5c] block mt-1">xây dựng hệ thống đầu tư của riêng bạn?</span>
                         </h2>
 
                         <p className="max-w-xl mx-auto font-sans leading-relaxed text-sm md:text-base text-gray-650 dark:text-[#a0a5b5]">
-                            Nếu bạn muốn trao đổi về hành trình đầu tư dài hạn — không phải để xin mã, mà để hiểu cách tư duy.
+                            Bắt đầu từ một quy trình giúp bạn nghiên cứu có cấu trúc, kiểm tra giả định và tự chịu trách nhiệm với quyết định của mình.
                         </p>
 
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
@@ -348,7 +348,7 @@ export default async function Home() {
                                 href="/advisory"
                                 className="w-full sm:w-auto h-12 px-8 rounded-full bg-[#9c1850] hover:bg-[#861244] text-white font-semibold flex items-center justify-center transition-all shadow-md active:scale-[0.97]"
                             >
-                                Tìm hiểu về Tư vấn
+                                Tìm hiểu cách đồng hành
                             </Link>
                             <Link
                                 href="/series"

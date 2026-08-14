@@ -164,10 +164,10 @@ function BookingModalContent() {
                         </div>
                         <h3 className="text-2xl font-serif font-bold text-white">Yêu cầu đã được nhận!</h3>
                         <p className="text-sm text-[#a0a5b5] leading-relaxed max-w-md mx-auto font-sans">
-                            Chào <strong className="text-white">{name}</strong>, chúng tôi đã tiếp nhận yêu cầu và gửi email thông báo phê duyệt tới quản trị viên.
+                            Chào <strong className="text-white">{name}</strong>, yêu cầu của bạn đã được gửi tới quản trị viên và chưa phải là lịch hẹn đã xác nhận.
                         </p>
                         <p className="text-xs text-[#e61c5c] font-semibold bg-[#e61c5c]/5 border border-[#e61c5c]/10 py-2.5 px-4 rounded-xl inline-block max-w-xs font-sans">
-                            Athena Stock sẽ phản hồi xác nhận lịch hẹn vào hòm thư email của bạn sớm nhất trong vòng 24 giờ.
+                            Quản trị viên sẽ xem xét và gửi email xác nhận hoặc đề xuất khung giờ khác trong vòng 24 giờ.
                         </p>
                         <div className="pt-6">
                             <button
@@ -185,7 +185,7 @@ function BookingModalContent() {
                                 Đặt lịch <span className="text-[#e61c5c] italic font-medium">Hẹn trao đổi</span>
                             </h3>
                             <p className="text-xs text-[#a0a5b5] font-sans">
-                                Nhập khung giờ rảnh mong muốn. Chúng tôi sẽ xử lý yêu cầu và gửi email xác nhận cho bạn.
+                                Chọn khung giờ mong muốn. Quản trị viên sẽ xem xét và gửi email xác nhận sau khi tiếp nhận yêu cầu.
                             </p>
                         </div>
 
@@ -290,6 +290,10 @@ function BookingModalContent() {
                                 onToken={handleCaptchaToken}
                                 resetKey={captchaResetKey}
                             />
+
+                            <p className="text-[10px] text-muted-foreground leading-relaxed">
+                                Thông tin bạn gửi chỉ được dùng để xử lý và xác nhận lịch hẹn; không dùng cho marketing nếu chưa có sự đồng ý của bạn.
+                            </p>
 
                             <div className="pt-4">
                                 <button

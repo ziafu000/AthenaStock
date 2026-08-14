@@ -201,7 +201,7 @@ export function SearchBubble() {
                     type="text"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    placeholder="Tìm kiếm..."
+                    placeholder="Tìm bài viết, phân tích, framework, tâm lý..."
                 />
                 <button
                     onClick={handleSearchClick}
@@ -297,7 +297,7 @@ export function SearchBubble() {
                                     Tìm kiếm nhanh
                                 </h5>
                                 <p className="text-[9px] text-muted-foreground leading-normal font-sans">
-                                    Nhập từ khóa để tìm bài viết, framework và nghiên cứu nội bộ.
+                                    Tìm bài viết, phân tích doanh nghiệp, framework và nội dung tâm lý nhà đầu tư.
                                 </p>
                             </div>
                         </div>

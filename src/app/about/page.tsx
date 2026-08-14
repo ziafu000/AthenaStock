@@ -3,8 +3,8 @@ import Image from "next/image"
 import { Check, X, ShieldAlert } from "lucide-react"
 
 export const metadata = {
-    title: "Về chúng tôi & Triết lý – Athena Stock",
-    description: "Athena Stock là hệ thống nghiên cứu và phát triển năng lực đầu tư giá trị. Không bán kèo, không hứa lợi nhuận — chỉ tư duy và bằng chứng.",
+    title: "Về Athena Stock – Investment Thinking House",
+    description: "Athena Stock là Investment Thinking House: hiểu doanh nghiệp, hiểu chính mình và xây dựng tài sản bền vững.",
 }
 
 export default function AboutPage() {
@@ -42,8 +42,8 @@ export default function AboutPage() {
                         Về chúng tôi & <span className="text-[#e61c5c] italic font-medium">Triết lý</span>
                     </h1>
                     <p className="mx-auto max-w-xl text-base text-gray-650 dark:text-[#a0a5b5] leading-relaxed font-sans">
-                        Một hệ thống nghiên cứu đầu tư — không phải blog cá nhân.<br />
-                        Phân tích có bằng chứng. Tư duy có kỷ luật. Không bán kèo.
+                        Athena Stock là Investment Thinking House.<br />
+                        Hiểu doanh nghiệp. Hiểu chính mình. Xây dựng tài sản bền vững.
                     </p>
                 </div>
             </section>
@@ -60,10 +60,10 @@ export default function AboutPage() {
                         </h2>
                         <div className="max-w-3xl mx-auto space-y-6 text-[#a0a5b5] text-sm md:text-base leading-relaxed font-sans text-justify md:text-center">
                             <p>
-                                Athena Stock là <strong className="text-white font-medium">hệ thống nghiên cứu và phát triển năng lực đầu tư giá trị</strong> — nơi phân tích doanh nghiệp dựa trên bằng chứng, không phải tín hiệu. Chúng tôi tin rằng nhà đầu tư dài hạn cần tư duy như một người chủ doanh nghiệp: hiểu mô hình kinh doanh, đòi hỏi biên an toàn và kiểm soát được cảm xúc trước biến động thị trường.
+                                Athena Stock là <strong className="text-white font-medium">Investment Thinking House</strong> — không gian nghiên cứu và học tập về tư duy đầu tư, nơi phân tích doanh nghiệp dựa trên bằng chứng, xây dựng framework ra quyết định và tìm hiểu tâm lý nhà đầu tư.
                             </p>
                             <p>
-                                Không có kèo. Không có cam kết lợi nhuận. Không có "góc nhìn cá nhân" thiếu nền tảng. Chỉ có phương pháp nghiên cứu rõ ràng, tư duy có kỷ luật và nội dung được kiểm chứng — để bạn tự đưa ra quyết định độc lập.
+                                North Star của chúng tôi là <strong className="text-white font-medium">“Đầu tư như một người chủ doanh nghiệp.”</strong> Góc nhìn này giúp nhà đầu tư đặt câu hỏi có cấu trúc, hiểu giới hạn của bằng chứng và tự chịu trách nhiệm với quyết định của mình.
                             </p>
                         </div>
                     </div>
@@ -76,10 +76,10 @@ export default function AboutPage() {
                         
                         <div className="grid md:grid-cols-2 gap-6">
                             {[
-                                { title: "Sở hữu doanh nghiệp", desc: "Mua cổ phiếu là mua một phần quyền sở hữu của một doanh nghiệp đang hoạt động, không phải một mẩu giấy để đầu cơ." },
-                                { title: "Giá cả vs Giá trị", desc: "Thị trường quyết định giá cả mỗi giây, nhưng chính nội tại và triển vọng kinh doanh mới quyết định giá trị thật của doanh nghiệp." },
-                                { title: "Biên an toàn (Margin of Safety)", desc: "Luôn mua dưới giá trị thực để tạo biên phòng vệ trước các biến động không lường trước và những sai số trong định giá." },
-                                { title: "Mô hình kinh doanh", desc: "Hiểu sâu sắc về cách doanh nghiệp tạo ra tiền và lợi thế cạnh tranh bền vững của họ hơn là cố gắng dự báo giá ngày mai." }
+                                { title: "Sở hữu doanh nghiệp", desc: "Xem cổ phiếu như quyền sở hữu một phần doanh nghiệp giúp đặt hoạt động kinh doanh vào trung tâm của quá trình nghiên cứu." },
+                                { title: "Giá cả và giá trị", desc: "Giá thị trường và giá trị ước tính có thể khác nhau; cả hai đều cần được xem xét cùng giả định và bối cảnh." },
+                                { title: "Biên an toàn (Margin of Safety)", desc: "Biên an toàn là khoảng đệm trước sai số, bất định và những thay đổi ngoài dự kiến trong quá trình định giá." },
+                                { title: "Mô hình kinh doanh", desc: "Hiểu cách doanh nghiệp tạo giá trị, phân bổ vốn và duy trì lợi thế cạnh tranh trước khi xem xét một quyết định." }
                             ].map((item, idx) => (
                                 <div key={idx} className="relative overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6 backdrop-blur-md">
                                     <h3 className="text-lg font-serif font-bold text-white mb-2">{item.title}</h3>
@@ -101,19 +101,19 @@ export default function AboutPage() {
                                 <ul className="space-y-4 text-[#a0a5b5] text-sm font-sans">
                                     <li className="flex items-start gap-3">
                                         <span className="text-red-500 font-bold shrink-0">✕</span>
-                                        <span>Khuyến nghị mua/bán các mã cổ phiếu cụ thể.</span>
+                                        <span>Đưa ra khuyến nghị mua hoặc bán dành riêng cho từng cá nhân.</span>
                                     </li>
                                     <li className="flex items-start gap-3">
                                         <span className="text-red-500 font-bold shrink-0">✕</span>
-                                        <span>Hứa hẹn lợi nhuận hấp dẫn hay cam kết giá.</span>
+                                        <span>Hứa hẹn lợi nhuận, cam kết giá hoặc bảo đảm kết quả.</span>
                                     </li>
                                     <li className="flex items-start gap-3">
                                         <span className="text-red-500 font-bold shrink-0">✕</span>
-                                        <span>Bán kèo, tín hiệu giao dịch, hay các lớp làm giàu nhanh.</span>
+                                        <span>Cung cấp tín hiệu giao dịch, nhóm VIP hoặc nội dung làm giàu nhanh.</span>
                                     </li>
                                     <li className="flex items-start gap-3">
                                         <span className="text-red-500 font-bold shrink-0">✕</span>
-                                        <span>Khuyến khích giao dịch liên tục kiếm phí hoa hồng.</span>
+                                        <span>Quản lý tài sản hoặc quyết định thay cho người đọc.</span>
                                     </li>
                                 </ul>
                             </div>
@@ -129,19 +129,19 @@ export default function AboutPage() {
                                 <ul className="space-y-4 text-[#a0a5b5] text-sm font-sans">
                                     <li className="flex items-start gap-3">
                                         <span className="text-green-500 font-bold shrink-0">✓</span>
-                                        <span>Phân tích định tính sâu sắc mô hình kinh doanh doanh nghiệp.</span>
+                                        <span>Cung cấp nghiên cứu có cấu trúc và các nghiên cứu tình huống doanh nghiệp.</span>
                                     </li>
                                     <li className="flex items-start gap-3">
                                         <span className="text-green-500 font-bold shrink-0">✓</span>
-                                        <span>Giúp nhận diện các thiên kiến tâm lý làm hại túi tiền bạn.</span>
+                                        <span>Giúp nhận diện thiên kiến và cách chúng ảnh hưởng đến quyết định.</span>
                                     </li>
                                     <li className="flex items-start gap-3">
                                         <span className="text-green-500 font-bold shrink-0">✓</span>
-                                        <span>Xây dựng một quy trình checklist phân tích có kỷ luật.</span>
+                                        <span>Xây dựng quy trình và checklist ra quyết định có thể lặp lại.</span>
                                     </li>
                                     <li className="flex items-start gap-3">
                                         <span className="text-green-500 font-bold shrink-0">✓</span>
-                                        <span>Lắng nghe và thảo luận khách quan về tư duy dài hạn.</span>
+                                        <span>Thảo luận dài hạn dựa trên bằng chứng, giả định và giới hạn rõ ràng.</span>
                                     </li>
                                 </ul>
                             </div>
@@ -152,14 +152,14 @@ export default function AboutPage() {
                     <div className="relative border border-white/[0.06] bg-white/[0.02] rounded-3xl p-8 md:p-12 text-center shadow-2xl backdrop-blur-md">
                         <div className="absolute -inset-px bg-gradient-to-br from-[#9c1850]/5 to-[#4271b3]/5 pointer-events-none rounded-3xl" />
                         <h3 className="text-xl md:text-2xl font-serif font-medium leading-relaxed italic text-white mb-6">
-                            &quot;Nếu bạn cần một người đồng hành thực thụ trong hành trình đầu tư dài hạn — không phải xin mã, mà để mài sắc tư duy.&quot;
+                            &quot;Xây dựng một hệ thống đầu tư để hiểu doanh nghiệp, hiểu chính mình và tự ra quyết định có trách nhiệm.&quot;
                         </h3>
                         <div className="flex justify-center mt-6">
                             <Link
                                 href="/advisory"
                                 className="h-12 px-8 rounded-full bg-[#9c1850] hover:bg-[#861244] text-white font-semibold flex items-center justify-center transition-all shadow-md active:scale-[0.97]"
                             >
-                                Tìm hiểu về Tư vấn & Đồng hành
+                                Tìm hiểu cách đồng hành
                             </Link>
                         </div>
                     </div>

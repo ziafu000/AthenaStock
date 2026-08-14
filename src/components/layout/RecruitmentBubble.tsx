@@ -44,14 +44,14 @@ export function RecruitmentBubble() {
                         setIframeLoading(true)
                     }}
                     className="group relative flex h-12 items-center justify-center gap-2 rounded-full border bg-background/85 px-3 py-2 text-foreground shadow-lg backdrop-blur-md transition-all duration-300 hover:border-accent/40 hover:bg-background hover:shadow-accent/5 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 md:px-4"
-                    title="Tuyển dụng nhân sự"
-                    aria-label="Mở form tuyển dụng nhân sự"
+                    title="Cơ hội cộng tác"
+                    aria-label="Mở form tìm hiểu cơ hội cộng tác"
                 >
                     <div className="relative flex h-5 w-5 items-center justify-center">
                         <Briefcase size={20} className="text-accent group-hover:scale-110 transition-transform duration-300" />
                     </div>
                     <span className="max-w-0 overflow-hidden text-sm font-semibold text-foreground transition-all duration-300 group-hover:max-w-xs md:max-w-xs md:group-hover:max-w-xs whitespace-nowrap">
-                        Tuyển dụng
+                        Cộng tác
                     </span>
 
                     {/* "Mới" Badge with gradient, shadow and pulse animation */}
@@ -87,10 +87,13 @@ export function RecruitmentBubble() {
                                 </div>
                                 <div>
                                     <h2 id="recruitment-modal-title" className="font-serif font-bold text-lg text-primary md:text-xl">
-                                        Tuyển dụng nhân sự
+                                        Cơ hội cộng tác
                                     </h2>
                                     <p className="text-xs text-muted-foreground">
-                                        Gia nhập đội ngũ Athena Stock
+                                        Tìm hiểu mức độ phù hợp để cùng xây dựng Athena Stock
+                                    </p>
+                                    <p className="text-[10px] text-muted-foreground mt-1">
+                                        Thông tin được gửi qua Google Forms và chỉ dùng để đánh giá mức độ phù hợp cho cơ hội cộng tác.
                                     </p>
                                 </div>
                             </div>
@@ -122,14 +125,14 @@ export function RecruitmentBubble() {
                             {iframeLoading && (
                                 <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-background/90 z-10">
                                     <Loader2 className="h-8 w-8 animate-spin text-accent" />
-                                    <p className="text-sm text-muted-foreground">Đang tải form tuyển dụng...</p>
+                                    <p className="text-sm text-muted-foreground">Đang tải form cộng tác...</p>
                                 </div>
                             )}
                             
                             <iframe
                                 src={siteConfig.recruitmentFormUrl}
                                 className="h-full w-full border-0"
-                                title="Google Form tuyển dụng nhân sự"
+                                title="Google Form cơ hội cộng tác"
                                 onLoad={() => setIframeLoading(false)}
                             />
                         </div>

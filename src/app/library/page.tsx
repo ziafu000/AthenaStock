@@ -3,34 +3,34 @@ import { BookOpen, Quote, ListChecks, BookMarked, Library } from "lucide-react"
 
 export const metadata = {
     title: "Library – Athena Stock",
-    description: "Tài nguyên chọn lọc: sách kinh điển, thuật ngữ, checklist và trích dẫn để nâng cao năng lực phân tích đầu tư.",
+    description: "Thư viện đang được phát triển với checklist, sách, trích dẫn và thuật ngữ phục vụ quá trình học tập.",
 }
 
 const resources = [
     {
         title: "Checklists & Frameworks",
-        description: "Các danh sách kiểm tra và bộ khung phân tích có thể sử dụng ngay để đánh giá doanh nghiệp.",
+        description: "Các danh sách kiểm tra và bộ khung tham khảo để cấu trúc quá trình nghiên cứu doanh nghiệp.",
         icon: ListChecks,
         href: "/frameworks",
         comingSoon: false,
     },
     {
         title: "Sách hay nên đọc",
-        description: "Danh sách curated các cuốn sách kinh điển về đầu tư giá trị và tâm lý học hành vi.",
+        description: "Danh mục đọc đang được xây dựng về tư duy đầu tư và tài chính hành vi.",
         icon: BookOpen,
         href: "/library/books",
         comingSoon: true,
     },
     {
         title: "Trích dẫn kinh điển",
-        description: "Những câu nói đáng suy ngẫm từ Warren Buffett, Charlie Munger, Benjamin Graham...",
+        description: "Các trích dẫn để tham khảo và suy ngẫm trong quá trình học tập.",
         icon: Quote,
         href: "/library/quotes",
         comingSoon: true,
     },
     {
         title: "Thuật ngữ (Glossary)",
-        description: "Giải thích các khái niệm tài chính phức tạp bằng ngôn ngữ đơn giản, trực quan.",
+        description: "Thuật ngữ đang được biên soạn để giải thích các khái niệm tài chính bằng ngôn ngữ dễ tiếp cận.",
         icon: BookMarked,
         href: "/library/glossary",
         comingSoon: true,
@@ -68,7 +68,7 @@ export default function LibraryPage() {
                         Thư viện <span className="text-[#e61c5c] italic font-medium">Tài nguyên</span>
                     </h1>
                     <p className="mx-auto max-w-xl text-base text-gray-650 dark:text-[#a0a5b5] leading-relaxed font-sans">
-                        Tài nguyên chọn lọc để nâng cao năng lực phân tích. Đọc chậm, suy ngẫm sâu và ghi chú cẩn thận.
+                        Thư viện đang được phát triển để tập hợp checklist, danh mục đọc và tài liệu tham khảo cho quá trình học tập.
                     </p>
                 </div>
             </section>
@@ -144,12 +144,12 @@ export default function LibraryPage() {
                             <span>Ghi chú của bạn</span>
                         </h2>
                         <p className="text-sm text-[#a0a5b5] mb-6 font-sans">
-                            Các đoạn trích dẫn nổi bật (highlights) và ghi chú bạn đã lưu trong quá trình đọc bài sẽ được tổng hợp ở đây.
+                            Không gian ghi chú cá nhân đang được phát triển và chưa lưu dữ liệu ở phiên bản hiện tại.
                         </p>
                         <div className="rounded-2xl border border-dashed border-white/[0.08] p-8 text-center text-muted-foreground bg-white/[0.01]">
                             <p className="font-medium text-white text-sm">Chức năng ghi chú đang được hoàn thiện</p>
                             <p className="text-xs mt-2 text-[#a0a5b5]">
-                                Tất cả dữ liệu của bạn sẽ được lưu trữ an toàn, riêng tư và hoàn toàn cục bộ trên trình duyệt của bạn (localStorage).
+                                Cách lưu trữ và quyền riêng tư sẽ được công bố rõ trước khi tính năng được phát hành.
                             </p>
                         </div>
                     </div>

@@ -11,7 +11,7 @@ const disclaimerClauses = [
         icon: BookOpen,
         content: (
             <>
-                Tất cả nội dung trên website <strong className="text-white">Athena Stock</strong> — bao gồm bài viết, phân tích doanh nghiệp, framework, và các tài liệu khác — chỉ mang tính chất <strong className="text-white">thông tin và giáo dục</strong>. Nội dung này <strong className="text-red-400">KHÔNG</strong> phải là tư vấn đầu tư, khuyến nghị mua/bán chứng khoán, hay cam kết về lợi nhuận.
+                Tất cả nội dung trên website <strong className="text-white">Athena Stock</strong> — bao gồm bài viết, phân tích doanh nghiệp, framework và tài liệu khác — chỉ nhằm mục đích <strong className="text-white">nghiên cứu và giáo dục</strong>. Việc nghiên cứu một doanh nghiệp không đồng nghĩa với lời khuyên phù hợp cho hoàn cảnh cá nhân và <strong className="text-red-400">KHÔNG</strong> phải khuyến nghị mua hoặc bán chứng khoán.
             </>
         ),
     },
@@ -57,6 +57,15 @@ const disclaimerClauses = [
         content: (
             <>
                 Website không thu thập thông tin về danh mục đầu tư hay giao dịch của bạn. Mọi ghi chú (notes/highlights) đều được lưu trữ cục bộ trên trình duyệt của bạn (<strong className="text-white">localStorage</strong>) và không được gửi về máy chủ.
+            </>
+        ),
+    },
+    {
+        title: "Dữ liệu đặt lịch & Quyền riêng tư",
+        icon: ShieldAlert,
+        content: (
+            <>
+                Họ tên, email, số điện thoại và lời nhắn bạn cung cấp khi đặt lịch chỉ được dùng để xử lý yêu cầu, để quản trị viên xác nhận hoặc đề xuất thời gian khác. Thông tin này không được dùng cho marketing nếu chưa có sự đồng ý của bạn.
             </>
         ),
     },
@@ -136,7 +145,7 @@ export default function DisclaimerPage() {
                                 <strong className="text-white">Ngày có hiệu lực:</strong> 01/01/2024
                             </p>
                             <p>
-                                <strong className="text-white">Cập nhật lần cuối:</strong> 01/08/2025
+                                <strong className="text-white">Cập nhật lần cuối:</strong> 13/08/2026
                             </p>
                             <p className="mt-4 pt-4 border-t border-white/[0.06] text-xs">
                                 Nếu có bất kỳ câu hỏi nào về các điều khoản này, vui lòng liên hệ qua trang{" "}

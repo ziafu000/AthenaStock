@@ -44,7 +44,7 @@ const carouselItems: CarouselItem[] = [
     id: "advisory",
     category: "Dịch vụ • Advisory",
     title: "Đồng Hành Tư Vấn",
-    subtitle: "Đồng hành tư duy dài hạn — không kèo, không hứa lợi nhuận, không áp lực.",
+    subtitle: "Đồng hành xây dựng quy trình ra quyết định độc lập, có nguyên tắc và dựa trên bằng chứng.",
     videoSrc: "/videos/advisory.mp4",
   },
 ];
