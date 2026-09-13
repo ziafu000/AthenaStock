@@ -13,6 +13,7 @@ const staticRoutes = [
     "/frameworks",
     "/series",
     "/library",
+    "/library/glossary",
     "/disclaimer",
     "/privacy",
 ]

@@ -30,10 +30,10 @@ const resources = [
     },
     {
         title: "Thuật ngữ (Glossary)",
-        description: "Thuật ngữ đang được biên soạn để giải thích các khái niệm tài chính bằng ngôn ngữ dễ tiếp cận.",
+        description: "Giải thích 20 khái niệm và công thức tài chính cốt lõi phục vụ quá trình phân tích và định giá.",
         icon: BookMarked,
         href: "/library/glossary",
-        comingSoon: true,
+        comingSoon: false,
     },
 ]
 
