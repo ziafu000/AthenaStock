@@ -27,7 +27,7 @@ Trong thực tế, mô hình DCF thường được chia làm hai phần:
 Enterprise Value (EV) = PV of Explicit Cash Flows (5–10 năm) + PV of Terminal Value
 ```
 
-1. **Giai đoạn dự phóng chi tiết (Explicit Forecast Period):** Dự báo dòng tiền tự do của doanh nghiệp (FCFF hoặc [Owner Earnings](/frameworks/owner-earnings)) cho từng năm, thường kéo dài từ 5 đến 10 năm.
+1. **Giai đoạn dự phóng chi tiết (Explicit Forecast Period):** Dự báo dòng tiền tự do cho doanh nghiệp (FCFF) trước các khoản thanh toán cho chủ nợ và cổ đông, thường kéo dài từ 5 đến 10 năm. Vì mô hình này dùng WACC để tính Enterprise Value, không dùng [Owner Earnings](/frameworks/owner-earnings) — một dòng tiền thuộc về cổ đông sau lãi vay — làm đầu vào.
 2. **Giá trị cuối kỳ (Terminal Value - TV):** Ước tính giá trị của toàn bộ dòng tiền mà công ty sẽ tiếp tục tạo ra từ sau năm thứ 10 cho đến vĩnh viễn.
 
 Theo công thức Gordon Growth Model (tăng trưởng vĩnh cửu), Terminal Value được tính như sau:
@@ -59,10 +59,10 @@ Hãy xem xét một ví dụ thực tế: Giả định một doanh nghiệp t�
 
 Dưới đây là bảng ma trận định giá Terminal Value khi chỉ cần thay đổi nhẹ hai tham số: tỷ suất chiết khấu (WACC) biến động 1% (100 điểm cơ bản) và tốc độ tăng trưởng vĩnh cửu ($g$) biến động 0.5%:
 
-| WACC \ $g$ | 2.0% | 2.5% | 3.0% | Biến thiên giá trị |
+| WACC \ $g$ | 2.0% | 2.5% | 3.0% | Mức thấp nhất so với cơ sở |
 | :---: | :---: | :---: | :---: | :---: |
-| **9.0%** | 14.571 tỷ | 15.769 tỷ | 17.167 tỷ | *+38.5%* |
-| **10.0%** | **12.750 tỷ** | **13.667 tỷ** (Cơ sở) | **14.714 tỷ** | *Gốc so sánh* |
+| **9.0%** | 14.571 tỷ | 15.769 tỷ | 17.167 tỷ | *+6.6%* |
+| **10.0%** | **12.750 tỷ** | **13.667 tỷ** (Cơ sở) | **14.714 tỷ** | *−6.7%* |
 | **11.0%** | 11.333 tỷ | 12.059 tỷ | 12.875 tỷ | *−17.1%* |
 | **12.0%** | 10.200 tỷ | 10.789 tỷ | 11.444 tỷ | *−25.4%* |
 

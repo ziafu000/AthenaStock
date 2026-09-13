@@ -154,7 +154,7 @@ export const GLOSSARY_TERMS: GlossaryTerm[] = [
         category: "cashflow",
         categoryLabel: "Dòng tiền & Chủ sở hữu",
         definition: "Thước đo dòng tiền thực tế được Warren Buffett công bố năm 1986, phản ánh lượng tiền mặt mà chủ doanh nghiệp có thể rút ra mà không làm suy giảm vị thế cạnh tranh hay năng lực sản xuất hiện hữu.",
-        formula: "Owner Earnings = Lợi nhuận sau thuế + Khấu hao & Hao mòn ± Khoản mục phi tiền mặt - Chi phí vốn duy trì (Maintenance Capex)",
+        formula: "Owner Earnings = Lợi nhuận sau thuế + Khấu hao & Hao mòn ± Khoản mục phi tiền mặt - Chi phí vốn duy trì - Nhu cầu vốn lưu động tăng thêm",
         interpretation: "Giải quyết triệt để điểm mù của lợi nhuận kế toán Net Income (bỏ qua nhu cầu tái đầu tư tài sản) và EBITDA (bỏ qua hoàn toàn chi phí thay thế hao mòn máy móc).",
         caution: "Báo cáo tài chính theo chuẩn kế toán không tách riêng Maintenance Capex và Growth Capex; nhà đầu tư phải tự ước tính bằng phân tích chuyên sâu.",
         relatedLink: {
@@ -266,8 +266,8 @@ export const GLOSSARY_TERMS: GlossaryTerm[] = [
         category: "performance",
         categoryLabel: "Hiệu quả & Tài chính",
         definition: "Thước đo lượng vốn khả dụng ngắn hạn cần thiết để tài trợ cho hoạt động vận hành thường nhật của doanh nghiệp, bằng tài sản ngắn hạn hoạt động trừ nợ ngắn hạn hoạt động.",
-        formula: "NWC = (Các khoản phải thu + Hàng tồn kho + Tiền & tương đương tiền) - Các khoản phải trả nhà cung cấp và nợ ngắn hạn",
-        interpretation: "Đo lường năng lực thanh toán ngắn hạn. Doanh nghiệp có vị thế độc quyền có thể vận hành với Vốn lưu động âm (chiếm dụng vốn lành mạnh từ nhà cung cấp và nhận tiền trước từ khách hàng).",
+        formula: "NWC hoạt động = (Các khoản phải thu + Hàng tồn kho + Tài sản ngắn hạn hoạt động khác) - (Các khoản phải trả nhà cung cấp + Nợ ngắn hạn hoạt động khác)",
+        interpretation: "Đo lường lượng vốn bị ràng buộc trong hoạt động thường nhật, không bao gồm tiền mặt dư thừa và nợ vay chịu lãi. Doanh nghiệp có vị thế độc quyền có thể vận hành với Vốn lưu động hoạt động âm nhờ chiếm dụng vốn lành mạnh từ nhà cung cấp và nhận tiền trước từ khách hàng.",
         caution: "Sự tăng vọt bất thường của vốn lưu động do phải thu hoặc tồn kho ứ đọng là tín hiệu cảnh báo nghiêm trọng về chất lượng doanh thu và nguy cơ nợ khó đòi.",
         relatedLink: {
             title: "Dấu hiệu cảnh báo trong Báo cáo tài chính",
