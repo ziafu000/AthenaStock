@@ -56,7 +56,7 @@ const disclaimerClauses = [
         icon: Database,
         content: (
             <>
-                Website không thu thập thông tin về danh mục đầu tư hay giao dịch của bạn. Mọi ghi chú (notes/highlights) đều được lưu trữ cục bộ trên trình duyệt của bạn (<strong className="text-white">localStorage</strong>) và không được gửi về máy chủ.
+                Website không thu thập thông tin về danh mục đầu tư hay giao dịch của bạn. Xem danh mục dữ liệu được xử lý tại <a href="/privacy" className="text-[#e61c5c] hover:text-[#e61c5c]/80 underline transition-colors">Chính sách quyền riêng tư</a>.
             </>
         ),
     },
@@ -65,7 +65,7 @@ const disclaimerClauses = [
         icon: ShieldAlert,
         content: (
             <>
-                Họ tên, email, số điện thoại và lời nhắn bạn cung cấp khi đặt lịch chỉ được dùng để xử lý yêu cầu, để quản trị viên xác nhận hoặc đề xuất thời gian khác. Thông tin này không được dùng cho marketing nếu chưa có sự đồng ý của bạn.
+                Thông tin đặt lịch chỉ được dùng để xử lý yêu cầu của bạn. Xem cách dữ liệu được lưu trữ, chuyển phát và xóa tại <a href="/privacy" className="text-[#e61c5c] hover:text-[#e61c5c]/80 underline transition-colors">Chính sách quyền riêng tư</a>.
             </>
         ),
     },

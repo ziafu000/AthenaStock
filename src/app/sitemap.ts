@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next"
-import { getAllContent } from "@/lib/mdx"
-import { getPostUrl } from "@/lib/content-types"
-import { siteConfig } from "@/lib/site"
+import { getAllContent } from "../lib/mdx.ts"
+import { getPostUrl } from "../lib/content-types.ts"
+import { siteConfig } from "../lib/site.ts"
 
 const staticRoutes = [
     "",
@@ -14,6 +14,7 @@ const staticRoutes = [
     "/series",
     "/library",
     "/disclaimer",
+    "/privacy",
 ]
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

@@ -1,5 +1,6 @@
 import { existsSync, readFileSync, readdirSync } from "node:fs"
 import { join, relative } from "node:path"
+import { pathToFileURL } from "node:url"
 
 const root = process.cwd()
 const publicRoutes = [
@@ -13,6 +14,7 @@ const publicRoutes = [
     "/series",
     "/library",
     "/disclaimer",
+    "/privacy",
 ]
 const exactInternalRoutes = new Set([
     "/",
@@ -54,17 +56,14 @@ for (const route of publicRoutes) {
     if (!routeExists(route)) fail(`Missing public page for ${route || "/"}`)
 }
 
-const sitemap = read("src/app/sitemap.ts")
-const staticRouteBlock = sitemap.match(/const staticRoutes\s*=\s*\[([\s\S]*?)\]/)
-if (!staticRouteBlock) {
-    fail("Cannot read staticRoutes from src/app/sitemap.ts")
-} else {
-    const sitemapRoutes = [...staticRouteBlock[1].matchAll(/"([^"]*)"/g)].map((match) => match[1])
-    if (JSON.stringify([...sitemapRoutes].sort()) !== JSON.stringify([...publicRoutes].sort())) {
-        fail(`Sitemap routes differ from public route contract: ${sitemapRoutes.join(", ")}`)
-    }
+const { default: createSitemap } = await import(pathToFileURL(join(root, "src/app/sitemap.ts")))
+const sitemap = await createSitemap()
+const staticEntries = sitemap.filter((entry) => entry.priority === 1 || entry.priority === 0.7)
+const sitemapRoutes = staticEntries.map((entry) => new URL(entry.url).pathname.replace(/\/$/, ""))
+if (JSON.stringify([...sitemapRoutes].sort()) !== JSON.stringify([...publicRoutes].sort())) {
+    fail(`Sitemap routes differ from public route contract: ${sitemapRoutes.join(", ")}`)
 }
-if (sitemap.includes("lastModified: new Date(),")) {
+if (staticEntries.some((entry) => entry.lastModified !== undefined)) {
     fail("Static sitemap entries must not receive a new timestamp on every build")
 }
 

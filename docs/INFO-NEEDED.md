@@ -29,23 +29,7 @@ Cần bạn xác nhận để AI viết đúng thực tế, không phỏng đoá
 
 ## B. Trang `/privacy`
 
-Xác nhận các điểm sau để AI viết chính xác:
-
-**Data thu thập:**
-- [ ] Booking form: tên, email, số điện thoại, ngày hẹn, lời nhắn → lưu ở đâu? (VD: Google Sheet, Notion, email tới admin...)
-- [ ] Email newsletter: có không? Dùng tool gì? (VD: Mailchimp, Brevo, Buttondown...)
-- [ ] Analytics: dùng Vercel Analytics (đã thấy trong code) — có thêm GA, Hotjar, hay tool nào khác không?
-- [ ] Reader notes/highlights: localStorage only (đã confirm trong code — không gửi lên server)
-
-**Bên thứ ba nhận data:**
-- Vercel (hosting + analytics) — xác nhận
-- Cloudflare Turnstile (captcha trong booking form) — xác nhận
-- Email provider gửi booking confirmation là gì? (VD: Resend, SendGrid, Nodemailer + SMTP...)
-- Có bên nào khác không?
-
-**Thời gian lưu data:**
-- Booking requests lưu bao lâu?
-- Có quy trình xóa data không?
+Trang đã được triển khai. Nội dung công khai tại `/privacy` là nguồn chính thức cho danh mục dữ liệu, bên xử lý, tình trạng lưu trữ và quy trình yêu cầu xóa. Chỉ mở lại phần thu thập yêu cầu này khi luồng dữ liệu hoặc chính sách thay đổi.
 
 ---
 

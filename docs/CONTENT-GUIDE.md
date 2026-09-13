@@ -558,11 +558,7 @@ Business research articles require an active review lifecycle:
 
 ### Privacy and Data Disclosure
 
-When writing about the advisory/booking service or any data-collection feature, include accurate disclosures:
-
-- **Booking form data** (name, email, phone, date, message): used only to schedule and confirm the session. Not shared with third parties or used for marketing.
-- **Reader notes/highlights**: stored in browser `localStorage` only. No data sent to server.
-- **No portfolio or transaction data** is ever collected by the platform.
+When writing about the advisory/booking service or any data-collection feature, link to the [Privacy Policy](/privacy) rather than copying its data inventory, processors, retention status, or deletion process. The policy is the authoritative user-facing disclosure.
 
 Any content that describes product features must accurately reflect actual capability — do not describe features as working if they are not yet implemented.
 

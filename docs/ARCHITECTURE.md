@@ -153,7 +153,13 @@ The routes below are the approved current implementation. No route migration is 
 - \/\ - Homepage
 - \/about\ - About page
 - \/advisory\ - Advisory services
+- \/articles\ - Article hub
+- \/business\ - Business-analysis hub
+- \/disclaimer\ - Disclaimer
+- \/frameworks\ - Framework hub
 - \/library\ - Content library
+- \/privacy\ - Privacy policy
+- \/psychology\ - Psychology hub
 - \/series\ - Learning paths
 
 ### Dynamic Routes
