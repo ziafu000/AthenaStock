@@ -37,7 +37,7 @@ const privacySections = [
                     Khi bạn đăng ký nhận bản tin, chúng tôi thu thập địa chỉ email để quản lý đăng ký và gửi email chào mừng, bản tin cùng các thông báo liên quan.
                 </p>
                 <p className="text-sm text-[#a0a5b5]">
-                    Địa chỉ email và trạng thái đăng ký được lưu trong cơ sở dữ liệu của Athena Stock. Mỗi email bản tin có liên kết hủy đăng ký; khi bạn hủy, hệ thống ngừng gửi bản tin và ghi nhận trạng thái hủy đăng ký.
+                    Địa chỉ email và trạng thái đăng ký được lưu trong cơ sở dữ liệu PostgreSQL bảo mật của Athena Stock, kết nối qua cấu hình máy chủ <strong className="text-white">DATABASE_URL</strong>. Mỗi email bản tin có liên kết hủy đăng ký; khi bạn hủy, hệ thống ngừng gửi bản tin và ghi nhận trạng thái hủy đăng ký.
                 </p>
             </div>
         ),
@@ -85,7 +85,10 @@ const privacySections = [
         content: (
             <div className="space-y-3">
                 <p>
-                    <strong className="text-white">Thời gian lưu trữ & quyền xóa dữ liệu:</strong> Dữ liệu từ các yêu cầu đặt hẹn được lưu giữ trong thời gian cần thiết để phục vụ mục đích liên hệ và trao đổi, tuân thủ đúng quy định pháp luật hiện hành. Bạn có quyền yêu cầu tra cứu, chỉnh sửa hoặc xóa vĩnh viễn thông tin của mình bất cứ lúc nào qua email <a href="mailto:contact@athenastock.com" className="text-[#e61c5c] underline hover:text-[#e61c5c]/80">contact@athenastock.com</a>.
+                    <strong className="text-white">Nơi lưu trữ:</strong> Dữ liệu đặt lịch và đăng ký bản tin được lưu trong cơ sở dữ liệu PostgreSQL bảo mật, kết nối qua cấu hình máy chủ <strong className="text-white">DATABASE_URL</strong>.
+                </p>
+                <p className="text-sm text-[#a0a5b5]">
+                    <strong className="text-white">Thời gian lưu trữ & quyền xóa dữ liệu:</strong> Thời hạn lưu trữ cụ thể và quy trình xóa tự động đang được hoàn thiện. Trong thời gian này, bạn có thể yêu cầu tra cứu, chỉnh sửa hoặc xóa dữ liệu thủ công bất cứ lúc nào qua email <a href="mailto:contact@athenastock.com" className="text-[#e61c5c] underline hover:text-[#e61c5c]/80">contact@athenastock.com</a>; Athena Stock sẽ tiếp nhận và thực hiện yêu cầu xóa.
                 </p>
             </div>
         ),
