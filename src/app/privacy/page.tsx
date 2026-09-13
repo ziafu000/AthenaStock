@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Shield, Lock, Database, Server, HardDrive, RefreshCw, Mail, CheckCircle2 } from "lucide-react"
+import { Shield, Lock, Database, Server, RefreshCw, Mail, CheckCircle2 } from "lucide-react"
 
 export const metadata = {
     title: "Chính sách quyền riêng tư – Athena Stock",
@@ -43,16 +43,16 @@ const privacySections = [
         ),
     },
     {
-        title: "Ghi chú & Đánh dấu của người đọc (Reader Notes)",
-        icon: HardDrive,
+        title: "Tùy chọn hiển thị trên thiết bị",
+        icon: Database,
         content: (
             <div className="space-y-3">
                 <p>
-                    Trong quá trình đọc các bài nghiên cứu và phân tích, các ghi chú cá nhân hoặc đánh dấu (highlights) do bạn tạo ra được lưu trữ <strong className="text-white">hoàn toàn trong localStorage</strong> trên trình duyệt và thiết bị cá nhân của bạn.
+                    Website chỉ sử dụng <strong className="text-white">localStorage</strong> trên trình duyệt để ghi nhớ các tùy chọn hiển thị của bạn, như cỡ chữ, độ rộng dòng đọc và giao diện sáng hoặc tối.
                 </p>
                 <div className="rounded-xl border border-white/[0.08] bg-white/[0.02] p-3 text-xs text-[#a0a5b5] space-y-1">
                     <p className="font-semibold text-[#faf8f6]">Cam kết bảo mật thiết bị:</p>
-                    <p>Dữ liệu này tuyệt đối không bao giờ được gửi lên máy chủ của Athena Stock hay bất kỳ bên thứ ba nào. Bạn có toàn quyền xóa toàn bộ ghi chú bất kỳ lúc nào bằng cách xóa dữ liệu duyệt web trên trình duyệt của mình.</p>
+                    <p>Các tùy chọn này không được gửi lên máy chủ của Athena Stock. Bạn có thể xóa chúng bất kỳ lúc nào bằng cách xóa dữ liệu duyệt web trên trình duyệt của mình.</p>
                 </div>
             </div>
         ),

@@ -319,6 +319,28 @@ export default function AboutPage() {
                         </div>
                     </div>
 
+                    {/* Athenaster Research Team */}
+                    <div className="space-y-8">
+                        <div className="text-center space-y-3">
+                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#4271b3]/10 text-[#4271b3] text-xs font-semibold tracking-wide uppercase border border-[#4271b3]/20">
+                                <Compass className="w-3.5 h-3.5" />
+                                Đội ngũ nghiên cứu
+                            </div>
+                            <h2 className="text-2xl md:text-3xl font-sans font-bold text-white">
+                                Athenaster <span className="font-serif italic font-light text-[#4271b3]">_1</span>
+                            </h2>
+                        </div>
+
+                        <div className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-white/[0.02] p-8 backdrop-blur-md space-y-4">
+                            <p className="text-sm md:text-base text-[#a0a5b5] leading-relaxed font-sans">
+                                Athenaster_1 là nhóm nghiên cứu đứng sau các phân tích của Athena Stock, áp dụng phương pháp độc lập, đối chiếu dữ liệu đa nguồn và phân biệt rõ dữ kiện, nhận định cùng giả định.
+                            </p>
+                            <p className="text-sm md:text-base text-[#a0a5b5] leading-relaxed font-sans">
+                                Tình trạng nắm giữ cổ phiếu của người tham gia nghiên cứu được xác định và công bố theo từng doanh nghiệp trong phần disclosure của bài phân tích tương ứng.
+                            </p>
+                        </div>
+                    </div>
+
                     {/* Do vs Don't Bento Grid */}
                     <div className="grid md:grid-cols-2 gap-8 pt-4">
                         {/* What we DON'T do */}
