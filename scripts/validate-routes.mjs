@@ -13,6 +13,7 @@ const publicRoutes = [
     "/frameworks",
     "/series",
     "/library",
+    "/library/glossary",
     "/disclaimer",
     "/privacy",
 ]

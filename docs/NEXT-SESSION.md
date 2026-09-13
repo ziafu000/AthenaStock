@@ -33,20 +33,21 @@ Thêm Callout warning vào đầu `content/business/fpt-corporation.mdx` vì dat
 ### 4. Trang `/privacy` (cần input từ bạn)
 **Bạn cần chuẩn bị → xem file `docs/INFO-NEEDED.md`**
 
-### 5. Bài psychology mới — AI làm hoàn toàn
-- Confirmation Bias (có citations học thuật)
-- Loss Aversion & Prospect Theory (Kahneman & Tversky 1979)
-- Anchoring Bias trong định giá
+### 5. Bài psychology mới — [Đã hoàn thành]
+- Confirmation Bias (`content/psychology/confirmation-bias.mdx`) — có citations Wason (1960), Lord, Ross & Lepper (1979)
+- Loss Aversion & Prospect Theory (`content/psychology/loss-aversion.mdx`) — Kahneman & Tversky (1979), Shefrin & Statman (1985), Odean (1998)
+- Anchoring Bias trong định giá (`content/psychology/anchoring-bias.mdx`) — Tversky & Kahneman (1974)
 
-### 6. Bài framework mới — AI làm hoàn toàn
-- Owner Earnings (Buffett definition vs. GAAP earnings)
-- Mental model: DCF sensitivity — tại sao terminal value chiếm phần lớn
+### 6. Bài framework mới — [Đã hoàn thành]
+- Owner Earnings (`content/framework/owner-earnings.mdx`) — Buffett definition 1986 vs. GAAP earnings, Maintenance vs Growth Capex
+- Mental model: DCF sensitivity (`content/framework/dcf-sensitivity.mdx`) — tại sao terminal value chiếm 60-80%+, WACC sensitivity, Reverse DCF
 
 ### 7. Bài business research mới (cần input từ bạn)
 **Bạn cần chuẩn bị → xem file `docs/INFO-NEEDED.md`**
 
-### 8. Hoàn thiện Library Glossary (AI làm, bạn review)
-~20 thuật ngữ: P/E, P/B, ROE, ROIC, FCF, Moat, Margin of Safety, Owner Earnings, WACC, Terminal Value, Earnings Yield, Net Margin, Operating Leverage, Capex, Working Capital, Goodwill, Float, Book Value, Intrinsic Value, Circle of Competence.
+### 8. Hoàn thiện Library Glossary — [Đã hoàn thành]
+20 thuật ngữ cốt lõi tại `src/app/library/glossary/page.tsx`, search & category filter, công thức và góc nhìn đầu tư: P/E, P/B, ROE, ROIC, FCF, Moat, Margin of Safety, Owner Earnings, WACC, Terminal Value, Earnings Yield, Net Margin, Operating Leverage, Capex, Working Capital, Goodwill, Float, Book Value, Intrinsic Value, Circle of Competence.
+`src/app/library/page.tsx` đã kích hoạt `comingSoon: false`.
 
 ---
 
