@@ -2,7 +2,7 @@
 
 > Đọc file này đầu mỗi session mới. Cập nhật khi hoàn thành từng việc.
 
-## Trạng thái hiện tại (sau commit f4a6234)
+## Trạng thái nền trước Phase 2 (sau commit f4a6234)
 
 Đã hoàn thành P0 → P3 của initiative "Investment Thinking House":
 - Brand copy đồng bộ toàn site (North Star: "Đầu tư như một người chủ doanh nghiệp")
