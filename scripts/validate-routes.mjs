@@ -13,6 +13,7 @@ const publicRoutes = [
     "/series",
     "/library",
     "/disclaimer",
+    "/privacy",
 ]
 const exactInternalRoutes = new Set([
     "/",

@@ -58,6 +58,9 @@ export function Footer() {
                             <Link href="/disclaimer" className="hover:text-foreground transition-colors duration-300">
                                 Miễn trừ trách nhiệm
                             </Link>
+                            <Link href="/privacy" className="hover:text-foreground transition-colors duration-300">
+                                Chính sách quyền riêng tư
+                            </Link>
                             <a href="mailto:contact@athenastock.com" className="hover:text-foreground transition-colors duration-300">
                                 contact@athenastock.com
                             </a>
