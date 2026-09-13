@@ -91,9 +91,9 @@ Research older than 12 months without a freshness update must display a stalenes
 
 ### Privacy and data handling
 
-- The booking form collects name, email, phone, date, and message. This data is used only to schedule and confirm the session. It is not shared with third parties or used for marketing without explicit consent.
-- Reader highlights and notes are stored in browser `localStorage` only. No note data is sent to the server.
-- Any future change to data handling requires updating the disclaimer page and this document simultaneously.
+- Collect only the data needed to provide an explicitly requested service, and do not use it for unrelated marketing without consent.
+- Keep the user-facing data inventory, processors, retention status, and deletion process in the [Privacy Policy](/privacy), which is the authoritative disclosure.
+- Any future change to data handling requires updating that policy before release.
 
 ### Editorial independence
 
