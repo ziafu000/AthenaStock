@@ -29,6 +29,20 @@ const privacySections = [
         ),
     },
     {
+        title: "Đăng ký nhận bản tin",
+        icon: Mail,
+        content: (
+            <div className="space-y-3">
+                <p>
+                    Khi bạn đăng ký nhận bản tin, chúng tôi thu thập địa chỉ email để quản lý đăng ký và gửi email chào mừng, bản tin cùng các thông báo liên quan.
+                </p>
+                <p className="text-sm text-[#a0a5b5]">
+                    Địa chỉ email và trạng thái đăng ký được lưu trong cơ sở dữ liệu của Athena Stock. Mỗi email bản tin có liên kết hủy đăng ký; khi bạn hủy, hệ thống ngừng gửi bản tin và ghi nhận trạng thái hủy đăng ký.
+                </p>
+            </div>
+        ),
+    },
+    {
         title: "Ghi chú & Đánh dấu của người đọc (Reader Notes)",
         icon: HardDrive,
         content: (
@@ -58,20 +72,20 @@ const privacySections = [
                     <div className="border-l-2 border-[#4271b3]/40 pl-3">
                         <strong className="text-white">Cloudflare Turnstile:</strong> Cơ chế chống bot và thư rác (spam) trong biểu mẫu đặt lịch hẹn. Giải pháp này bảo vệ an toàn website mà không thu thập dữ liệu theo dõi người dùng xuyên suốt các website khác.
                     </div>
+                    <div className="border-l-2 border-emerald-400/40 pl-3">
+                        <strong className="text-white">Resend:</strong> Cung cấp dịch vụ chuyển phát email xác nhận đặt lịch, email quản trị và email liên quan đến đăng ký bản tin. Resend nhận địa chỉ email người nhận cùng nội dung cần thiết để chuyển phát các email này.
+                    </div>
                 </div>
             </div>
         ),
     },
     {
-        title: "Lưu trữ, xóa dữ liệu & Kế hoạch tương lai",
+        title: "Lưu trữ & xóa dữ liệu",
         icon: Database,
         content: (
             <div className="space-y-3">
                 <p>
                     <strong className="text-white">Thời gian lưu trữ & quyền xóa dữ liệu:</strong> Dữ liệu từ các yêu cầu đặt hẹn được lưu giữ trong thời gian cần thiết để phục vụ mục đích liên hệ và trao đổi, tuân thủ đúng quy định pháp luật hiện hành. Bạn có quyền yêu cầu tra cứu, chỉnh sửa hoặc xóa vĩnh viễn thông tin của mình bất cứ lúc nào qua email <a href="mailto:contact@athenastock.com" className="text-[#e61c5c] underline hover:text-[#e61c5c]/80">contact@athenastock.com</a>.
-                </p>
-                <p className="text-sm text-[#a0a5b5]">
-                    <strong className="text-white">Các mục đang mở:</strong> Vị trí cơ sở dữ liệu lưu trữ tập trung và dịch vụ gửi thư điện tử tự động (newsletter) sẽ được công bố minh bạch và cập nhật ngay trên trang này khi các tính năng được tích hợp chính thức vào hệ thống.
                 </p>
             </div>
         ),
@@ -175,7 +189,7 @@ export default function PrivacyPage() {
                             </a>
                         </div>
                         <div className="pt-4 border-t border-white/[0.06] text-xs text-muted-foreground flex flex-col sm:flex-row items-center justify-between gap-2">
-                            <span>Có hiệu lực từ: 01/01/2024</span>
+                            <span>Có hiệu lực từ: 13/09/2026</span>
                             <span className="flex items-center gap-1">
                                 <RefreshCw className="w-3 h-3" /> Cập nhật lần cuối: 13/09/2026
                             </span>

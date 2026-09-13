@@ -8,7 +8,6 @@ import {
     Layers,
     FileCheck,
     History,
-    UserCheck,
     Scale,
     Compass,
 } from "lucide-react"
@@ -293,7 +292,7 @@ export default function AboutPage() {
                                         Không sửa âm thầm (No Silent Edits)
                                     </h3>
                                     <p className="text-sm text-[#a0a5b5] leading-relaxed font-sans">
-                                        Các bài phân tích khi đã công bố sẽ không bao giờ bị chỉnh sửa lén lút nhằm che giấu sai số hoặc xóa bỏ nhận định cũ khi diễn biến thị trường trái ngược kỳ vọng. Lịch sử phiên bản luôn được bảo toàn trọn vẹn.
+                                        Nguyên tắc biên tập của Athena Stock là không sửa âm thầm. Mọi cập nhật hoặc đính chính nội dung đã công bố đều được ghi nhãn rõ ràng kèm ngày thực hiện.
                                     </p>
                                 </div>
                                 <div className="space-y-3">
@@ -302,7 +301,7 @@ export default function AboutPage() {
                                         Cập nhật dữ liệu mới (Update)
                                     </h3>
                                     <p className="text-sm text-[#a0a5b5] leading-relaxed font-sans">
-                                        Khi doanh nghiệp công bố báo cáo tài chính quý mới hoặc xuất hiện sự kiện mang tính bước ngoặt, nội dung mới sẽ được bổ sung với nhãn <strong className="text-white font-medium">Update</strong> kèm ngày tháng rà soát cụ thể, tách biệt với báo cáo gốc.
+                                        Khi bổ sung dữ liệu mới hoặc thay đổi nhận định, nội dung cập nhật được ghi nhãn <strong className="text-white font-medium">Update</strong> kèm ngày thực hiện.
                                     </p>
                                 </div>
                             </div>
@@ -313,54 +312,9 @@ export default function AboutPage() {
                                         Đính chính sai sót (Correction Notice)
                                     </h3>
                                     <p className="text-sm text-[#a0a5b5] leading-relaxed font-sans">
-                                        Nếu phát hiện sai lệch về số liệu tính toán hoặc lỗi thông tin thực tế, thông báo đính chính sẽ được gắn nổi bật tại đầu bài viết, ghi rõ bản chất sai lệch, số liệu điều chỉnh chính xác và thời điểm sửa chữa để người đọc nắm bắt kịp thời.
+                                        Khi phát hiện sai sót, phần sửa chữa được ghi nhãn <strong className="text-white font-medium">Correction</strong> kèm ngày thực hiện để người đọc phân biệt với nội dung ban đầu.
                                     </p>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Team / Athenaster & Disclosure */}
-                    <div className="space-y-8">
-                        <div className="text-center space-y-3">
-                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 text-purple-400 text-xs font-semibold tracking-wide uppercase border border-purple-500/20">
-                                <UserCheck className="w-3.5 h-3.5" />
-                                Đội ngũ & Độc lập
-                            </div>
-                            <h2 className="text-2xl md:text-3xl font-sans font-bold text-white">
-                                Đội ngũ nghiên cứu & <span className="font-serif italic font-light text-purple-400">Minh bạch vị thế</span>
-                            </h2>
-                        </div>
-
-                        <div className="grid md:grid-cols-2 gap-6">
-                            <div className="relative overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6 backdrop-blur-md space-y-4">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-12 h-12 rounded-2xl bg-[#9c1850]/20 border border-[#9c1850]/40 flex items-center justify-center font-serif font-bold text-white text-lg">
-                                        A1
-                                    </div>
-                                    <div>
-                                        <h3 className="text-lg font-serif font-bold text-white">Athenaster_1</h3>
-                                        <p className="text-xs text-muted-foreground font-sans">Lead Researcher & Operator</p>
-                                    </div>
-                                </div>
-                                <p className="text-sm text-[#a0a5b5] leading-relaxed font-sans">
-                                    Athena Stock được vận hành và phụ trách nghiên cứu chính bởi <strong className="text-white font-medium">Athenaster_1</strong>. Định danh Athenaster thể hiện cam kết kiên định với nghiên cứu khách quan, phương pháp luận thực chứng và phong cách tư duy độc lập, hướng người đọc tập trung vào chất lượng luận điểm thay vì tính trình diễn cá nhân.
-                                </p>
-                            </div>
-
-                            <div className="relative overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6 backdrop-blur-md space-y-4">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-12 h-12 rounded-2xl bg-[#4271b3]/20 border border-[#4271b3]/40 flex items-center justify-center text-[#4271b3]">
-                                        <ShieldAlert className="w-6 h-6" />
-                                    </div>
-                                    <div>
-                                        <h3 className="text-lg font-serif font-bold text-white">Chính sách Disclosure</h3>
-                                        <p className="text-xs text-muted-foreground font-sans">Minh bạch xung đột lợi ích</p>
-                                    </div>
-                                </div>
-                                <p className="text-sm text-[#a0a5b5] leading-relaxed font-sans">
-                                    Tác giả luôn công bố minh bạch việc có hoặc không nắm giữ vị thế đối với cổ phiếu của doanh nghiệp được phân tích tại thời điểm xuất bản. Athena Stock tuyệt đối không nhận tài trợ, thù lao truyền thông hay bất kỳ hình thức hợp tác thương mại nào từ các doanh nghiệp xuất hiện trong bài viết.
-                                </p>
                             </div>
                         </div>
                     </div>
