@@ -16,14 +16,17 @@ const publicRoutes = [
     "/library/glossary",
     "/disclaimer",
     "/privacy",
+    "/vip/upgrade",
 ]
 const exactInternalRoutes = new Set([
     "/",
     ...publicRoutes.filter(Boolean),
     "/admin/bookings",
+    "/admin/vip",
     "/booking/cancel",
     "/booking/reschedule",
     "/booking/respond",
+    "/profile",
 ])
 const dynamicPrefixes = ["/articles/", "/business/", "/frameworks/", "/psychology/"]
 const failures = []

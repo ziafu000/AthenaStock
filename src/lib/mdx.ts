@@ -35,6 +35,7 @@ const commonFrontmatterKeys = [
     "title",
     "description",
     "date",
+    "publishedAt",
     "updatedAt",
     "tags",
     "readingTime",
@@ -266,6 +267,11 @@ export function validateFrontmatter<T extends ContentType>(
     validateRequiredString(data, "description", issues, 180)
     validateDateField(data, "date", issues, true)
     validateDateField(data, "updatedAt", issues, false)
+    if (data.publishedAt !== undefined) {
+        if (typeof data.publishedAt !== "string" || isNaN(new Date(data.publishedAt).getTime())) {
+            issues.push({ field: "publishedAt", message: "must be a valid ISO date or date-time string" })
+        }
+    }
     validateStringArray(data, "tags", issues, true)
     validateRequiredString(data, "readingTime", issues)
 

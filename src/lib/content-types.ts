@@ -43,6 +43,7 @@ interface BaseFrontmatter {
     title: string
     description: string
     date: string
+    publishedAt?: string
     updatedAt?: string
     tags: string[]
     readingTime: string
