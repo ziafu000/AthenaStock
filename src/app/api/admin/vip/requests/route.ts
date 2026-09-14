@@ -13,6 +13,18 @@ export async function GET(request: NextRequest) {
     try {
         const sql = getDatabase()
         const url = new URL(request.url)
+        const singleId = url.searchParams.get("id") || url.searchParams.get("requestId")
+
+        if (singleId) {
+            const rows = await sql<{ proof_image_data: string | null }[]>`
+                SELECT proof_image_data FROM public.vip_payment_requests WHERE id = ${singleId} LIMIT 1
+            `
+            if (rows.length === 0) {
+                return NextResponse.json({ error: "Không tìm thấy yêu cầu thanh toán." }, { status: 404 })
+            }
+            return NextResponse.json({ proof_image_data: rows[0].proof_image_data }, { headers: { "Cache-Control": "no-store" } })
+        }
+
         const statusFilter = url.searchParams.get("status")
 
         let requests: (VipPaymentRequest & {
@@ -27,7 +39,9 @@ export async function GET(request: NextRequest) {
             requests = await sql`
                 SELECT 
                     r.id, r.member_id, r.package_id, r.package_months, r.amount, r.transfer_code,
-                    r.bank_info, r.status, r.proof_image_data, r.notes, r.created_at, r.approved_at, r.updated_at,
+                    r.bank_info, r.status,
+                    (r.proof_image_data IS NOT NULL AND length(r.proof_image_data) > 0) as has_proof,
+                    r.notes, r.created_at, r.approved_at, r.updated_at,
                     m.full_name as member_name, m.email as member_email, m.phone as member_phone,
                     m.tier as current_tier, m.vip_expires_at as member_vip_expires_at
                 FROM public.vip_payment_requests r
@@ -40,7 +54,9 @@ export async function GET(request: NextRequest) {
             requests = await sql`
                 SELECT 
                     r.id, r.member_id, r.package_id, r.package_months, r.amount, r.transfer_code,
-                    r.bank_info, r.status, r.proof_image_data, r.notes, r.created_at, r.approved_at, r.updated_at,
+                    r.bank_info, r.status,
+                    (r.proof_image_data IS NOT NULL AND length(r.proof_image_data) > 0) as has_proof,
+                    r.notes, r.created_at, r.approved_at, r.updated_at,
                     m.full_name as member_name, m.email as member_email, m.phone as member_phone,
                     m.tier as current_tier, m.vip_expires_at as member_vip_expires_at
                 FROM public.vip_payment_requests r
@@ -50,7 +66,6 @@ export async function GET(request: NextRequest) {
             `
         }
 
-        // Stats summary
         const counts = await sql<{
             total_pending: string
             total_approved: string
@@ -69,7 +84,6 @@ export async function GET(request: NextRequest) {
             FROM public.vip_payment_requests
         `
 
-        // Recent audit logs
         const auditLogs = await sql<MembershipAuditLog[]>`
             SELECT id, actor_type, actor_id, action, target_type, target_id, details, created_at
             FROM public.membership_audit_logs

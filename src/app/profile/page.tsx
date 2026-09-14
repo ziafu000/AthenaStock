@@ -22,7 +22,6 @@ import {
     Lock,
     Loader2,
 } from "lucide-react"
-import { VipUpgradeModal } from "@/components/vip/VipUpgradeModal"
 import { WATCHLIST_STATUSES } from "@/lib/member/types"
 import type {
     Member,
@@ -36,7 +35,6 @@ export default function ProfilePage() {
     const [member, setMember] = useState<Member | null>(null)
     const [loadingMember, setLoadingMember] = useState(true)
     const [activeTab, setActiveTab] = useState<"watchlist" | "portfolio" | "billing">("watchlist")
-    const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false)
 
     // Auth Form states (if not logged in)
     const [authMode, setAuthMode] = useState<"login" | "register">("login")
@@ -45,6 +43,10 @@ export default function ProfilePage() {
     const [authPhone, setAuthPhone] = useState("")
     const [authError, setAuthError] = useState("")
     const [authLoading, setAuthLoading] = useState(false)
+    const [otpStep, setOtpStep] = useState(false)
+    const [otpCode, setOtpCode] = useState("")
+    const [otpToken, setOtpToken] = useState("")
+    const [devOtpHint, setDevOtpHint] = useState("")
 
     // Watchlist states
     const [watchlist, setWatchlist] = useState<WatchlistItem[]>([])
@@ -144,23 +146,63 @@ export default function ProfilePage() {
         setAuthLoading(true)
 
         try {
-            const res = await fetch("/api/member/auth", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    action: authMode,
-                    email: authEmail,
-                    full_name: authFullName,
-                    phone: authPhone,
-                }),
-            })
+            if (authMode === "login") {
+                if (!otpStep) {
+                    const res = await fetch("/api/member/auth", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            action: "request_otp",
+                            email: authEmail,
+                        }),
+                    })
 
-            const data = await res.json()
-            if (!res.ok) {
-                throw new Error(data.error || "Xác thực không thành công.")
+                    const data = await res.json()
+                    if (!res.ok) {
+                        throw new Error(data.error || "Không thể gửi mã xác thực.")
+                    }
+
+                    setOtpToken(data.otpToken || "")
+                    if (data.devOtp) setDevOtpHint(data.devOtp)
+                    setOtpStep(true)
+                } else {
+                    const res = await fetch("/api/member/auth", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            action: "verify_otp",
+                            email: authEmail,
+                            code: otpCode,
+                            otpToken,
+                        }),
+                    })
+
+                    const data = await res.json()
+                    if (!res.ok) {
+                        throw new Error(data.error || "Xác thực không thành công.")
+                    }
+
+                    setMember(data.member)
+                }
+            } else {
+                const res = await fetch("/api/member/auth", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        action: "register",
+                        email: authEmail,
+                        full_name: authFullName,
+                        phone: authPhone,
+                    }),
+                })
+
+                const data = await res.json()
+                if (!res.ok) {
+                    throw new Error(data.error || "Đăng ký không thành công.")
+                }
+
+                setMember(data.member)
             }
-
-            setMember(data.member)
         } catch (err) {
             setAuthError(err instanceof Error ? err.message : "Đã có lỗi xảy ra.")
         } finally {
@@ -306,7 +348,11 @@ export default function ProfilePage() {
                     <div className="flex rounded-xl bg-secondary/50 p-1 mb-6">
                         <button
                             type="button"
-                            onClick={() => setAuthMode("login")}
+                            onClick={() => {
+                                setAuthMode("login")
+                                setOtpStep(false)
+                                setAuthError("")
+                            }}
                             className={`flex-1 rounded-lg py-1.5 text-xs font-semibold transition-all ${
                                 authMode === "login" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
                             }`}
@@ -315,7 +361,11 @@ export default function ProfilePage() {
                         </button>
                         <button
                             type="button"
-                            onClick={() => setAuthMode("register")}
+                            onClick={() => {
+                                setAuthMode("register")
+                                setOtpStep(false)
+                                setAuthError("")
+                            }}
                             className={`flex-1 rounded-lg py-1.5 text-xs font-semibold transition-all ${
                                 authMode === "register" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
                             }`}
@@ -354,12 +404,58 @@ export default function ProfilePage() {
                             <input
                                 type="email"
                                 required
+                                disabled={otpStep}
                                 value={authEmail}
                                 onChange={(e) => setAuthEmail(e.target.value)}
                                 placeholder="name@example.com"
-                                className="w-full rounded-xl border border-border bg-background px-3.5 py-2 text-sm focus:border-amber-500 focus:outline-none"
+                                className="w-full rounded-xl border border-border bg-background px-3.5 py-2 text-sm focus:border-amber-500 focus:outline-none disabled:opacity-60"
                             />
                         </div>
+
+                        {authMode === "login" && otpStep && (
+                            <div className="space-y-2">
+                                <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-3 text-xs text-foreground">
+                                    <p className="font-semibold text-amber-600 dark:text-amber-400 mb-1">
+                                        Mã xác thực đã được gửi tới email của bạn.
+                                    </p>
+                                    <p className="text-muted-foreground">
+                                        Vui lòng nhập mã 6 số nhận được để hoàn tất đăng nhập.
+                                    </p>
+                                    {devOtpHint && (
+                                        <div className="mt-2 font-mono text-[11px] bg-background/80 px-2 py-1 rounded border border-amber-500/20">
+                                            Mã OTP thử nghiệm: <strong>{devOtpHint}</strong>
+                                        </div>
+                                    )}
+                                </div>
+
+                                <label className="block text-xs font-semibold text-muted-foreground uppercase mb-1">
+                                    Mã xác thực (OTP 6 số) *
+                                </label>
+                                <input
+                                    type="text"
+                                    required
+                                    maxLength={6}
+                                    value={otpCode}
+                                    onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, ""))}
+                                    placeholder="123456"
+                                    className="w-full rounded-xl border border-border bg-background px-3.5 py-2 text-sm font-mono tracking-widest text-center text-lg focus:border-amber-500 focus:outline-none"
+                                />
+
+                                <div className="text-right">
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setOtpStep(false)
+                                            setOtpCode("")
+                                            setAuthError("")
+                                        }}
+                                        className="text-xs text-muted-foreground hover:text-foreground underline"
+                                    >
+                                        Đổi email hoặc gửi lại mã
+                                    </button>
+                                </div>
+                            </div>
+                        )}
 
                         {authMode === "register" && (
                             <div>
@@ -384,7 +480,13 @@ export default function ProfilePage() {
                             {authLoading ? (
                                 <Loader2 className="h-4 w-4 animate-spin" />
                             ) : (
-                                <span>{authMode === "login" ? "Đăng nhập ngay" : "Tạo tài khoản"}</span>
+                                <span>
+                                    {authMode === "login"
+                                        ? otpStep
+                                            ? "Xác thực & Đăng nhập"
+                                            : "Gửi mã xác thực đăng nhập"
+                                        : "Tạo tài khoản"}
+                                </span>
                             )}
                         </button>
                     </form>
@@ -453,21 +555,21 @@ export default function ProfilePage() {
                                             : "Vô thời hạn"}
                                     </strong>
                                 </span>
-                                <button
-                                    onClick={() => setIsUpgradeModalOpen(true)}
-                                    className="rounded-xl border border-amber-500/40 bg-amber-500/10 px-3.5 py-1.5 text-xs font-semibold text-amber-700 dark:text-amber-300 hover:bg-amber-500/20 transition-all"
+                                <Link
+                                    href="/vip/upgrade"
+                                    className="rounded-xl border border-amber-500/40 bg-amber-500/10 px-3.5 py-1.5 text-xs font-semibold text-amber-700 dark:text-amber-300 hover:bg-amber-500/20 transition-all inline-block"
                                 >
                                     Gia hạn VIP
-                                </button>
+                                </Link>
                             </div>
                         ) : (
-                            <button
-                                onClick={() => setIsUpgradeModalOpen(true)}
+                            <Link
+                                href="/vip/upgrade"
                                 className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-rose-600 px-4 py-2 text-xs font-semibold text-white shadow-md hover:from-amber-600 hover:to-rose-700 transition-all"
                             >
                                 <Crown className="h-4 w-4" />
                                 <span>Nâng cấp VIP</span>
-                            </button>
+                            </Link>
                         )}
 
                         <button
@@ -660,13 +762,13 @@ export default function ProfilePage() {
                                 Theo dõi phân bổ tỷ trọng 1 danh mục chính, tính toán lãi/lỗ tự động và quản trị rủi ro tập trung cho danh mục đầu tư giá trị của bạn.
                             </p>
                             <div className="pt-2">
-                                <button
-                                    onClick={() => setIsUpgradeModalOpen(true)}
+                                <Link
+                                    href="/vip/upgrade"
                                     className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-rose-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md hover:from-amber-600 hover:to-rose-700 transition-all cursor-pointer"
                                 >
                                     <Crown className="h-4 w-4" />
                                     <span>Nâng cấp VIP để mở khóa Portfolio</span>
-                                </button>
+                                </Link>
                             </div>
                         </div>
                     ) : (
@@ -857,13 +959,13 @@ export default function ProfilePage() {
                         <h2 className="text-lg font-serif font-bold text-foreground">
                             Lịch sử yêu cầu nâng cấp gói VIP
                         </h2>
-                        <button
-                            onClick={() => setIsUpgradeModalOpen(true)}
+                        <Link
+                            href="/vip/upgrade"
                             className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-rose-600 px-3.5 py-1.5 text-xs font-semibold text-white shadow-sm hover:from-amber-600 hover:to-rose-700 transition-all"
                         >
                             <Plus className="h-3.5 w-3.5" />
                             <span>Tạo yêu cầu mới</span>
-                        </button>
+                        </Link>
                     </div>
 
                     {paymentRequests.length === 0 ? (
@@ -937,16 +1039,6 @@ export default function ProfilePage() {
                     )}
                 </div>
             )}
-
-            {/* Modal for VIP Upgrade */}
-            <VipUpgradeModal
-                isOpen={isUpgradeModalOpen}
-                onClose={() => {
-                    setIsUpgradeModalOpen(false)
-                    void loadMember()
-                    void loadPaymentRequests()
-                }}
-            />
         </div>
     )
 }

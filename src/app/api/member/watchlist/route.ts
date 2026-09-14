@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
             ) VALUES (
                 ${member.id}, ${ticker}, ${validStatus}, ${notes}, now()
             )
-            ON CONFLICT (member_id, upper(ticker))
+            ON CONFLICT (member_id, (upper(ticker)))
             DO UPDATE SET
                 status = EXCLUDED.status,
                 notes = COALESCE(EXCLUDED.notes, watchlists.notes),

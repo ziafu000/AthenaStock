@@ -34,6 +34,10 @@ export async function POST(request: NextRequest) {
 
         const currentReq = reqRows[0]
 
+        if (currentReq.status === "approved") {
+            return NextResponse.json({ error: "Không thể từ chối yêu cầu thanh toán đã được phê duyệt." }, { status: 400 })
+        }
+
         await sql`
             UPDATE public.vip_payment_requests
             SET status = ${targetStatus},

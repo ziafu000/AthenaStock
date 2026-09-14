@@ -15,6 +15,7 @@ import {
     X,
     Shield,
     Clock,
+    Loader2,
 } from "lucide-react"
 import type { VipPaymentRequest, MembershipAuditLog } from "@/lib/member/types"
 
@@ -47,6 +48,24 @@ export default function AdminVipPage() {
     const [actionLoading, setActionLoading] = useState(false)
     const [error, setError] = useState("")
     const [activeBillImage, setActiveBillImage] = useState<string | null>(null)
+    const [loadingBillId, setLoadingBillId] = useState<string | null>(null)
+
+    async function handleViewBill(requestId: string) {
+        setLoadingBillId(requestId)
+        try {
+            const res = await fetch(`/api/admin/vip/requests?id=${requestId}`, { cache: "no-store" })
+            const data = await res.json()
+            if (data.proof_image_data) {
+                setActiveBillImage(data.proof_image_data)
+            } else {
+                alert("Không tìm thấy hình ảnh biên lai thanh toán.")
+            }
+        } catch {
+            alert("Không thể tải hình ảnh biên lai.")
+        } finally {
+            setLoadingBillId(null)
+        }
+    }
 
     const loadData = useCallback(async (currentStatus: string) => {
         setLoading(true)
@@ -383,12 +402,17 @@ export default function AdminVipPage() {
                                             {req.amount.toLocaleString("vi-VN")} đ
                                         </td>
                                         <td className="px-4 py-3.5">
-                                            {req.proof_image_data ? (
+                                            {req.has_proof || req.proof_image_data ? (
                                                 <button
-                                                    onClick={() => setActiveBillImage(req.proof_image_data)}
-                                                    className="inline-flex items-center gap-1 rounded-lg border border-border bg-secondary/50 px-2.5 py-1 text-xs font-semibold text-foreground hover:bg-secondary transition-all"
+                                                    onClick={() => void handleViewBill(req.id)}
+                                                    disabled={loadingBillId === req.id}
+                                                    className="inline-flex items-center gap-1 rounded-lg border border-border bg-secondary/50 px-2.5 py-1 text-xs font-semibold text-foreground hover:bg-secondary transition-all disabled:opacity-50"
                                                 >
-                                                    <Eye className="h-3.5 w-3.5 text-amber-500" />
+                                                    {loadingBillId === req.id ? (
+                                                        <Loader2 className="h-3.5 w-3.5 animate-spin text-amber-500" />
+                                                    ) : (
+                                                        <Eye className="h-3.5 w-3.5 text-amber-500" />
+                                                    )}
                                                     <span>Xem Bill</span>
                                                 </button>
                                             ) : (

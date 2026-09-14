@@ -9,7 +9,13 @@ import { VipCountdownBanner } from "@/components/vip/VipCountdownBanner"
 import { getAllPosts, getPostBySlug } from "@/lib/mdx"
 import { getRelatedPosts } from "@/lib/related"
 import { ADMIN_SESSION_COOKIE, verifyAdminSession } from "@/lib/booking/admin-auth"
-import { MEMBER_SESSION_COOKIE, verifyMemberSessionToken } from "@/lib/member/auth"
+import {
+    MEMBER_SESSION_COOKIE,
+    verifyMemberSessionToken,
+    getMemberFromCookie,
+    isVipMember,
+    isSessionVip,
+} from "@/lib/member/auth"
 import { checkResearchVipAccess } from "@/lib/member/vip-access"
 
 interface BusinessPageProps {
@@ -63,8 +69,16 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
     const isAdmin = verifyAdminSession(adminCookie)
 
     const memberCookie = cookieStore.get(MEMBER_SESSION_COOKIE)?.value
-    const memberSession = verifyMemberSessionToken(memberCookie)
-    const isVip = memberSession?.tier === "vip"
+    let isVip = false
+    if (memberCookie) {
+        try {
+            const member = await getMemberFromCookie(memberCookie)
+            isVip = isVipMember(member)
+        } catch {
+            const memberSession = verifyMemberSessionToken(memberCookie)
+            isVip = isSessionVip(memberSession)
+        }
+    }
 
     const vipCheck = checkResearchVipAccess({
         date: post.metadata.date,
@@ -76,9 +90,18 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
     const relatedPosts = await getRelatedPosts(post)
 
     if (vipCheck.isLocked) {
-        // Extract section 1 as teaser
         const match = post.content.match(/^##\s+2\./m)
-        const teaserContent = match && match.index ? post.content.slice(0, match.index) : post.content
+        let teaserContent = ""
+        if (match && typeof match.index === "number" && match.index > 0) {
+            teaserContent = post.content.slice(0, match.index).trim()
+        } else {
+            const secondHeadingMatch = post.content.match(/[\s\S]*?^##\s+[^\n]+\n[\s\S]*?(?=^##\s+)/m)
+            if (secondHeadingMatch && secondHeadingMatch[0]) {
+                teaserContent = secondHeadingMatch[0].trim()
+            } else {
+                teaserContent = post.content.slice(0, Math.min(post.content.length, 600)).trim()
+            }
+        }
 
         return (
             <BusinessAnalysisLayout meta={post.metadata}>

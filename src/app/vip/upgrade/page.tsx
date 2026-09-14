@@ -88,6 +88,14 @@ export default function VipUpgradePage() {
     function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
         const file = e.target.files?.[0]
         if (file) {
+            if (file.size > 5 * 1024 * 1024) {
+                setError("Dung lượng hình ảnh vượt quá 5MB. Vui lòng chọn tệp nhỏ hơn.")
+                return
+            }
+            if (!file.type.startsWith("image/")) {
+                setError("Chỉ chấp nhận tệp hình ảnh.")
+                return
+            }
             setProofFile(file)
             const reader = new FileReader()
             reader.onloadend = () => {
@@ -114,6 +122,7 @@ export default function VipUpgradePage() {
                 body: JSON.stringify({
                     requestId: createdRequest.id,
                     proofImageData: proofPreview,
+                    uploadToken: createdRequest.upload_token,
                 }),
             })
 

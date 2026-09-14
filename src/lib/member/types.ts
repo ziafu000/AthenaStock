@@ -80,7 +80,9 @@ export interface VipPaymentRequest {
         accountName: string
     }
     status: VipPaymentRequestStatus
-    proof_image_data: string | null
+    proof_image_data?: string | null
+    has_proof?: boolean
+    upload_token?: string
     notes: string | null
     created_at: string
     approved_at: string | null
@@ -147,4 +149,11 @@ export interface MembershipAuditLog {
     target_id: string
     details: Record<string, unknown>
     created_at: string
+}
+
+export interface MemberSession {
+    memberId: string
+    email: string
+    tier: MemberTier
+    vipExpiresAt?: string | null
 }

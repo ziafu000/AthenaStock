@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { randomBytes } from "node:crypto"
 import { getDatabase } from "@/lib/booking/db"
-import { getMemberFromRequest, createMemberSession, MEMBER_SESSION_COOKIE } from "@/lib/member/auth"
+import { getMemberFromRequest, createUploadProofToken } from "@/lib/member/auth"
 import { VIP_PACKAGES, BANK_CONFIG } from "@/lib/member/types"
 import type { Member, VipPaymentRequest } from "@/lib/member/types"
 import { recordAuditLog } from "@/lib/member/audit"
@@ -10,7 +10,6 @@ export const runtime = "nodejs"
 
 function generateTransferCode(months: number): string {
     const monthPad = String(months).padStart(2, "0")
-    // Generate 4-character random alphanumeric (uppercase, easily readable without 0/O 1/I confusion if possible)
     const chars = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ"
     const bytes = randomBytes(4)
     let code = ""
@@ -32,9 +31,7 @@ export async function POST(request: NextRequest) {
 
         const sql = getDatabase()
         let member: Member | null = await getMemberFromRequest(request)
-        let sessionTokenToSet: string | null = null
 
-        // If not logged in, require email & full_name
         if (!member) {
             const cleanEmail = typeof email === "string" ? email.trim().toLowerCase() : ""
             const cleanName = typeof full_name === "string" ? full_name.trim() : ""
@@ -67,16 +64,13 @@ export async function POST(request: NextRequest) {
                 `
                 member = inserted[0]
             }
-            sessionTokenToSet = createMemberSession(member)
         }
 
         if (!member) {
             return NextResponse.json({ error: "Không thể xác định thông tin thành viên." }, { status: 400 })
         }
 
-        // Generate unique transfer code
         let transferCode = generateTransferCode(pkg.months)
-        // Ensure uniqueness
         for (let attempt = 0; attempt < 5; attempt++) {
             const duplicateCheck = await sql`
                 SELECT id FROM public.vip_payment_requests WHERE transfer_code = ${transferCode} LIMIT 1
@@ -102,6 +96,7 @@ export async function POST(request: NextRequest) {
         `
 
         const newRequest = inserted[0]
+        const uploadToken = createUploadProofToken(newRequest.id, member.id)
 
         await recordAuditLog({
             actorType: "member",
@@ -118,11 +113,12 @@ export async function POST(request: NextRequest) {
 
         const qrCodeUrl = `https://img.vietqr.io/image/${BANK_CONFIG.bankId}-${BANK_CONFIG.accountNumber}-compact2.png?amount=${pkg.amount}&addInfo=${encodeURIComponent(transferCode)}&accountName=${encodeURIComponent(BANK_CONFIG.accountName)}`
 
-        const response = NextResponse.json({
+        return NextResponse.json({
             success: true,
             request: {
                 ...newRequest,
                 qr_code_url: qrCodeUrl,
+                upload_token: uploadToken,
             },
             member: {
                 id: member.id,
@@ -131,20 +127,6 @@ export async function POST(request: NextRequest) {
                 tier: member.tier,
             },
         })
-
-        if (sessionTokenToSet) {
-            response.cookies.set({
-                name: MEMBER_SESSION_COOKIE,
-                value: sessionTokenToSet,
-                path: "/",
-                httpOnly: true,
-                secure: process.env.NODE_ENV === "production",
-                sameSite: "lax",
-                maxAge: 30 * 24 * 60 * 60,
-            })
-        }
-
-        return response
     } catch (error) {
         console.error("Create VIP request error:", error)
         return NextResponse.json({ error: "Không thể tạo yêu cầu thanh toán." }, { status: 500 })
