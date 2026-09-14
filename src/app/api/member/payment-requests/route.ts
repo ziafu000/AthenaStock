@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
 
         const sql = getDatabase()
         const requests = await sql<VipPaymentRequest[]>`
-            SELECT id, member_id, package_id, package_months, amount, transfer_code, bank_info, status, proof_image_data, notes, created_at, approved_at, updated_at
+            SELECT id, member_id, package_id, package_months, amount, transfer_code, bank_info, status, (proof_image_data IS NOT NULL AND length(proof_image_data) > 0) as has_proof, notes, created_at, approved_at, updated_at
             FROM public.vip_payment_requests
             WHERE member_id = ${member.id}
             ORDER BY created_at DESC

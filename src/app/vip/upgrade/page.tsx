@@ -197,7 +197,14 @@ export default function VipUpgradePage() {
             <div className="max-w-2xl mx-auto rounded-3xl border border-stone-200 dark:border-stone-800 bg-background p-6 md:p-10 shadow-xl">
                 {error && (
                     <div className="mb-6 rounded-xl border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-600 dark:text-red-400">
-                        {error}
+                        <div>{error}</div>
+                        {error.includes("đăng nhập") && (
+                            <div className="mt-2">
+                                <Link href="/profile" className="underline font-medium hover:opacity-80">
+                                    Đi tới trang đăng nhập &rarr;
+                                </Link>
+                            </div>
+                        )}
                     </div>
                 )}
 

@@ -6,10 +6,9 @@ import { Clock, Crown, Sparkles, ArrowRight, ShieldCheck } from "lucide-react"
 
 interface VipCountdownBannerProps {
     unlockAt: string
-    onOpenUpgradeModal?: () => void
 }
 
-export function VipCountdownBanner({ unlockAt, onOpenUpgradeModal }: VipCountdownBannerProps) {
+export function VipCountdownBanner({ unlockAt }: VipCountdownBannerProps) {
     const [timeLeft, setTimeLeft] = useState<{
         hours: number
         minutes: number
@@ -100,25 +99,14 @@ export function VipCountdownBanner({ unlockAt, onOpenUpgradeModal }: VipCountdow
                     </div>
 
                     <div className="pt-2">
-                        {onOpenUpgradeModal ? (
-                            <button
-                                onClick={onOpenUpgradeModal}
-                                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-rose-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md hover:from-amber-600 hover:to-rose-700 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
-                            >
-                                <Sparkles className="h-4 w-4" />
-                                <span>Đăng ký thành viên VIP</span>
-                                <ArrowRight className="h-4 w-4" />
-                            </button>
-                        ) : (
-                            <Link
-                                href="/vip/upgrade"
-                                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-rose-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md hover:from-amber-600 hover:to-rose-700 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
-                            >
-                                <Sparkles className="h-4 w-4" />
-                                <span>Đăng ký thành viên VIP</span>
-                                <ArrowRight className="h-4 w-4" />
-                            </Link>
-                        )}
+                        <Link
+                            href="/vip/upgrade"
+                            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-rose-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md hover:from-amber-600 hover:to-rose-700 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+                        >
+                            <Sparkles className="h-4 w-4" />
+                            <span>Đăng ký thành viên VIP</span>
+                            <ArrowRight className="h-4 w-4" />
+                        </Link>
                     </div>
                 </div>
             </div>

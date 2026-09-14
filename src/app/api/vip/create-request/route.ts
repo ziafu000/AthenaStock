@@ -44,26 +44,29 @@ export async function POST(request: NextRequest) {
                 return NextResponse.json({ error: "Vui lòng nhập họ và tên (tối thiểu 2 ký tự)." }, { status: 400 })
             }
 
-            const existing = await sql<Member[]>`
-                SELECT id, email, full_name, phone, tier, vip_started_at, vip_expires_at, created_at, updated_at
+            const existing = await sql<{ id: string }[]>`
+                SELECT id
                 FROM public.members
                 WHERE lower(email) = ${cleanEmail}
                 LIMIT 1
             `
 
             if (existing.length > 0) {
-                member = existing[0]
-            } else {
-                const inserted = await sql<Member[]>`
-                    INSERT INTO public.members (
-                        email, full_name, phone, tier
-                    ) VALUES (
-                        ${cleanEmail}, ${cleanName}, ${cleanPhone}, 'normal'
-                    )
-                    RETURNING id, email, full_name, phone, tier, vip_started_at, vip_expires_at, created_at, updated_at
-                `
-                member = inserted[0]
+                return NextResponse.json(
+                    { error: "Email này đã được đăng ký tài khoản. Vui lòng đăng nhập để nâng cấp VIP." },
+                    { status: 401 }
+                )
             }
+
+            const inserted = await sql<Member[]>`
+                INSERT INTO public.members (
+                    email, full_name, phone, tier
+                ) VALUES (
+                    ${cleanEmail}, ${cleanName}, ${cleanPhone}, 'normal'
+                )
+                RETURNING id, email, full_name, phone, tier, vip_started_at, vip_expires_at, created_at, updated_at
+            `
+            member = inserted[0]
         }
 
         if (!member) {
@@ -119,12 +122,6 @@ export async function POST(request: NextRequest) {
                 ...newRequest,
                 qr_code_url: qrCodeUrl,
                 upload_token: uploadToken,
-            },
-            member: {
-                id: member.id,
-                email: member.email,
-                full_name: member.full_name,
-                tier: member.tier,
             },
         })
     } catch (error) {
