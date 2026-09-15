@@ -8,7 +8,7 @@ export const runtime = "nodejs"
 // Reference mock prices for common VN stocks (in VND) for portfolio calculation
 const REFERENCE_PRICES: Record<string, number> = {
     FPT: 135000,
-    HPG: 268000,
+    HPG: 26800,
     VNM: 67500,
     MWG: 61800,
     VCB: 92400,
@@ -178,34 +178,17 @@ export async function DELETE(request: NextRequest) {
         }
 
         const url = new URL(request.url)
-        let ticker = url.searchParams.get("ticker")
-        let id = url.searchParams.get("id")
+        const ticker = url.searchParams.get("ticker")?.trim().toUpperCase()
 
-        if (!ticker && !id) {
-            try {
-                const body = await request.json()
-                ticker = body.ticker
-                id = body.id
-            } catch {
-                // Ignore json parsing error
-            }
+        if (!ticker) {
+            return NextResponse.json({ error: "Cần cung cấp mã cổ phiếu để xóa." }, { status: 400 })
         }
 
         const sql = getDatabase()
-
-        if (id) {
-            await sql`
-                DELETE FROM public.portfolio_holdings
-                WHERE id = ${id} AND member_id = ${member.id}
-            `
-        } else if (ticker) {
-            await sql`
-                DELETE FROM public.portfolio_holdings
-                WHERE upper(ticker) = ${ticker.trim().toUpperCase()} AND member_id = ${member.id}
-            `
-        } else {
-            return NextResponse.json({ error: "Cần cung cấp mã cổ phiếu hoặc id để xóa." }, { status: 400 })
-        }
+        await sql`
+            DELETE FROM public.portfolio_holdings
+            WHERE upper(ticker) = ${ticker} AND member_id = ${member.id}
+        `
 
         return NextResponse.json({ success: true, message: "Đã xóa khỏi danh mục đầu tư." })
     } catch (error) {

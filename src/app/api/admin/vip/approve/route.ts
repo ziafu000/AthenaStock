@@ -21,56 +21,49 @@ export async function POST(request: NextRequest) {
 
         const sql = getDatabase()
 
-        // Fetch request
-        const reqRows = await sql<VipPaymentRequest[]>`
-            SELECT id, member_id, package_id, package_months, amount, transfer_code, status, proof_image_data, notes, created_at, approved_at, updated_at
-            FROM public.vip_payment_requests
-            WHERE id = ${requestId}
-            LIMIT 1
-        `
+        const approval = await sql.begin(async (tx) => {
+            const reqRows = await tx<VipPaymentRequest[]>`
+                SELECT id, member_id, package_id, package_months, amount, transfer_code, status, notes, created_at, approved_at, updated_at
+                FROM public.vip_payment_requests
+                WHERE id = ${requestId}
+                FOR UPDATE
+            `
 
-        if (reqRows.length === 0) {
-            return NextResponse.json({ error: "Không tìm thấy yêu cầu thanh toán." }, { status: 404 })
-        }
+            if (reqRows.length === 0) {
+                return { status: 404 as const, error: "Không tìm thấy yêu cầu thanh toán." }
+            }
 
-        const vipReq = reqRows[0]
-        if (vipReq.status === "approved") {
-            return NextResponse.json({ error: "Yêu cầu thanh toán này đã được duyệt trước đó." }, { status: 400 })
-        }
+            const vipReq = reqRows[0]
+            if (vipReq.status === "approved") {
+                return { status: 400 as const, error: "Yêu cầu thanh toán này đã được duyệt trước đó." }
+            }
 
-        // Fetch member
-        const memRows = await sql<Member[]>`
-            SELECT id, email, full_name, phone, tier, vip_started_at, vip_expires_at, created_at, updated_at
-            FROM public.members
-            WHERE id = ${vipReq.member_id}
-            LIMIT 1
-        `
+            const memRows = await tx<Member[]>`
+                SELECT id, email, full_name, phone, tier, vip_started_at, vip_expires_at, created_at, updated_at
+                FROM public.members
+                WHERE id = ${vipReq.member_id}
+                FOR UPDATE
+            `
 
-        if (memRows.length === 0) {
-            return NextResponse.json({ error: "Không tìm thấy thông tin thành viên." }, { status: 404 })
-        }
+            if (memRows.length === 0) {
+                return { status: 404 as const, error: "Không tìm thấy thông tin thành viên." }
+            }
 
-        const member = memRows[0]
-        const now = new Date()
-        const durationMs = vipReq.package_months * 30 * 24 * 60 * 60 * 1000
+            const member = memRows[0]
+            const now = new Date()
+            const durationMs = vipReq.package_months * 30 * 24 * 60 * 60 * 1000
 
-        let newVipStartedAt: Date
-        let newVipExpiresAt: Date
+            let newVipStartedAt: Date
+            let newVipExpiresAt: Date
 
-        // Check if member already has active VIP
-        if (member.tier === "vip" && member.vip_expires_at && new Date(member.vip_expires_at).getTime() > now.getTime()) {
-            newVipStartedAt = member.vip_started_at ? new Date(member.vip_started_at) : now
-            newVipExpiresAt = new Date(new Date(member.vip_expires_at).getTime() + durationMs)
-        } else {
-            newVipStartedAt = now
-            newVipExpiresAt = new Date(now.getTime() + durationMs)
-        }
+            if (member.tier === "vip" && member.vip_expires_at && new Date(member.vip_expires_at).getTime() > now.getTime()) {
+                newVipStartedAt = member.vip_started_at ? new Date(member.vip_started_at) : now
+                newVipExpiresAt = new Date(new Date(member.vip_expires_at).getTime() + durationMs)
+            } else {
+                newVipStartedAt = now
+                newVipExpiresAt = new Date(now.getTime() + durationMs)
+            }
 
-        const adminEmail = process.env.ADMIN_EMAIL || "admin"
-
-        // Execute update in transaction
-        await sql.begin(async (tx) => {
-            // Update member tier & expiration
             await tx`
                 UPDATE public.members
                 SET tier = 'vip',
@@ -80,7 +73,6 @@ export async function POST(request: NextRequest) {
                 WHERE id = ${member.id}
             `
 
-            // Update payment request status
             await tx`
                 UPDATE public.vip_payment_requests
                 SET status = 'approved',
@@ -89,27 +81,40 @@ export async function POST(request: NextRequest) {
                     updated_at = now()
                 WHERE id = ${vipReq.id}
             `
+
+            return {
+                status: 200 as const,
+                vipReq,
+                member,
+                newVipExpiresAt,
+            }
         })
+
+        if ("error" in approval) {
+            return NextResponse.json({ error: approval.error }, { status: approval.status })
+        }
+
+        const adminEmail = process.env.ADMIN_EMAIL || "admin"
 
         await recordAuditLog({
             actorType: "admin",
             actorId: adminEmail,
             action: "approve_vip",
             targetType: "vip_payment_request",
-            targetId: vipReq.id,
+            targetId: approval.vipReq.id,
             details: {
-                memberId: member.id,
-                memberEmail: member.email,
-                months: vipReq.package_months,
-                newExpiresAt: newVipExpiresAt.toISOString(),
+                memberId: approval.member.id,
+                memberEmail: approval.member.email,
+                months: approval.vipReq.package_months,
+                newExpiresAt: approval.newVipExpiresAt.toISOString(),
                 notes: notes || null,
             },
         })
 
         return NextResponse.json({
             success: true,
-            message: `Đã kích hoạt VIP ${vipReq.package_months} tháng cho thành viên ${member.full_name}.`,
-            vipExpiresAt: newVipExpiresAt.toISOString(),
+            message: `Đã kích hoạt VIP ${approval.vipReq.package_months} tháng cho thành viên ${approval.member.full_name}.`,
+            vipExpiresAt: approval.newVipExpiresAt.toISOString(),
         })
     } catch (error) {
         console.error("Approve VIP error:", error)
