@@ -60,6 +60,7 @@ export async function POST(request: NextRequest) {
         const updated = await sql<Omit<VipPaymentRequest, "proof_image_data">[]>`
             UPDATE public.vip_payment_requests
             SET proof_image_data = ${proofImageData},
+                status = 'pending',
                 updated_at = now()
             WHERE id = ${requestId}
             RETURNING id, member_id, package_id, package_months, amount, transfer_code, bank_info, status, notes, created_at, approved_at, updated_at

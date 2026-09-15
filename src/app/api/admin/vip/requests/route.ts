@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
     try {
         const sql = getDatabase()
         const url = new URL(request.url)
-        const singleId = url.searchParams.get("id") || url.searchParams.get("requestId")
+        const singleId = url.searchParams.get("id")
 
         if (singleId) {
             const rows = await sql<{ proof_image_data: string | null }[]>`

@@ -467,7 +467,7 @@ export default function AdminVipPage() {
                                                 </button>
                                             )}
 
-                                            {req.status === "pending" && (
+                                            {(req.status === "pending" || req.status === "more_info_needed") && (
                                                 <>
                                                     <button
                                                         onClick={() => handleReject(req, "more_info_needed")}

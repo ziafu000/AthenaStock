@@ -93,7 +93,7 @@ export async function POST(request: NextRequest) {
             INSERT INTO public.vip_payment_requests (
                 member_id, package_id, package_months, amount, transfer_code, bank_info, status
             ) VALUES (
-                ${member.id}, ${pkg.id}, ${pkg.months}, ${pkg.amount}, ${transferCode}, ${JSON.stringify(bankInfo)}, 'pending'
+                ${member.id}, ${pkg.id}, ${pkg.months}, ${pkg.amount}, ${transferCode}, ${JSON.stringify(bankInfo)}::jsonb, 'pending'
             )
             RETURNING id, member_id, package_id, package_months, amount, transfer_code, bank_info, status, proof_image_data, notes, created_at, approved_at, updated_at
         `

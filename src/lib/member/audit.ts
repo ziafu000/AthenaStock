@@ -23,7 +23,7 @@ export async function recordAuditLog({
             INSERT INTO public.membership_audit_logs (
                 actor_type, actor_id, action, target_type, target_id, details
             ) VALUES (
-                ${actorType}, ${actorId}, ${action}, ${targetType}, ${targetId}, ${JSON.stringify(details)}
+                ${actorType}, ${actorId}, ${action}, ${targetType}, ${targetId}, ${JSON.stringify(details)}::jsonb
             )
         `
     } catch (error) {

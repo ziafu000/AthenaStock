@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
 
         const sql = getDatabase()
 
-        if (action === "request_otp" || (action === "login" && !body.code)) {
+        if (action === "request_otp") {
             const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : ""
             if (!email || !email.includes("@")) {
                 return NextResponse.json({ error: "Email không hợp lệ." }, { status: 400 })
@@ -103,7 +103,7 @@ export async function POST(request: NextRequest) {
             })
         }
 
-        if (action === "verify_otp" || (action === "login" && body.code)) {
+        if (action === "verify_otp") {
             const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : ""
             const code = typeof body.code === "string" ? body.code.trim() : ""
             const otpToken = typeof body.otpToken === "string" ? body.otpToken.trim() : ""
