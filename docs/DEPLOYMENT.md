@@ -12,8 +12,8 @@ Release phải giữ nguyên frontend hiện tại và cấu hình đầy đủ 
 ## 1. Database
 
 1. Tạo Supabase project và lấy URI **Transaction Pooler** (port `6543`) có `sslmode=require` cho app/Vercel.
-2. Chạy lần lượt mọi file trong [`database/migrations/`](../database/migrations/) theo thứ tự tên (`001`, `002`, `003`, ...).
-3. Xác nhận các bảng `bookings`, `booking_actions`, `booking_email_jobs`, `booking_rate_limits`, RLS và partial unique index `bookings_reserved_start_at_idx` đã có.
+2. Chạy `npm run migrate` để tự động áp dụng các file trong [`database/migrations/`](../database/migrations/) và ghi nhận vào `public.schema_migrations` (hoặc chạy lần lượt từng file theo thứ tự).
+3. Xác nhận các bảng booking, subscription và các bảng hội viên Phase 3 (`members`, `vip_payment_requests`, `watchlists`, `portfolio_holdings`, `membership_audit_logs`) đã có và bật RLS.
 
 Với production đã chạy migration `001` cũ: deploy code tương thích trước, sau đó chạy `003_allow_competing_booking_requests.sql`. Migration này cho phép nhiều request `pending` cùng slot nhưng chỉ một request được `confirmed`.
 
@@ -45,12 +45,19 @@ BOOKING_CAPTCHA_DISABLED=false
 BOOKING_MEETING_PROVIDER=jitsi
 BOOKING_MEETING_URL_BASE=https://meet.jit.si
 BOOKING_MEETING_LOCATION=
+GLOBAL_VIP_OVERRIDE=false
+VIP_BANK_NAME="MB Bank"
+VIP_BANK_ID=MB
+VIP_BANK_ACCOUNT_NUMBER=0901234567
+VIP_BANK_ACCOUNT_NAME="ATHENA STOCK"
 ```
 
 - Sinh `BOOKING_SECRET` ngẫu nhiên, tối thiểu 32 ký tự; không dùng giá trị mẫu.
 - `NEXT_PUBLIC_APP_URL` phải là origin production để link trong email đúng host.
-- `ADMIN_SESSION_SECRET` phải tách khỏi `BOOKING_SECRET`; rotate secret này chỉ đăng xuất session admin.
+- `ADMIN_SESSION_SECRET` phải tách khỏi `BOOKING_SECRET`; rotate secret này chỉ đăng xuất session admin. Secret này cũng được dùng làm fallback để ký session cookie hội viên nếu `ADMIN_SESSION_SECRET` tồn tại.
 - `CRON_SECRET` bảo vệ email worker; Vercel Cron tự gửi secret này qua Bearer header. Lịch fallback hiện là một lần/ngày để tương thích Vercel Hobby.
+- `GLOBAL_VIP_OVERRIDE=true` cho phép mở toàn bộ bài nghiên cứu VIP cho mọi người dùng mà không cần chờ 8 giờ.
+- Các biến `VIP_BANK_*` tùy chọn cấu hình ngân hàng thụ hưởng hiển thị trên trang nâng cấp `/vip/upgrade` và tạo URL mã VietQR (mặc định MB Bank).
 - Hai Turnstile key bắt buộc ở production. `BOOKING_CAPTCHA_DISABLED=true` chỉ dùng local.
 - `BOOKING_MEETING_LOCATION` là override tùy chọn; để trống để tạo Jitsi room riêng.
 - Dùng database và API key riêng cho preview/production.
@@ -80,8 +87,8 @@ Lệnh này kiểm tra public routes, `robots.txt`, sitemap, search contract, va
 
 ## Checklist sau deploy
 
-- [ ] Migration đã chạy đúng database production
-- [ ] RLS của bảng `bookings` đã bật và không có public policy
+- [ ] Migration đã chạy đúng database production (`npm run migrate` hoàn tất đến migration 013)
+- [ ] RLS của các bảng `bookings`, `members`, `watchlists`, `portfolio_holdings`, `membership_audit_logs` đã bật và không có public policy
 - [ ] Form booking tạo đúng một bản ghi
 - [ ] Email admin nhận link confirm và reschedule
 - [ ] Mở link confirm chưa làm thay đổi dữ liệu; submit confirm mới gửi email
@@ -90,10 +97,14 @@ Lệnh này kiểm tra public routes, `robots.txt`, sitemap, search contract, va
 - [ ] Token sai và token hết hạn bị từ chối
 - [ ] Slot trùng trả lỗi rõ ràng
 - [ ] Slot đã giữ bị disable trước submit; server vẫn trả `409` khi có race
-- [ ] `/admin/bookings` chỉ mở sau magic-link POST confirmation
+- [ ] `/admin/bookings` và `/admin/vip` chỉ mở sau admin auth xác thực
 - [ ] Customer reschedule/cancel dùng được và token không replay được
 - [ ] Email được xử lý ngay sau action; Cron hằng ngày xử lý tiếp job `pending/retry -> sent` hoặc `dead`
 - [ ] Production từ chối booking thiếu/sai Turnstile token
+- [ ] Trang `/vip/upgrade` tạo yêu cầu nâng cấp, sinh đúng mã chuyển khoản và hiển thị VietQR
+- [ ] Upload ảnh bill chuyển khoản (tối đa 5MB) lưu thành công và cập nhật trạng thái yêu cầu
+- [ ] Trang `/profile` đăng nhập qua OTP, hiển thị đúng thời hạn VIP, watchlist và VIP portfolio
+- [ ] Trang `/business/[slug]` hiển thị countdown banner và teaser đối với bài viết dưới 8h cho normal user
 - [ ] Domain gửi Resend đã verified
 - [ ] Sitemap, robots, analytics và toàn bộ route hiện tại hoạt động
 - [ ] Frontend không có thay đổi hình ảnh ngoài copy booking bắt buộc

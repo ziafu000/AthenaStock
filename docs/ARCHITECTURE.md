@@ -150,30 +150,41 @@ Content here...
 The routes below are the approved current implementation. No route migration is planned.
 
 ### Static Routes
-- \/\ - Homepage
-- \/about\ - About page
-- \/advisory\ - Advisory services
-- \/articles\ - Article hub
-- \/business\ - Business-analysis hub
-- \/disclaimer\ - Disclaimer
-- \/frameworks\ - Framework hub
-- \/library\ - Content library
-- \/privacy\ - Privacy policy
-- \/psychology\ - Psychology hub
-- \/series\ - Learning paths
+- `/` - Homepage
+- `/about` - About page
+- `/advisory` - Advisory services
+- `/articles` - Article hub
+- `/business` - Business-analysis hub
+- `/disclaimer` - Disclaimer
+- `/frameworks` - Framework hub
+- `/library` - Content library
+- `/privacy` - Privacy policy
+- `/psychology` - Psychology hub
+- `/series` - Learning paths
+- `/vip/upgrade` - VIP membership packages, VietQR payment info, and receipt upload
+- `/profile` - Member dashboard, personal watchlist, and VIP portfolio
+- `/admin/vip` - Protected admin panel for VIP payment approvals and requests
 
 ### Dynamic Routes
-- \/articles/[slug]\ - Article detail pages
-- \/business/[slug]\ - Business analysis pages
-- \/psychology/[slug]\ - Psychology content pages
-- \/frameworks/[slug]\ - Framework pages
+- `/articles/[slug]` - Article detail pages
+- `/business/[slug]` - Business analysis pages (with 8-hour VIP-first access window)
+- `/psychology/[slug]` - Psychology content pages
+- `/frameworks/[slug]` - Framework pages
 
 ### API Routes
-- \POST /api/booking\ - Persist a booking and notify admin
-- \GET/POST /api/booking/confirm\ - Preview/approve and send email with `.ics`
+- `POST /api/booking` - Persist a booking and notify admin
+- `GET/POST /api/booking/confirm` - Preview/approve and send email with `.ics`
 - `GET/POST /api/booking/reschedule` - Load/submit reschedule suggestions
 - `POST /api/subscribe` và `GET/POST /api/subscribe/unsubscribe` - Persistent consent, deduplication và one-time unsubscribe
 - `GET /api/search` - Bounded, cached và rate-limited content search
+- `POST /api/member/auth` - OTP authentication and signed member session management
+- `GET /api/member/payment-requests` - Member VIP payment request history
+- `GET|POST|DELETE /api/member/watchlist` - Member personal watchlist tracking
+- `GET|POST|DELETE /api/member/portfolio` - VIP personal portfolio holding management and valuation
+- `POST /api/vip/create-request` - Create VIP upgrade request with VietQR transfer code
+- `POST /api/vip/upload-proof` - Upload payment receipt image with upload token verification
+- `GET /api/admin/vip/requests` - Admin listing and inspection of VIP payment requests
+- `POST /api/admin/vip/approve` and `POST /api/admin/vip/reject` - Admin approval and status management for VIP requests
 
 ---
 
@@ -268,7 +279,35 @@ No public navigation, page layout or visual-system migration is part of this tar
 
 ### Server State
 - **Content**: File system reads at build time
-- **Bookings**: PostgreSQL at runtime; isolated from the static MDX content system
+- **Transactional Data**: PostgreSQL at runtime for bookings, newsletter subscriptions, members, VIP payment requests, watchlists, portfolio holdings, and audit logs; isolated from the static MDX content system
+
+---
+
+## VIP Membership & Content Gate Architecture
+
+```text
+Research article request (/business/[slug])
+               |
+      Check VIP-first window (< 8 hours from publish)
+      & Global VIP Override (GLOBAL_VIP_OVERRIDE=true)
+               |
+         Is locked?
+         /        \
+       No          Yes
+      /              \
+Full content     Check member session cookie (athena_member_session)
+                     /           \
+                 Is VIP?       Normal / Guest
+                 /                 \
+            Full content       Teaser content + VipCountdownBanner
+```
+
+Architectural rules:
+- Business research posts have an 8-hour VIP-first window where only VIP members can read full content. Normal/guest users see a teaser and countdown banner with upgrade CTA.
+- Content gating is verified on the server in `src/app/business/[slug]/page.tsx` and `src/lib/member/vip-access.ts`.
+- Member sessions use HMAC SHA-256 signed HttpOnly cookies (`athena_member_session`).
+- VIP upgrades use deterministic transfer codes, VietQR dynamic QR payloads, and signed upload tokens for proof-of-payment receipts.
+- Admin VIP approvals run inside PostgreSQL transactions (`SELECT ... FOR UPDATE`) to ensure idempotency, atomic expiration updates, and immutable audit logs.
 
 ---
 
@@ -344,7 +383,8 @@ SENDER_EMAIL=Athena Stock <contact@athenastock.com>
 NEXT_PUBLIC_APP_URL=https://athenastock.com
 BOOKING_ACTION_TTL_HOURS=72
 BOOKING_MEETING_LOCATION=
-\\\
+GLOBAL_VIP_OVERRIDE=false
+```
 
 ### Build Commands
 

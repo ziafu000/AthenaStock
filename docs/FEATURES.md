@@ -67,7 +67,7 @@ const { fontSize, setFontSize } = useReading()
 
 **UI:** A↓ and A↑ buttons in ReadingControls
 
-**Persistence:** Saved to localStorage as \eading-preferences\
+**Persistence:** Saved to localStorage as \reading-preferences\
 
 ---
 
@@ -252,6 +252,69 @@ See [IMPLEMENTATION-MAP.md](./IMPLEMENTATION-MAP.md) for the shipped file map an
 - Responsive HTML
 - Existing AthenaStock brand colors preserved
 - Clear CTAs
+
+---
+
+## VIP-First 8-Hour Content Window
+
+**Purpose:** Early access for VIP members on in-depth business research articles (`/business/[slug]`).
+
+**Features:**
+- Business research posts have an 8-hour VIP-first window starting from publication time (`date`).
+- VIP members with active membership (`vip_expires_at > now()`) have immediate full access.
+- Normal and guest visitors see a teaser (Section 1: Summary) followed by `VipCountdownBanner` displaying remaining locked time and a direct button to `/vip/upgrade`.
+- Fail-safe teaser extraction ensures protected content beyond Section 1 is never leaked.
+- Global VIP Override: Setting `GLOBAL_VIP_OVERRIDE=true` opens all VIP content universally (useful for preview, testing, or marketing promotions).
+
+**Implementation:**
+- Logic: `src/lib/member/vip-access.ts` (`isPostInVipWindow`, `canAccessContent`)
+- UI: `src/components/vip/VipCountdownBanner.tsx`
+- Server Page: `src/app/business/[slug]/page.tsx`
+
+---
+
+## VIP Upgrade & Payment Processing
+
+**Purpose:** End-to-end flow for upgrading from Normal to VIP membership.
+
+**Features:**
+- Package selection: 1 month, 3 months, 6 months, and 12 months.
+- Transfer code generation: Deterministic short codes (e.g. `ATHENA DK V03 R7K2`).
+- VietQR integration: Generates direct QR codes encoding bank account, transfer code, and amount.
+- Proof of payment upload: Client-side image preview, max 5MB size validation, supported image types (JPEG, PNG, WebP), secured with HMAC-signed `upload_token`.
+- Admin review dashboard at `/admin/vip`:
+  - Tabbed filters: Tất cả, Chờ duyệt (`pending`), Cần bổ sung (`more_info_needed`), Đã duyệt (`approved`), Đã từ chối (`rejected`).
+  - View proof image on-demand (list views omit heavy base64 payloads).
+  - Atomic approval: PostgreSQL transaction with `SELECT ... FOR UPDATE` extending VIP duration from current expiration or `now()`.
+  - Reject / Request more info actions with audit trail recorded in `membership_audit_logs`.
+
+**Implementation:**
+- Upgrade UI: `src/app/vip/upgrade/page.tsx`
+- Admin UI: `src/app/admin/vip/page.tsx`
+- APIs: `/api/vip/create-request`, `/api/vip/upload-proof`, `/api/admin/vip/*`
+
+---
+
+## Member Profile, Watchlist & VIP Portfolio
+
+**Purpose:** Athenan personal dashboard at `/profile`.
+
+**Features:**
+- **Passwordless Member Auth**: OTP verification via `POST /api/member/auth` and 30-day HMAC-signed HttpOnly cookie `athena_member_session`.
+- **Profile & Billing History**: Displays current membership tier (`normal` or `vip`), VIP expiration date, and past upgrade payment requests with status badges.
+- **Personal Watchlist**:
+  - Add and remove stock tickers.
+  - Track research status: `Đang theo dõi`, `Chờ thêm dữ liệu`, `Đang cập nhật`, `Đã hoàn tất nghiên cứu`, `Tạm dừng theo dõi`.
+  - Private notes per stock.
+- **VIP Personal Portfolio**:
+  - Restricted to active VIP members (`tier === 'vip'` and unexpired).
+  - Manage holdings: ticker, shares, cost basis, notes.
+  - Real-time calculations: current market valuation, total cost, profit/loss (amount and percentage), and portfolio allocation weights.
+
+**Implementation:**
+- UI: `src/app/profile/page.tsx`
+- APIs: `/api/member/auth`, `/api/member/watchlist`, `/api/member/portfolio`, `/api/member/payment-requests`
+- Schemas: `public.members`, `public.watchlists`, `public.portfolio_holdings`
 
 ---
 

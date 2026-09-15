@@ -12,7 +12,8 @@
     "validate:routes": "node scripts/validate-routes.mjs",
     "smoke:http": "node scripts/smoke-http.mjs",
     "migrate": "node scripts/migrate.mjs",
-    "test": "npm run validate:content && npm run validate:routes",
+    "test:vip": "npx tsx tests/vip-phase3.test.ts",
+    "test": "npm run validate:content && npm run validate:routes && npm run test:vip",
     "verify": "npm run test && npm run typecheck && npm run lint && npm run build"
   },
   "dependencies": {
