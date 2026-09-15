@@ -5,7 +5,7 @@ import Image from "next/image"
 import { ModeToggle } from "@/components/ui/ModeToggle"
 import { useReading } from "@/components/reading/ReadingContext"
 import { cn } from "@/lib/utils"
-import { Menu, X } from "lucide-react"
+import { Menu, X, Crown, User } from "lucide-react"
 import { useState } from "react"
 import { usePathname } from "next/navigation"
 import { SearchBubble } from "@/components/layout/SearchBubble"
@@ -75,6 +75,24 @@ export function Header() {
 
                 {/* Right: Actions (no background) */}
                 <div className="flex items-center space-x-2.5">
+                    <Link
+                        href="/vip/upgrade"
+                        className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-amber-500/15 to-rose-500/15 border border-amber-500/30 px-3 py-1.5 text-xs font-bold text-amber-700 dark:text-amber-300 hover:from-amber-500/25 hover:to-rose-500/25 transition-all"
+                    >
+                        <Crown className="h-3.5 w-3.5 text-amber-500" />
+                        <span>VIP</span>
+                    </Link>
+
+                    <Link
+                        href="/profile"
+                        className="rounded-full p-2 hover:bg-secondary text-muted-foreground hover:text-foreground transition-all"
+                        title="Trang cá nhân & Danh mục"
+                    >
+                        <User className="h-4 w-4" />
+                    </Link>
+
+                    <div className="h-4 w-px bg-border"></div>
+
                     <SearchBubble />
 
                     <div className="h-4 w-px bg-border"></div>
@@ -104,6 +122,14 @@ export function Header() {
 
                 {/* Actions */}
                 <div className="flex items-center space-x-1.5">
+                    <Link
+                        href="/vip/upgrade"
+                        className="inline-flex items-center gap-1 rounded-full bg-amber-500/15 border border-amber-500/30 px-2.5 py-1 text-xs font-bold text-amber-700 dark:text-amber-300"
+                    >
+                        <Crown className="h-3 w-3 text-amber-500" />
+                        <span>VIP</span>
+                    </Link>
+
                     <SearchBubble />
 
                     <ModeToggle />
@@ -136,6 +162,24 @@ export function Header() {
                                     {link.label}
                                 </Link>
                             ))}
+                            <div className="pt-2 border-t border-border/40 flex flex-col space-y-1">
+                                <Link
+                                    href="/vip/upgrade"
+                                    className="flex items-center gap-2 text-sm px-4 py-2.5 rounded-xl font-serif font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                >
+                                    <Crown className="h-4 w-4" />
+                                    <span>Nâng cấp Hội viên VIP</span>
+                                </Link>
+                                <Link
+                                    href="/profile"
+                                    className="flex items-center gap-2 text-sm px-4 py-2.5 rounded-xl font-serif font-bold text-foreground hover:bg-secondary/35"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                >
+                                    <User className="h-4 w-4" />
+                                    <span>Trang cá nhân & Watchlist</span>
+                                </Link>
+                            </div>
                         </nav>
                     </div>
                 )}

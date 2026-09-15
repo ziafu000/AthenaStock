@@ -79,6 +79,76 @@ Production bắt buộc Turnstile. Route rate-limit theo IP và email, recheck s
 - `POST /api/subscribe/unsubscribe`: consume token một lần và chuyển subscription sang `unsubscribed`.
 - `GET /api/search?q=keyword`: query tối đa 80 ký tự, trả tối đa 20 kết quả với metadata tối thiểu; có shared rate limit và CDN cache.
 
+## Member authentication & profile
+
+Session hội viên sử dụng cookie HttpOnly `athena_member_session` được ký HMAC SHA-256.
+
+### `POST /api/member/auth`
+
+- `action: "request_otp"`: nhận `{ "email": "...", "full_name": "...", "phone": "..." }`. Tạo hoặc cập nhật thông tin cơ bản của member, tạo mã OTP 6 số và gửi qua email/log.
+- `action: "verify_otp"`: nhận `{ "email": "...", "code": "..." }`. Xác thực OTP, tạo session cookie thời hạn 30 ngày và trả thông tin `member`.
+- `action: "logout"`: xóa session cookie.
+- `action: "status"`: kiểm tra session hiện tại, trả `{ "authenticated": true|false, "member": ... }`.
+
+### `GET /api/member/payment-requests`
+
+Yêu cầu session hội viên. Trả danh sách lịch sử yêu cầu nâng cấp VIP của thành viên (lược bỏ `proof_image_data` để tối ưu payload).
+
+## Personal Watchlist & VIP Portfolio
+
+### `GET|POST|DELETE /api/member/watchlist`
+
+Yêu cầu session hội viên:
+- `GET`: trả danh sách mã cổ phiếu đang theo dõi kèm trạng thái và ghi chú.
+- `POST`: nhận `{ "ticker": "...", "status": "...", "notes": "..." }`. Upsert theo `(member_id, (upper(ticker)))`.
+- `DELETE ?ticker=...`: xóa mã khỏi watchlist.
+
+### `GET|POST|DELETE /api/member/portfolio`
+
+Yêu cầu session hội viên với hạng `vip` còn hiệu lực (trả `403` với `code: "VIP_REQUIRED"` nếu không phải VIP):
+- `GET`: trả danh mục nắm giữ kèm giá tham chiếu thị trường, tổng giá trị, giá vốn, lãi/lỗ và tỷ trọng phân bổ danh mục.
+- `POST`: nhận `{ "ticker": "...", "shares": 1000, "cost_basis": 25000, "notes": "..." }`. Upsert theo `(member_id, (upper(ticker)))`.
+- `DELETE ?ticker=...`: xóa cổ phiếu khỏi danh mục.
+
+## VIP Upgrade & Payment
+
+### `POST /api/vip/create-request`
+
+Nhận `{ "email": "...", "full_name": "...", "phone": "...", "package_id": "vip_1m" | "vip_3m" | "vip_6m" | "vip_12m" }`.
+- Nếu email đã đăng ký tài khoản, yêu cầu caller phải đăng nhập phiên hợp lệ (tránh mạo danh tài khoản).
+- Sinh mã chuyển khoản chuẩn dạng `ATHENA DK V03 R7K2`.
+- Trả thông tin tài khoản ngân hàng, mã chuyển khoản, số tiền và `upload_token` ký HMAC dùng để tải hóa đơn.
+
+### `POST /api/vip/upload-proof`
+
+Nhận `{ "requestId": "...", "uploadToken": "...", "proof_image_data": "data:image/jpeg;base64,..." }`.
+- Xác thực `uploadToken` hoặc session của chính chủ sở hữu yêu cầu.
+- Giới hạn kích thước ảnh tối đa 5MB, hỗ trợ định dạng JPEG, PNG, WebP.
+- Cập nhật ảnh bill, nếu trạng thái trước đó là `more_info_needed` sẽ tự động chuyển về `pending` và ghi nhận audit log.
+- Trả kết quả gọn (không serialize lại chuỗi ảnh base64 lớn).
+
+## Admin VIP Management
+
+Yêu cầu admin session (`/api/admin/session`).
+
+### `GET /api/admin/vip/requests`
+
+- `GET`: trả danh sách tối đa 200 yêu cầu nâng cấp VIP, sắp xếp mới nhất trước, lược bỏ `proof_image_data` để giảm tải băng thông.
+- `GET ?id=...`: trả chi tiết một yêu cầu cụ thể kèm `proof_image_data` để admin xem ảnh bill chuyển khoản.
+
+### `POST /api/admin/vip/approve`
+
+Nhận `{ "requestId": "...", "overrideMonths": 3, "notes": "..." }`.
+- Khóa bản ghi bằng `FOR UPDATE` trong database transaction để tránh race condition double-approval.
+- Cập nhật hạng `vip`, tính toán `vip_expires_at` mới (nối tiếp thời hạn hiện tại nếu đang active hoặc tính từ thời điểm duyệt).
+- Chuyển trạng thái yêu cầu sang `approved` và ghi nhận audit log vào `membership_audit_logs`.
+
+### `POST /api/admin/vip/reject`
+
+Nhận `{ "requestId": "...", "action": "reject" | "request_info", "notes": "..." }`.
+- Chặn từ chối đối với yêu cầu đã được duyệt (`approved`).
+- Chuyển trạng thái sang `rejected` hoặc `more_info_needed` và ghi nhận audit log.
+
 ## Mã trạng thái chính
 
 | Status | Ý nghĩa |
@@ -110,8 +180,13 @@ BOOKING_ACTION_TTL_HOURS=72
 BOOKING_MEETING_PROVIDER=jitsi
 BOOKING_MEETING_URL_BASE=https://meet.jit.si
 BOOKING_MEETING_LOCATION=
+GLOBAL_VIP_OVERRIDE=false
+VIP_BANK_NAME="MB Bank"
+VIP_BANK_ID=MB
+VIP_BANK_ACCOUNT_NUMBER=0901234567
+VIP_BANK_ACCOUNT_NAME="ATHENA STOCK"
 ```
 
-`BOOKING_CAPTCHA_DISABLED=true` chỉ hoạt động ngoài production. `BOOKING_MEETING_LOCATION` là override tĩnh tùy chọn; nếu để trống hệ thống tạo Jitsi room riêng khi booking được xác nhận.
+`BOOKING_CAPTCHA_DISABLED=true` chỉ hoạt động ngoài production. `BOOKING_MEETING_LOCATION` là override tĩnh tùy chọn; nếu để trống hệ thống tạo Jitsi room riêng khi booking được xác nhận. `GLOBAL_VIP_OVERRIDE=true` cho phép mở toàn bộ nội dung nghiên cứu VIP cho mọi người dùng khi cần kiểm thử hoặc chạy chiến dịch. Các biến `VIP_BANK_*` tùy chọn dùng để cấu hình tài khoản ngân hàng hiển thị trên trang thanh toán và sinh mã VietQR.
 
 Chạy mọi migration trong [`database/migrations/`](../database/migrations/) theo thứ tự trước khi deploy code. Checklist chi tiết ở [`DEPLOYMENT.md`](./DEPLOYMENT.md).

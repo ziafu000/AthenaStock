@@ -16,6 +16,7 @@ const staticRoutes = [
     "/library/glossary",
     "/disclaimer",
     "/privacy",
+    "/vip/upgrade",
 ]
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

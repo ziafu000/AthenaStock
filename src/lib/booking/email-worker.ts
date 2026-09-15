@@ -70,6 +70,15 @@ async function buildEmail(job: EmailJobRecord): Promise<CreateEmailOptions> {
         }
     }
 
+    if (job.kind === "member_otp") {
+        return {
+            from: senderEmail,
+            to: job.recipient,
+            subject: "Mã xác thực đăng nhập Athena Stock",
+            html: layout(`<p>Mã xác thực đăng nhập tài khoản Athena Stock của bạn là:</p><div style="text-align:center;margin:24px 0;"><span style="font-size:28px;letter-spacing:6px;font-weight:bold;color:#9c1850;background:#fdf2f4;padding:10px 24px;border-radius:8px;border:1px dashed #9c1850;">${escapeHtml(String(job.payload.code || ""))}</span></div><p style="font-size:13px;color:#666">Mã xác thực có hiệu lực trong 10 phút. Nếu bạn không yêu cầu mã này, vui lòng bỏ qua email.</p>`),
+        }
+    }
+
     if (job.kind === "newsletter_welcome") {
         return {
             from: senderEmail,
